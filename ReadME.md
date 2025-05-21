@@ -29,7 +29,7 @@ A modern, powerful, and customizable UI library for Roblox Luau scripts with a c
 ### Installation
 
 ```lua
-local CryzenHub = loadstring(game:HttpGet('https://raw.githubusercontent.com/YourUsername/CryzenHub/main/Source.lua'))()
+local CryzenHub = loadstring(game:HttpGet(https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source''))()
 ```
 
 ## Key System
@@ -411,7 +411,7 @@ This data persists between sessions if SaveConfig is enabled.
 ## Comprehensive Example
 
 ```lua
-local CryzenHub = loadstring(game:HttpGet('https://raw.githubusercontent.com/YourUsername/CryzenHub/main/Source.lua'))()
+local CryzenHub = loadstring(game:HttpGet('https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source'))()
 
 -- Create key system
 local keySystem = CryzenHub:CreateKeySystem({
