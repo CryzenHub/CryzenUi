@@ -5,7 +5,7 @@ A simple yet powerful UI library for Roblox scripts.
 ## Installation
 
 ```lua
-local CryzenHub = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL_HERE"))()
+local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source"))()
 ```
 
 ## Features
@@ -23,7 +23,7 @@ local CryzenHub = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL_HERE"))()
 
 ```lua
 -- Load the library
-local CryzenHub = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL_HERE"))()
+local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source"))()
 
 -- Create a window
 local Window = CryzenHub:CreateWindow("CryzenHub Example")
@@ -157,7 +157,7 @@ Creates a color picker.
 ### Creating a simple ESP script UI
 
 ```lua
-local CryzenHub = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL_HERE"))()
+local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source"))()
 local Window = CryzenHub:CreateWindow("CryzenHub ESP")
 
 local ESPTab = Window:CreateTab("ESP")
