@@ -1,22 +1,24 @@
-# CryzenHub UI Library v1.2.0
+# CryzenHub UI Library v2.0.0
 
-A powerful and feature-rich UI library for Roblox Luau scripts with smooth animations, modern design, and extensive customization options.
+A premium UI library for Roblox scripts with a completely redesigned modern interface, enhanced features, and improved performance.
 
-## What's New in v1.2.0
+![CryzenHub v2.0.0 Banner](https://i.imgur.com/placeholder.png)
 
-- **Acrylic Effect**: Modern blurred background effect for a premium look
-- **Window Resizing**: Resize the UI window to your preferred size
-- **Enhanced Search**: Global search functionality to find UI elements quickly
-- **RGB Color Picker**: More precise color selection with RGB inputs
-- **Collapsible Sections**: Organize your UI elements better with collapsible sections
-- **Ripple Effects**: Beautiful material design-inspired ripple animations
-- **Enhanced Notifications**: Different notification types (info, success, warning, error)
-- **Keybind Support**: Add keyboard shortcuts to toggles and other elements
-- **Configuration System**: Save and load UI settings
-- **Rainbow Mode**: Animated color transitions for accent elements
-- **List Element**: New element for managing collections of items
-- **Checkbox Element**: Simpler alternative to toggles
-- **Rich Text Labels**: Format text with colors and styles
+## What's New in v2.0.0
+
+- **Complete Redesign**: Modern, sleek interface with a premium look and feel
+- **Enhanced Performance**: Optimized rendering and interaction handling
+- **Acrylic Effect**: Beautiful blur effect for a premium glass-like appearance
+- **Improved Animations**: Smoother transitions and visual feedback
+- **Gradient Support**: Customizable gradient backgrounds for UI elements
+- **Advanced Color Picker**: More precise color selection with RGB inputs
+- **Multi-Select Dropdowns**: Select multiple items from dropdowns
+- **Improved Notifications**: Different notification types with icons
+- **Section Management**: Collapsible sections for better organization
+- **Flag System**: Easy value tracking across your UI
+- **Config System**: Comprehensive save/load functionality
+- **Tooltips**: Helpful hover tooltips for UI elements
+- **Rich Search**: Find elements quickly with the built-in search functionality
 
 ## Installation
 
@@ -27,376 +29,615 @@ local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/Cry
 ## Basic Usage
 
 ```lua
--- Load the library
-local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source"))()
-
--- Create a window with custom configuration
-local Window = CryzenHub:CreateWindow("CryzenHub Example", {
-    MainColor = Color3.fromRGB(30, 30, 46),
-    AccentColor = Color3.fromRGB(70, 130, 255),
-    TextColor = Color3.fromRGB(240, 240, 240),
-    Font = Enum.Font.Gotham,
-    SmoothDragging = true,
-    DefaultToggleKey = Enum.KeyCode.RightShift,
-    UseAcrylic = true
+-- Create a window
+local Window = CryzenHub:CreateWindow({
+    Title = "CryzenHub Example",
+    Theme = {
+        Primary = Color3.fromRGB(20, 20, 30),
+        Accent = Color3.fromRGB(100, 120, 255),
+        TextSize = 14
+    }
 })
 
--- Create tabs
-local MainTab = Window:CreateTab("Main", "rbxassetid://6026568198") -- Icon is optional
-local SettingsTab = Window:CreateTab("Settings")
+-- Create tabs with icons
+local MainTab = Window:Tab("Main", "rbxassetid://7059346373")
+local SettingsTab = Window:Tab("Settings", "rbxassetid://7059394039")
 
 -- Create sections
-local FeaturesSection = MainTab:CreateSection("Features")
-local MiscSection = MainTab:CreateSection("Miscellaneous")
-local ConfigSection = SettingsTab:CreateSection("Configuration")
+local FeaturesSection = MainTab:Section("Features")
+local VisualsSection = MainTab:Section("Visuals")
+local ConfigSection = SettingsTab:Section("Configuration")
 
 -- Add elements to sections
-FeaturesSection:CreateButton("Click Me", function()
-    Window:Notify("Button Clicked", "You clicked the button!", {
-        type = "success", -- info, success, warning, error
-        duration = 3
+FeaturesSection:Label("Welcome to CryzenHub v2.0.0")
+
+FeaturesSection:Button("Click Me", function()
+    Window:Notify({
+        Title = "Button Clicked",
+        Message = "You clicked the button!",
+        Duration = 3,
+        Type = "Success"
     })
 end)
 
-local toggle = FeaturesSection:CreateToggle("Toggle Feature", false, function(value)
-    print("Toggle set to:", value)
+local speedToggle = FeaturesSection:Toggle("Speed Hack", {
+    Default = false,
+    Flag = "SpeedEnabled"
+}, function(value)
+    print("Speed Hack:", value)
 end)
 
-local slider = FeaturesSection:CreateSlider("Speed", 0, 100, 50, function(value)
-    print("Slider value:", value)
-end, {
-    format = "%.1f", -- Custom format
-    suffix = " studs/s" -- Add a unit
-})
-
-local dropdown = MiscSection:CreateDropdown("Select Option", {"Option 1", "Option 2", "Option 3"}, "Option 1", function(selected)
-    print("Selected:", selected)
+local speedSlider = FeaturesSection:Slider("Speed Multiplier", {
+    Min = 1,
+    Max = 10,
+    Default = 2,
+    Decimals = 1,
+    Suffix = "x",
+    Flag = "SpeedMultiplier"
+}, function(value)
+    print("Speed multiplier set to:", value)
 end)
 
-local textbox = MiscSection:CreateTextbox("Enter Name", "Your name here...", function(text)
-    print("Entered text:", text)
+local dropdown = FeaturesSection:Dropdown("Target", {
+    Items = {"All Players", "Enemies", "Friends"},
+    Default = "Enemies",
+    Flag = "TargetOption"
+}, function(selected)
+    print("Target selected:", selected)
 end)
 
-local colorpicker = ConfigSection:CreateColorPicker("UI Color", Color3.fromRGB(255, 0, 0), function(color)
-    print("Selected color:", color)
+local multiDropdown = FeaturesSection:Dropdown("Weapons", {
+    Items = {"Assault Rifle", "Shotgun", "Sniper", "Pistol", "Knife"},
+    MultiSelect = true,
+    Default = {"Assault Rifle", "Pistol"},
+    Flag = "SelectedWeapons"
+}, function(selected)
+    print("Weapons selected:", table.concat(selected, ", "))
 end)
 
-local keybind = ConfigSection:CreateKeybind("Toggle UI", Enum.KeyCode.RightControl, function(key)
-    print("Keybind pressed:", key.Name)
+VisualsSection:Checkbox("ESP", true, function(value)
+    print("ESP enabled:", value)
 end)
 
-local checkbox = ConfigSection:CreateCheckbox("Enable Feature", true, function(checked)
-    print("Checkbox value:", checked)
+local espColor = VisualsSection:ColorPicker("ESP Color", {
+    Default = Color3.fromRGB(255, 0, 0),
+    Flag = "ESPColor"
+}, function(color)
+    print("ESP color set to:", color)
 end)
 
-local list = ConfigSection:CreateList("Player Whitelist", {"Player1", "Player2"}, function(items)
-    print("List updated:", table.concat(items, ", "))
+VisualsSection:Divider()
+
+VisualsSection:Keybind("Toggle ESP", {
+    Default = Enum.KeyCode.E,
+    Flag = "ESPKeybind"
+}, function(key)
+    print("ESP toggled with key:", key.Name)
 end)
 
-local label = ConfigSection:CreateLabel("<font color='rgb(70, 130, 255)'>Rich</font> <b>Text</b> <i>Support!</i>", {
-    TextSize = 18,
-    TextXAlignment = Enum.TextXAlignment.Center
-})
+VisualsSection:Textbox("Player Name", {
+    Placeholder = "Enter player name...",
+    ClearOnFocus = false,
+    Flag = "TargetPlayer"
+}, function(text)
+    print("Player name set to:", text)
+end)
 
--- Use theme presets
-Window:SetTheme("Midnight") -- Available: Dark, Light, Discord, Midnight, Aqua
+-- Configuration section
+ConfigSection:Label("Save and Load Configurations")
 
--- Save and load configurations
-Window:SaveConfig("MyConfig")
-Window:LoadConfig("MyConfig")
+ConfigSection:Textbox("Config Name", {
+    Placeholder = "Enter config name...",
+    Default = "MyConfig"
+}, function(text)
+    -- Config name is stored for saving/loading
+    ConfigName = text
+end)
 
--- Enable rainbow mode
-Window:SetRainbowMode(true)
+ConfigSection:Button("Save Config", function()
+    local success = Window:SaveConfig(ConfigName or "Default")
+    
+    Window:Notify({
+        Title = success and "Success" or "Error",
+        Message = success and "Configuration saved!" or "Failed to save configuration",
+        Type = success and "Success" or "Error"
+    })
+end)
+
+ConfigSection:Button("Load Config", function()
+    local success = Window:LoadConfig(ConfigName or "Default")
+    
+    Window:Notify({
+        Title = success and "Success" or "Error",
+        Message = success and "Configuration loaded!" or "Failed to load configuration",
+        Type = success and "Success" or "Error"
+    })
+end)
 ```
 
 ## API Reference
 
 ### CryzenHub
 
-#### `CryzenHub:CreateWindow(title, config)`
+#### `CryzenHub:CreateWindow(options)`
 Creates a main window for your UI.
-- `title`: The title displayed at the top of the window
-- `config`: (Optional) Table with configuration options
+- `options`: Table with window configuration:
+  - `Title`: Window title
+  - `Theme`: Custom theme settings
+  - `Size`: Window size (UDim2)
+  - `Position`: Window position (UDim2)
+  - `MinSize`: Minimum window size (Vector2)
 - Returns: Window object
 
 ### Window
 
-#### `Window:CreateTab(tabName, icon)`
+#### `Window:Tab(name, icon)`
 Creates a new tab in the window.
-- `tabName`: The name of the tab
+- `name`: The name of the tab
 - `icon`: (Optional) Asset ID for the tab icon
 - Returns: Tab object
 
-#### `Window:Notify(title, text, options)`
+#### `Window:Notify(options)`
 Shows a notification.
-- `title`: Title of the notification
-- `text`: Main text content
 - `options`: Table with notification options:
-  - `type`: "info", "success", "warning", "error"
-  - `duration`: How long the notification stays visible (in seconds)
-  - `position`: "bottom-right", "bottom-left", "top-right", "top-left"
-  - `callback`: Function called when notification is closed
+  - `Title`: The title of the notification
+  - `Message`: The notification content
+  - `Duration`: How long to display the notification (in seconds)
+  - `Type`: "Info", "Success", "Warning", or "Error"
 - Returns: Notification object
 
-#### `Window:SetTheme(theme)`
-Customizes the UI theme.
-- `theme`: Either a preset name or a table with theme properties
-  - Presets: "Dark", "Light", "Discord", "Midnight", "Aqua"
-  - Custom: {MainColor, SecondaryColor, AccentColor, TextColor, Font}
-
-#### `Window:SaveConfig(configName)`
+#### `Window:SaveConfig(name)`
 Saves the current UI configuration.
-- `configName`: Name to save the config under
-- Returns: Configuration data or true if saved to file
+- `name`: Name to save the config under
+- Returns: Success status and config data
 
-#### `Window:LoadConfig(configName)`
+#### `Window:LoadConfig(nameOrData)`
 Loads a UI configuration.
-- `configName`: Name of the config to load, or a config table
-- Returns: true if loaded successfully
+- `nameOrData`: Name of the config to load or config data table
+- Returns: Success status
 
-#### `Window:SetRainbowMode(enabled)`
-Enables or disables rainbow mode for accent colors.
-- `enabled`: true to enable, false to disable
+#### `Window:SelectTab(tab)`
+Selects a specific tab.
+- `tab`: The tab object to select
 
-#### `Window:SetToggleKey(keyCode)`
-Changes the key used to toggle the UI's visibility.
-- `keyCode`: The Enum.KeyCode to use
+#### `Window:GetElementByFlag(flag)`
+Gets an element by its flag.
+- `flag`: The flag name
+- Returns: Element object if found, nil otherwise
 
 ### Tab
 
-#### `Tab:CreateSection(sectionName)`
+#### `Tab:Section(title)`
 Creates a section within a tab.
-- `sectionName`: The title of the section
+- `title`: The title of the section
 - Returns: Section object
 
 ### Section
 
-#### `Section:CreateButton(buttonText, callback)`
+#### `Section:Label(text, options)`
+Creates a text label.
+- `text`: The text to display (supports rich text)
+- `options`: Additional options:
+  - `Color`: Text color
+  - `TextSize`: Font size
+  - `Height`: Label height
+  - `TextXAlignment`: Text alignment
+- Returns: Label element
+
+#### `Section:Button(text, callback, options)`
 Creates a clickable button.
-- `buttonText`: Text displayed on the button
+- `text`: Text displayed on the button
 - `callback`: Function called when button is clicked
-- Returns: Button object
+- `options`: Additional options:
+  - `Flag`: Identifier for the element
+- Returns: Button element
 
-#### `Section:CreateToggle(toggleText, default, callback)`
+#### `Section:Toggle(text, options, callback)`
 Creates a toggle switch.
-- `toggleText`: Text displayed next to the toggle
-- `default`: Initial state (true/false)
+- `text`: Text displayed next to the toggle
+- `options`: Toggle options:
+  - `Default`: Initial state (true/false)
+  - `Flag`: Identifier for the element
 - `callback`: Function called when toggle changes state
-- Returns: Toggle object with SetValue(), GetValue(), SetKeybind(), GetKeybind() methods
+- Returns: Toggle element
 
-#### `Section:CreateSlider(sliderText, min, max, default, callback, options)`
+#### `Section:Slider(text, options, callback)`
 Creates a value slider.
-- `sliderText`: Text displayed above the slider
-- `min`: Minimum value
-- `max`: Maximum value
-- `default`: Initial value
+- `text`: Text displayed above the slider
+- `options`: Slider options:
+  - `Min`: Minimum value
+  - `Max`: Maximum value
+  - `Default`: Initial value
+  - `Decimals`: Number of decimal places
+  - `Suffix`: Text to display after the value
+  - `Flag`: Identifier for the element
 - `callback`: Function called when slider value changes
-- `options`: Table with additional options (format, prefix, suffix, decimal)
-- Returns: Slider object with SetValue(), GetValue(), SetRange() methods
+- Returns: Slider element
 
-#### `Section:CreateDropdown(dropdownText, options, default, callback)`
-Creates a dropdown selector with search.
-- `dropdownText`: Text displayed above the dropdown
-- `options`: Array of options
-- `default`: Initially selected option
+#### `Section:Dropdown(text, options, callback)`
+Creates a dropdown selector.
+- `text`: Text displayed above the dropdown
+- `options`: Dropdown options:
+  - `Items`: Array of selectable items
+  - `Default`: Initially selected item(s)
+  - `MultiSelect`: Allow selecting multiple items
+  - `Flag`: Identifier for the element
 - `callback`: Function called when selection changes
-- Returns: Dropdown object with SetValue(), GetValue(), Refresh() methods
+- Returns: Dropdown element
 
-#### `Section:CreateTextbox(boxText, placeholderText, callback, defaultText)`
+#### `Section:Textbox(text, options, callback)`
 Creates a text input field.
-- `boxText`: Text displayed above the textbox
-- `placeholderText`: Placeholder text when textbox is empty
+- `text`: Text displayed above the textbox
+- `options`: Textbox options:
+  - `Default`: Initial text
+  - `Placeholder`: Placeholder text when empty
+  - `ClearOnFocus`: Whether to clear text when focused
+  - `Flag`: Identifier for the element
 - `callback`: Function called when text is submitted
-- `defaultText`: Initial text in the textbox
-- Returns: Textbox object with SetValue(), GetValue() methods
+- Returns: Textbox element
 
-#### `Section:CreateLabel(labelText, options)`
-Creates a text label with rich text support.
-- `labelText`: Text to display (supports HTML-like tags)
-- `options`: Table with label options (TextColor, TextSize, TextXAlignment)
-- Returns: Label object with SetText(), SetColor() methods
-
-#### `Section:CreateColorPicker(pickerText, default, callback)`
-Creates a color picker with RGB inputs.
-- `pickerText`: Text displayed next to the color display
-- `default`: Initial color (Color3 value)
+#### `Section:ColorPicker(text, options, callback)`
+Creates a color picker.
+- `text`: Text displayed next to the color display
+- `options`: ColorPicker options:
+  - `Default`: Initial color (Color3)
+  - `Flag`: Identifier for the element
 - `callback`: Function called when color changes
-- Returns: ColorPicker object with SetValue(), GetValue() methods
+- Returns: ColorPicker element
 
-#### `Section:CreateKeybind(bindText, defaultKey, callback)`
+#### `Section:Keybind(text, options, callback)`
 Creates a keybind input element.
-- `bindText`: Text displayed next to the keybind
-- `defaultKey`: Initial key (Enum.KeyCode)
+- `text`: Text displayed next to the keybind
+- `options`: Keybind options:
+  - `Default`: Initial key (Enum.KeyCode)
+  - `Flag`: Identifier for the element
 - `callback`: Function called when keybind is pressed
-- Returns: Keybind object with SetValue(), GetValue() methods
+- Returns: Keybind element
 
-#### `Section:CreateCheckbox(checkText, default, callback)`
+#### `Section:Checkbox(text, default, callback, options)`
 Creates a checkbox element.
-- `checkText`: Text displayed next to the checkbox
+- `text`: Text displayed next to the checkbox
 - `default`: Initial state (true/false)
 - `callback`: Function called when checkbox changes state
-- Returns: Checkbox object with SetValue(), GetValue() methods
+- `options`: Additional options:
+  - `Flag`: Identifier for the element
+- Returns: Checkbox element
 
-#### `Section:CreateList(listText, defaultItems, callback, options)`
-Creates a list element with add/remove functionality.
-- `listText`: Text displayed above the list
-- `defaultItems`: Initial list items
-- `callback`: Function called when list changes
-- `options`: Additional options for the list
-- Returns: List object with SetItems(), GetItems(), AddItem(), RemoveItem(), Clear() methods
+#### `Section:Divider(options)`
+Creates a horizontal divider line.
+- `options`: Divider options:
+  - `Color`: Line color
+  - `Transparency`: Line transparency
+- Returns: Divider element
+
+### Element Common Methods
+
+Most elements share these common methods:
+
+#### `Element:Update(value)`
+Updates the element's value.
+- `value`: The new value for the element
+
+#### `Element:SetValue(value)`
+Sets the element's value (same as Update).
+- `value`: The new value for the element
+
+### Dropdown-Specific Methods
+
+#### `Dropdown:AddItem(item)`
+Adds an item to the dropdown.
+- `item`: The item to add
+
+#### `Dropdown:RemoveItem(item)`
+Removes an item from the dropdown.
+- `item`: The item to remove
+
+#### `Dropdown:Clear()`
+Clears all items from the dropdown.
+
+### Slider-Specific Methods
+
+#### `Slider:SetMinMax(min, max)`
+Changes the slider's minimum and maximum values.
+- `min`: New minimum value
+- `max`: New maximum value
+
+## Customizing Themes
+
+You can customize the UI appearance by providing theme options when creating a window:
+
+```lua
+local Window = CryzenHub:CreateWindow({
+    Title = "Custom Theme Example",
+    Theme = {
+        -- Main colors
+        Primary = Color3.fromRGB(20, 20, 30),      -- Main background
+        Secondary = Color3.fromRGB(30, 30, 40),    -- Secondary background
+        Tertiary = Color3.fromRGB(40, 40, 55),     -- Input fields
+        Accent = Color3.fromRGB(100, 120, 255),    -- Accent color
+        
+        -- Text colors
+        Text = Color3.fromRGB(240, 240, 255),      -- Primary text
+        TextDark = Color3.fromRGB(180, 180, 195),  -- Secondary text
+        
+        -- Border colors
+        Stroke = Color3.fromRGB(60, 60, 80),       -- Border color
+        
+        -- Status colors
+        Success = Color3.fromRGB(70, 200, 120),    -- Success color
+        Warning = Color3.fromRGB(255, 180, 70),    -- Warning color
+        Error = Color3.fromRGB(255, 80, 80),       -- Error color
+        Info = Color3.fromRGB(70, 160, 255),       -- Info color
+        
+        -- Typography
+        Font = Enum.Font.Gotham,                   -- UI font
+        HeaderSize = 18,                           -- Header text size
+        TextSize = 14,                             -- Normal text size
+        SubTextSize = 12,                          -- Smaller text size
+        
+        -- Effects
+        Blur = true,                               -- Enable background blur
+        BlurSize = 10,                             -- Blur intensity
+        UseAcrylic = true,                         -- Enable acrylic effect
+        EnableShadows = true,                      -- Enable drop shadows
+        UseGradients = true                        -- Enable gradient backgrounds
+    }
+})
+```
 
 ## Examples
 
-### Creating a player selector with the list element
+### Player List with Multi-Select Dropdown
 
 ```lua
-local PlayersTab = Window:CreateTab("Players")
-local PlayerSection = PlayersTab:CreateSection("Player Selection")
+local PlayersTab = Window:Tab("Players", "rbxassetid://7072717958")
+local PlayersSection = PlayersTab:Section("Player Selection")
 
 -- Get all player names
-local playerNames = {}
-for _, player in pairs(game.Players:GetPlayers()) do
-    table.insert(playerNames, player.Name)
+local function GetAllPlayers()
+    local playerNames = {}
+    for _, player in pairs(game.Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    return playerNames
 end
 
--- Create dropdown to select players
-local playerDropdown = PlayerSection:CreateDropdown("Select Player", playerNames, nil, function(selected)
-    Window:Notify("Player Selected", "You selected: " .. selected, {type = "info"})
+-- Create multi-select dropdown for players
+local selectedPlayers = PlayersSection:Dropdown("Select Players", {
+    Items = GetAllPlayers(),
+    MultiSelect = true,
+    Flag = "SelectedPlayers"
+}, function(selected)
+    print("Selected players:", table.concat(selected, ", "))
 end)
 
--- Create a list to track selected players
-local selectedPlayers = PlayerSection:CreateList("Selected Players", {}, function(list)
-    print("Selected players: " .. table.concat(list, ", "))
+-- Refresh player list button
+PlayersSection:Button("Refresh Player List", function()
+    selectedPlayers:Update(GetAllPlayers())
+    Window:Notify({
+        Title = "Players Refreshed",
+        Message = "Player list has been updated",
+        Type = "Info"
+    })
 end)
 
--- Button to add selected player to the list
-PlayerSection:CreateButton("Add Selected Player", function()
-    local selected = playerDropdown:GetValue()
-    if selected then
-        -- Check if player is already in list
-        local items = selectedPlayers:GetItems()
-        for _, item in ipairs(items) do
-            if item == selected then
-                Window:Notify("Already Added", selected .. " is already in your list!", {type = "warning"})
-                return
-            end
+-- Action buttons for selected players
+PlayersSection:Button("Teleport to Selected", function()
+    local selected = Window.Flags.SelectedPlayers
+    if #selected == 0 then
+        Window:Notify({
+            Title = "No Selection",
+            Message = "No players selected",
+            Type = "Warning"
+        })
+        return
+    end
+    
+    for _, playerName in ipairs(selected) do
+        local player = game.Players:FindFirstChild(playerName)
+        if player and player.Character then
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(
+                player.Character:GetPrimaryPartCFrame()
+            )
+            break -- Teleport to the first valid player
         end
-        
-        selectedPlayers:AddItem(selected)
-        Window:Notify("Player Added", selected .. " added to your list!", {type = "success"})
     end
 end)
 
--- Update player list when players join/leave
-game.Players.PlayerAdded:Connect(function(player)
-    table.insert(playerNames, player.Name)
-    playerDropdown:Refresh(playerNames, true)
+-- Update when players join/leave
+game.Players.PlayerAdded:Connect(function()
+    selectedPlayers:Update(GetAllPlayers())
 end)
 
-game.Players.PlayerRemoving:Connect(function(player)
-    for i, name in ipairs(playerNames) do
-        if name == player.Name then
-            table.remove(playerNames, i)
-            break
-        end
-    end
-    playerDropdown:Refresh(playerNames, true)
+game.Players.PlayerRemoving:Connect(function()
+    selectedPlayers:Update(GetAllPlayers())
 end)
 ```
 
-### Creating a theme customizer
+### ESP Configuration with Color Picker
 
 ```lua
-local ThemesTab = Window:CreateTab("Themes")
-local ThemeSection = ThemesTab:CreateSection("Theme Customization")
+local VisualsTab = Window:Tab("Visuals", "rbxassetid://7072706108")
+local ESPSection = VisualsTab:Section("ESP Settings")
 
--- Preset themes
-local presets = {"Dark", "Light", "Discord", "Midnight", "Aqua"}
-ThemeSection:CreateDropdown("Theme Presets", presets, "Dark", function(selected)
-    Window:SetTheme(selected)
-    Window:Notify("Theme Applied", "Applied the " .. selected .. " theme!", {type = "success"})
+-- ESP toggle
+local espEnabled = ESPSection:Toggle("Enable ESP", {
+    Default = false,
+    Flag = "ESPEnabled"
+}, function(value)
+    -- ESP toggle logic here
 end)
 
--- Custom theme colors
-ThemeSection:CreateLabel("Custom Theme Colors")
-
-local mainColor = ThemeSection:CreateColorPicker("Main Color", Config.MainColor, function(color)
-    Window:SetTheme({MainColor = color})
+-- ESP options
+ESPSection:Checkbox("Show Names", true, function(value)
+    -- Names ESP logic
 end)
 
-local accentColor = ThemeSection:CreateColorPicker("Accent Color", Config.AccentColor, function(color)
-    Window:SetTheme({AccentColor = color})
+ESPSection:Checkbox("Show Boxes", true, function(value)
+    -- Box ESP logic
 end)
 
-local textColor = ThemeSection:CreateColorPicker("Text Color", Config.TextColor, function(color)
-    Window:SetTheme({TextColor = color})
+ESPSection:Checkbox("Show Health", false, function(value)
+    -- Health ESP logic
 end)
 
--- Font selection
-local fonts = {"Gotham", "GothamBold", "GothamSemibold", "SourceSans", "SourceSansBold", "Arial", "ArialBold"}
-local fontEnums = {
-    Gotham = Enum.Font.Gotham,
-    GothamBold = Enum.Font.GothamBold,
-    GothamSemibold = Enum.Font.GothamSemibold,
-    SourceSans = Enum.Font.SourceSans,
-    SourceSansBold = Enum.Font.SourceSansBold,
-    Arial = Enum.Font.Arial,
-    ArialBold = Enum.Font.ArialBold
-}
-
-ThemeSection:CreateDropdown("Font", fonts, "Gotham", function(selected)
-    Window:SetTheme({Font = fontEnums[selected]})
+ESPSection:Checkbox("Show Distance", true, function(value)
+    -- Distance ESP logic
 end)
 
--- Rainbow mode
-ThemeSection:CreateToggle("Rainbow Mode", false, function(enabled)
-    Window:SetRainbowMode(enabled)
+-- ESP colors
+local teamColorToggle = ESPSection:Toggle("Use Team Colors", {
+    Default = true,
+    Flag = "UseTeamColors"
+}, function(value)
+    -- Team color logic
 end)
 
--- Save/load themes
-ThemeSection:CreateTextbox("Theme Name", "Enter theme name...", function(text)
-    if text and text ~= "" then
-        -- Save current theme
-        local themeConfig = {
-            MainColor = Config.MainColor,
-            AccentColor = Config.AccentColor,
-            TextColor = Config.TextColor,
-            Font = Config.Font
-        }
-        
-        writefile("CryzenHub_Theme_" .. text .. ".json", game:GetService("HttpService"):JSONEncode(themeConfig))
-        Window:Notify("Theme Saved", "Saved theme as: " .. text, {type = "success"})
+local espColor = ESPSection:ColorPicker("ESP Color", {
+    Default = Color3.fromRGB(255, 0, 0),
+    Flag = "ESPColor"
+}, function(color)
+    -- Color update logic
+end)
+
+-- ESP distance
+local espDistance = ESPSection:Slider("ESP Distance", {
+    Min = 50,
+    Max = 5000,
+    Default = 1000,
+    Suffix = " studs"
+}, function(value)
+    -- Update ESP distance logic
+end)
+
+-- ESP keybind
+ESPSection:Keybind("Toggle ESP", {
+    Default = Enum.KeyCode.E,
+    Flag = "ESPKeybind"
+}, function()
+    local newValue = not Window.Flags.ESPEnabled
+    espEnabled:SetValue(newValue)
+})
+
+-- ESP target selection
+ESPSection:Dropdown("ESP Targets", {
+    Items = {"All Players", "Enemies", "Team", "Friends"},
+    Default = "Enemies",
+    Flag = "ESPTargets"
+}, function(selected)
+    -- Target selection logic
+end)
+```
+
+### Configuration System
+
+```lua
+local SettingsTab = Window:Tab("Settings", "rbxassetid://7059394039")
+local ConfigSection = SettingsTab:Section("Configuration")
+
+local configName = "Default"
+
+-- Config name input
+ConfigSection:Textbox("Config Name", {
+    Default = configName,
+    Placeholder = "Enter config name..."
+}, function(text)
+    configName = text
+end)
+
+-- Save config
+ConfigSection:Button("Save Configuration", function()
+    local success, data = Window:SaveConfig(configName)
+    
+    if success then
+        Window:Notify({
+            Title = "Configuration Saved",
+            Message = "Successfully saved as: " .. configName,
+            Type = "Success"
+        })
+    else
+        Window:Notify({
+            Title = "Save Failed",
+            Message = "Could not save configuration. Make sure your exploit supports file writing.",
+            Type = "Error"
+        })
     end
 end)
 
--- Load saved themes
-local function refreshThemes()
-    if listfiles then
-        local themeFiles = {}
+-- Load config
+ConfigSection:Button("Load Configuration", function()
+    local success = Window:LoadConfig(configName)
+    
+    if success then
+        Window:Notify({
+            Title = "Configuration Loaded",
+            Message = "Successfully loaded: " .. configName,
+            Type = "Success"
+        })
+    else
+        Window:Notify({
+            Title = "Load Failed",
+            Message = "Could not load configuration. The file may not exist.",
+            Type = "Error"
+        })
+    end
+end)
+
+-- List available configs (if supported)
+if listfiles then
+    local configs = {}
+    
+    -- Refresh config list
+    local function RefreshConfigs()
+        configs = {}
         for _, file in ipairs(listfiles("")) do
-            if file:match("CryzenHub_Theme_(.+).json") then
-                local themeName = file:match("CryzenHub_Theme_(.+).json")
-                table.insert(themeFiles, themeName)
+            if file:match("CryzenHub_(.+)%.json") then
+                local name = file:match("CryzenHub_(.+)%.json")
+                table.insert(configs, name)
             end
         end
-        return themeFiles
+        return configs
     end
-    return {}
+    
+    -- Create dropdown with available configs
+    local configDropdown = ConfigSection:Dropdown("Available Configs", {
+        Items = RefreshConfigs(),
+        Flag = "SelectedConfig"
+    }, function(selected)
+        configName = selected
+    end)
+    
+    -- Refresh button
+    ConfigSection:Button("Refresh Config List", function()
+        configDropdown:Update(RefreshConfigs())
+        Window:Notify({
+            Title = "Config List Refreshed",
+            Message = "Found " .. #configs .. " configurations",
+            Type = "Info"
+        })
+    end)
 end
 
-local savedThemes = refreshThemes()
-local themeDropdown = ThemeSection:CreateDropdown("Saved Themes", savedThemes, nil, function(selected)
-    if selected and isfile("CryzenHub_Theme_" .. selected .. ".json") then
-        local themeData = game:GetService("HttpService"):JSONDecode(readfile("CryzenHub_Theme_" .. selected .. ".json"))
-        Window:SetTheme(themeData)
-        Window:Notify("Theme Loaded", "Loaded theme: " .. selected, {type = "success"})
+-- Reset all settings
+ConfigSection:Button("Reset All Settings", function()
+    -- Prompt confirmation
+    local confirmed = false
+    
+    -- Create a confirmation UI here or use your own method
+    -- For this example, we'll just reset without confirmation
+    
+    -- Reset all values to defaults
+    for flag, element in pairs(Window.Elements) do
+        if element.SetValue and element.Default ~= nil then
+            element:SetValue(element.Default)
+        end
     end
-end)
-
-ThemeSection:CreateButton("Refresh Themes", function()
-    local themes = refreshThemes()
-    themeDropdown:Refresh(themes)
-    Window:Notify("Themes Refreshed", "Updated the list of saved themes", {type = "info"})
+    
+    Window:Notify({
+        Title = "Settings Reset",
+        Message = "All settings have been reset to their default values",
+        Type = "Info"
+    })
 end)
 ```
 
@@ -405,18 +646,14 @@ end)
 This UI library is free to use for any purpose. Credit is appreciated but not required.
 ```
 
-The v1.2.0 update adds numerous enhancements to the CryzenHub UI Library, making it more feature-rich and visually appealing. Key improvements include:
+This v2.0.0 update represents a complete overhaul of the CryzenHub UI Library with a modern, premium design aesthetic. The new version includes:
 
-1. Acrylic blur effect for a modern look
-2. Window resizing capability
-3. Global search functionality for UI elements
-4. Enhanced color picker with RGB inputs
-5. Collapsible sections for better organization
-6. Material design ripple effects
-7. More notification types and positions
-8. Keybind support for elements
-9. Configuration save/load system
-10. Rainbow mode for accent colors
-11. New list element for collections
-12. Checkbox element as a toggle alternative
-13. Rich text support in labels
+1. A sleeker, more professional UI with acrylic effects and gradients
+2. Improved element design with better visual feedback
+3. Enhanced organization with collapsible sections
+4. Advanced controls like multi-select dropdowns
+5. Better notifications with different types and icons
+6. Comprehensive configuration system
+7. More intuitive tab navigation with icons
+8. Improved tooltips and search functionality
+9. Better performance through optimized rendering
