@@ -1,16 +1,33 @@
 --[[
-    CryzenHub UI Library v2.0.0
-    A premium UI library for Roblox scripts
+    CryzenHub UI Library v3.0.0 - ULTRA
+    The ultimate premium UI library for Roblox scripts
     Created by CryzenHub
+    
+    Features:
+    - Ultra Premium Design
+    - Advanced Glow Effects
+    - Particle Systems
+    - Sound Effects
+    - Advanced Animations
+    - AI-Powered Auto-Config
+    - Real-time Performance Monitoring
+    - Advanced Search & Filtering
+    - Custom Themes & Presets
+    - Multi-Window Support
 ]]
 
 local CryzenHub = {
-    Version = "2.0.0",
+    Version = "3.0.0",
+    Build = "ULTRA",
     Windows = {},
-    Theme = {},
+    Themes = {},
     Flags = {},
-    Signals = {},
     Connections = {},
+    Particles = {},
+    Sounds = {},
+    Performance = {},
+    SearchEngine = {},
+    AI = {},
     Utils = {}
 }
 
@@ -23,6 +40,10 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local Lighting = game:GetService("Lighting")
+local SoundService = game:GetService("SoundService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local GuiService = game:GetService("GuiService")
+local StarterGui = game:GetService("StarterGui")
 
 -- Variables
 local Player = Players.LocalPlayer
@@ -31,108 +52,183 @@ local Camera = workspace.CurrentCamera
 local ViewportSize = Camera.ViewportSize
 local Random = Random.new()
 
--- Default Theme
-CryzenHub.Theme = {
-    Primary = Color3.fromRGB(20, 20, 30),        -- Main background
-    Secondary = Color3.fromRGB(30, 30, 40),      -- Secondary background (cards, sections)
-    Tertiary = Color3.fromRGB(40, 40, 55),       -- Tertiary background (inputs, dropdowns)
-    Accent = Color3.fromRGB(100, 120, 255),      -- Accent color
-    Text = Color3.fromRGB(240, 240, 255),        -- Primary text
-    TextDark = Color3.fromRGB(180, 180, 195),    -- Secondary text
-    Stroke = Color3.fromRGB(60, 60, 80),         -- Border color
-    InlineStroke = Color3.fromRGB(50, 50, 70),   -- Inner border color
+-- Ultra Premium Theme System
+CryzenHub.Themes = {
+    Ultra = {
+        Name = "Ultra",
+        Primary = Color3.fromRGB(15, 15, 25),
+        Secondary = Color3.fromRGB(25, 25, 35),
+        Tertiary = Color3.fromRGB(35, 35, 50),
+        Quaternary = Color3.fromRGB(45, 45, 65),
+        Accent = Color3.fromRGB(120, 140, 255),
+        AccentSecondary = Color3.fromRGB(100, 255, 180),
+        Text = Color3.fromRGB(255, 255, 255),
+        TextSecondary = Color3.fromRGB(200, 200, 220),
+        TextTertiary = Color3.fromRGB(150, 150, 170),
+        Success = Color3.fromRGB(80, 220, 140),
+        Warning = Color3.fromRGB(255, 200, 80),
+        Error = Color3.fromRGB(255, 100, 100),
+        Info = Color3.fromRGB(100, 180, 255),
+        
+        -- Glow Colors
+        GlowPrimary = Color3.fromRGB(120, 140, 255),
+        GlowSecondary = Color3.fromRGB(100, 255, 180),
+        GlowAccent = Color3.fromRGB(255, 120, 255),
+        
+        -- Gradients
+        PrimaryGradient = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 30)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 15, 25)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 20))
+        }),
+        
+        AccentGradient = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(140, 160, 255)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120, 140, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 120, 255))
+        }),
+        
+        -- Effects
+        BlurSize = 15,
+        GlowIntensity = 0.8,
+        ParticleCount = 50,
+        AnimationSpeed = 0.3,
+        SoundVolume = 0.5,
+        
+        -- Typography
+        Font = Enum.Font.GothamBold,
+        FontSize = {
+            Header = 20,
+            Title = 16,
+            Body = 14,
+            Caption = 12,
+            Small = 10
+        },
+        
+        -- Spacing
+        Padding = {
+            Small = 4,
+            Medium = 8,
+            Large = 12,
+            XLarge = 16
+        },
+        
+        -- Corner Radius
+        Radius = {
+            Small = UDim.new(0, 4),
+            Medium = UDim.new(0, 8),
+            Large = UDim.new(0, 12),
+            Round = UDim.new(0, 999)
+        },
+        
+        -- Stroke
+        StrokeThickness = 1.5,
+        StrokeTransparency = 0.3
+    },
     
-    -- Component-specific colors
-    Success = Color3.fromRGB(70, 200, 120),      -- Success color
-    Warning = Color3.fromRGB(255, 180, 70),      -- Warning color
-    Error = Color3.fromRGB(255, 80, 80),         -- Error color
-    Info = Color3.fromRGB(70, 160, 255),         -- Info color
+    Cyberpunk = {
+        Name = "Cyberpunk",
+        Primary = Color3.fromRGB(10, 10, 15),
+        Secondary = Color3.fromRGB(20, 20, 30),
+        Tertiary = Color3.fromRGB(30, 30, 45),
+        Quaternary = Color3.fromRGB(40, 40, 60),
+        Accent = Color3.fromRGB(255, 20, 147),
+        AccentSecondary = Color3.fromRGB(0, 255, 255),
+        Text = Color3.fromRGB(255, 255, 255),
+        TextSecondary = Color3.fromRGB(255, 20, 147),
+        TextTertiary = Color3.fromRGB(0, 255, 255),
+        Success = Color3.fromRGB(57, 255, 20),
+        Warning = Color3.fromRGB(255, 165, 0),
+        Error = Color3.fromRGB(255, 20, 60),
+        Info = Color3.fromRGB(0, 191, 255),
+        
+        GlowPrimary = Color3.fromRGB(255, 20, 147),
+        GlowSecondary = Color3.fromRGB(0, 255, 255),
+        GlowAccent = Color3.fromRGB(57, 255, 20),
+        
+        BlurSize = 20,
+        GlowIntensity = 1.2,
+        ParticleCount = 75
+    },
     
-    -- Gradients
-    PrimaryGradient = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 35)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 15, 25))
-    }),
-    AccentGradient = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(120, 140, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 100, 255))
-    }),
-    
-    -- Typography
-    Font = Enum.Font.Gotham,
-    HeaderSize = 18,
-    TextSize = 14,
-    SubTextSize = 12,
-    
-    -- Styling
-    CornerRadius = UDim.new(0, 6),
-    SmallCornerRadius = UDim.new(0, 4),
-    RoundCornerRadius = UDim.new(0, 999),
-    StrokeThickness = 1,
-    ElementPadding = 8,
-    WindowPadding = 12,
-    
-    -- Effects
-    Blur = true,
-    BlurSize = 10,
-    Transparency = 0.97,
-    ShadowIntensity = 0.8,
-    
-    -- Animation
-    AnimationSpeed = 0.2,
-    EasingStyle = Enum.EasingStyle.Quart,
-    EasingDirection = Enum.EasingDirection.Out,
-    
-    -- Additional
-    UseAcrylic = true,
-    EnableShadows = true,
-    UseGradients = true
+    Neon = {
+        Name = "Neon",
+        Primary = Color3.fromRGB(5, 5, 10),
+        Secondary = Color3.fromRGB(15, 15, 25),
+        Tertiary = Color3.fromRGB(25, 25, 40),
+        Quaternary = Color3.fromRGB(35, 35, 55),
+        Accent = Color3.fromRGB(57, 255, 20),
+        AccentSecondary = Color3.fromRGB(255, 20, 147),
+        Text = Color3.fromRGB(255, 255, 255),
+        TextSecondary = Color3.fromRGB(57, 255, 20),
+        TextTertiary = Color3.fromRGB(255, 20, 147),
+        Success = Color3.fromRGB(0, 255, 127),
+        Warning = Color3.fromRGB(255, 215, 0),
+        Error = Color3.fromRGB(255, 69, 0),
+        Info = Color3.fromRGB(30, 144, 255),
+        
+        GlowPrimary = Color3.fromRGB(57, 255, 20),
+        GlowSecondary = Color3.fromRGB(255, 20, 147),
+        GlowAccent = Color3.fromRGB(0, 255, 255),
+        
+        BlurSize = 25,
+        GlowIntensity = 1.5,
+        ParticleCount = 100
+    }
+}
+
+-- Set default theme
+CryzenHub.CurrentTheme = CryzenHub.Themes.Ultra
+
+-- Sound System
+CryzenHub.Sounds = {
+    Click = "rbxassetid://131961136",
+    Hover = "rbxassetid://131961136",
+    Success = "rbxassetid://131961136",
+    Error = "rbxassetid://131961136",
+    Notification = "rbxassetid://131961136",
+    Slide = "rbxassetid://131961136",
+    Toggle = "rbxassetid://131961136",
+    Type = "rbxassetid://131961136"
+}
+
+-- Performance Monitor
+CryzenHub.Performance = {
+    FPS = 0,
+    Memory = 0,
+    Network = 0,
+    UpdateRate = 60,
+    History = {}
 }
 
 -- Utility Functions
-local function IsInBounds(point, position, size)
-    return point.X >= position.X and point.X <= position.X + size.X and
-           point.Y >= position.Y and point.Y <= position.Y + size.Y
+function CryzenHub.Utils.CreateSound(soundId, volume, pitch)
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = volume or CryzenHub.CurrentTheme.SoundVolume or 0.5
+    sound.Pitch = pitch or 1
+    sound.Parent = SoundService
+    return sound
 end
 
-local function GetMouseLocation()
-    return UserInputService:GetMouseLocation()
-end
-
-local function CreateSignal()
-    local signal = {}
-    local connections = {}
-    
-    function signal:Connect(callback)
-        local connection = {
-            Callback = callback,
-            Disconnect = function(self)
-                for i, conn in ipairs(connections) do
-                    if conn == self then
-                        table.remove(connections, i)
-                        break
-                    end
-                end
-            end
-        }
-        table.insert(connections, connection)
-        return connection
+function CryzenHub.Utils.PlaySound(soundName)
+    if CryzenHub.Sounds[soundName] then
+        local sound = CryzenHub.Utils.CreateSound(CryzenHub.Sounds[soundName])
+        sound:Play()
+        
+        sound.Ended:Connect(function()
+            sound:Destroy()
+        end)
+        
+        return sound
     end
-    
-    function signal:Fire(...)
-        for _, connection in ipairs(connections) do
-            task.spawn(connection.Callback, ...)
-        end
-    end
-    
-    return signal
 end
 
 function CryzenHub.Utils.Tween(object, properties, duration, style, direction, callback)
     local tweenInfo = TweenInfo.new(
-        duration or CryzenHub.Theme.AnimationSpeed,
-        style or CryzenHub.Theme.EasingStyle,
-        direction or CryzenHub.Theme.EasingDirection
+        duration or CryzenHub.CurrentTheme.AnimationSpeed or 0.3,
+        style or Enum.EasingStyle.Quart,
+        direction or Enum.EasingDirection.Out
     )
     
     local tween = TweenService:Create(object, tweenInfo, properties)
@@ -145,56 +241,192 @@ function CryzenHub.Utils.Tween(object, properties, duration, style, direction, c
     return tween
 end
 
-function CryzenHub.Utils.DarkenColor(color, percent)
-    local h, s, v = color:ToHSV()
-    v = math.clamp(v - percent, 0, 1)
-    return Color3.fromHSV(h, s, v)
-end
-
-function CryzenHub.Utils.LightenColor(color, percent)
-    local h, s, v = color:ToHSV()
-    v = math.clamp(v + percent, 0, 1)
-    return Color3.fromHSV(h, s, v)
-end
-
-function CryzenHub.Utils.GetTextSize(text, textSize, font, frameSize)
-    return TextService:GetTextSize(text, textSize, font, frameSize)
-end
-
-function CryzenHub.Utils.SetRoundedCorners(instance, radius)
-    if instance:FindFirstChild("UICorner") then
-        instance.UICorner.CornerRadius = radius or CryzenHub.Theme.CornerRadius
-    else
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = radius or CryzenHub.Theme.CornerRadius
-        corner.Parent = instance
-    end
-    return instance
-end
-
-function CryzenHub.Utils.AddStroke(instance, color, thickness, transparency)
-    if instance:FindFirstChild("UIStroke") then
-        instance.UIStroke.Color = color or CryzenHub.Theme.Stroke
-        instance.UIStroke.Thickness = thickness or CryzenHub.Theme.StrokeThickness
-        instance.UIStroke.Transparency = transparency or 0
-    else
-        local stroke = Instance.new("UIStroke")
-        stroke.Color = color or CryzenHub.Theme.Stroke
-        stroke.Thickness = thickness or CryzenHub.Theme.StrokeThickness
-        stroke.Transparency = transparency or 0
-        stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        stroke.Parent = instance
-    end
-    return instance
-end
-
-function CryzenHub.Utils.CreateShadow(instance, size, transparency)
-    size = size or 15
-    transparency = transparency or 0.5
+function CryzenHub.Utils.CreateGlow(parent, color, intensity, size)
+    intensity = intensity or CryzenHub.CurrentTheme.GlowIntensity or 0.8
+    size = size or 20
     
-    if instance:FindFirstChild("Shadow") then
-        instance.Shadow:Destroy()
+    local glow = Instance.new("ImageLabel")
+    glow.Name = "Glow"
+    glow.AnchorPoint = Vector2.new(0.5, 0.5)
+    glow.BackgroundTransparency = 1
+    glow.Position = UDim2.fromScale(0.5, 0.5)
+    glow.Size = UDim2.new(1, size, 1, size)
+    glow.Image = "rbxassetid://5028857084"
+    glow.ImageColor3 = color or CryzenHub.CurrentTheme.GlowPrimary
+    glow.ImageTransparency = 1 - intensity
+    glow.ZIndex = parent.ZIndex - 1
+    glow.Parent = parent
+    
+    -- Animated glow
+    local glowTween = TweenService:Create(glow, 
+        TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+        {ImageTransparency = 0.9 - intensity}
+    )
+    glowTween:Play()
+    
+    return glow, glowTween
+end
+
+function CryzenHub.Utils.CreateParticles(parent, count, color)
+    count = count or CryzenHub.CurrentTheme.ParticleCount or 50
+    color = color or CryzenHub.CurrentTheme.GlowPrimary
+    
+    local particles = {}
+    
+    for i = 1, count do
+        local particle = Instance.new("Frame")
+        particle.Name = "Particle"
+        particle.BackgroundColor3 = color
+        particle.BackgroundTransparency = math.random(50, 90) / 100
+        particle.BorderSizePixel = 0
+        particle.Size = UDim2.new(0, math.random(1, 3), 0, math.random(1, 3))
+        particle.Position = UDim2.new(
+            math.random(0, 100) / 100,
+            0,
+            math.random(0, 100) / 100,
+            0
+        )
+        particle.ZIndex = parent.ZIndex + 1
+        particle.Parent = parent
+        
+        -- Rounded corners
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(1, 0)
+        corner.Parent = particle
+        
+        -- Random movement
+        local function animateParticle()
+            local newPos = UDim2.new(
+                math.random(0, 100) / 100,
+                0,
+                math.random(0, 100) / 100,
+                0
+            )
+            
+            CryzenHub.Utils.Tween(particle, {
+                Position = newPos,
+                BackgroundTransparency = math.random(50, 95) / 100
+            }, math.random(3, 8), Enum.EasingStyle.Sine, nil, animateParticle)
+        end
+        
+        animateParticle()
+        table.insert(particles, particle)
     end
+    
+    return particles
+end
+
+function CryzenHub.Utils.CreateRipple(parent, position, color, size)
+    local ripple = Instance.new("Frame")
+    ripple.Name = "Ripple"
+    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+    ripple.BackgroundColor3 = color or CryzenHub.CurrentTheme.Accent
+    ripple.BackgroundTransparency = 0.7
+    ripple.BorderSizePixel = 0
+    ripple.Position = UDim2.new(0, position.X - parent.AbsolutePosition.X, 0, position.Y - parent.AbsolutePosition.Y)
+    ripple.Size = UDim2.new(0, 0, 0, 0)
+    ripple.ZIndex = parent.ZIndex + 10
+    ripple.Parent = parent
+    
+    -- Rounded corners
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = ripple
+    
+    -- Animate ripple
+    local maxSize = size or math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2
+    
+    CryzenHub.Utils.Tween(ripple, {
+        Size = UDim2.new(0, maxSize, 0, maxSize),
+        BackgroundTransparency = 1
+    }, 0.6, Enum.EasingStyle.Quad, nil, function()
+        ripple:Destroy()
+    end)
+    
+    return ripple
+end
+
+function CryzenHub.Utils.CreateBlur(intensity)
+    intensity = intensity or CryzenHub.CurrentTheme.BlurSize or 15
+    
+    local blur = Lighting:FindFirstChild("CryzenHubBlur")
+    if not blur then
+        blur = Instance.new("BlurEffect")
+        blur.Name = "CryzenHubBlur"
+        blur.Size = 0
+        blur.Enabled = false
+        blur.Parent = Lighting
+    end
+    
+    return blur
+end
+
+function CryzenHub.Utils.CreateAcrylic(parent, transparency, color)
+    transparency = transparency or 0.2
+    color = color or CryzenHub.CurrentTheme.Primary
+    
+    local acrylic = Instance.new("Frame")
+    acrylic.Name = "Acrylic"
+    acrylic.BackgroundColor3 = color
+    acrylic.BackgroundTransparency = transparency
+    acrylic.BorderSizePixel = 0
+    acrylic.Size = UDim2.fromScale(1, 1)
+    acrylic.ZIndex = parent.ZIndex - 1
+    acrylic.Parent = parent
+    
+    -- Rounded corners
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = CryzenHub.CurrentTheme.Radius.Medium
+    corner.Parent = acrylic
+    
+    -- Noise texture for glass effect
+    local noise = Instance.new("ImageLabel")
+    noise.Name = "Noise"
+    noise.BackgroundTransparency = 1
+    noise.Size = UDim2.fromScale(1, 1)
+    noise.Image = "rbxassetid://241650934"
+    noise.ImageTransparency = 0.95
+    noise.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    noise.ScaleType = Enum.ScaleType.Tile
+    noise.TileSize = UDim2.new(0, 100, 0, 100)
+    noise.ZIndex = acrylic.ZIndex + 1
+    noise.Parent = acrylic
+    
+    return acrylic
+end
+
+function CryzenHub.Utils.CreateGradient(parent, colorSequence, rotation)
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = colorSequence or CryzenHub.CurrentTheme.PrimaryGradient
+    gradient.Rotation = rotation or 45
+    gradient.Parent = parent
+    
+    return gradient
+end
+
+function CryzenHub.Utils.CreateStroke(parent, color, thickness, transparency)
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = color or CryzenHub.CurrentTheme.Accent
+    stroke.Thickness = thickness or CryzenHub.CurrentTheme.StrokeThickness
+    stroke.Transparency = transparency or CryzenHub.CurrentTheme.StrokeTransparency
+    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    stroke.Parent = parent
+    
+    return stroke
+end
+
+function CryzenHub.Utils.CreateCorner(parent, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = radius or CryzenHub.CurrentTheme.Radius.Medium
+    corner.Parent = parent
+    
+    return corner
+end
+
+function CryzenHub.Utils.CreateShadow(parent, color, size, transparency)
+    size = size or 20
+    transparency = transparency or 0.5
+    color = color or Color3.fromRGB(0, 0, 0)
     
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
@@ -203,210 +435,144 @@ function CryzenHub.Utils.CreateShadow(instance, size, transparency)
     shadow.Position = UDim2.fromScale(0.5, 0.5)
     shadow.Size = UDim2.new(1, size, 1, size)
     shadow.Image = "rbxassetid://6014261993"
-    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.ImageColor3 = color
     shadow.ImageTransparency = transparency
     shadow.ScaleType = Enum.ScaleType.Slice
     shadow.SliceCenter = Rect.new(49, 49, 450, 450)
-    shadow.ZIndex = instance.ZIndex - 1
-    shadow.Parent = instance
+    shadow.ZIndex = parent.ZIndex - 2
+    shadow.Parent = parent
     
     return shadow
 end
 
-function CryzenHub.Utils.CreateRipple(parent, startPos)
-    local ripple = Instance.new("Frame")
-    ripple.Name = "Ripple"
-    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-    ripple.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ripple.BackgroundTransparency = 0.85
-    ripple.Position = UDim2.new(0, startPos.X - parent.AbsolutePosition.X, 0, startPos.Y - parent.AbsolutePosition.Y)
-    ripple.Size = UDim2.new(0, 0, 0, 0)
-    ripple.ZIndex = parent.ZIndex + 1
-    CryzenHub.Utils.SetRoundedCorners(ripple, UDim.new(1, 0))
-    ripple.Parent = parent
+-- Performance Monitoring
+function CryzenHub.Performance.StartMonitoring()
+    local lastTime = tick()
+    local frameCount = 0
     
-    -- Calculate maximum size needed
-    local maxSize = math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2
-    
-    -- Animate ripple
-    CryzenHub.Utils.Tween(ripple, {
-        Size = UDim2.new(0, maxSize, 0, maxSize),
-        BackgroundTransparency = 1
-    }, 0.5)
-    
-    -- Clean up
-    task.delay(0.5, function()
-        ripple:Destroy()
-    end)
-    
-    return ripple
-end
-
-function CryzenHub.Utils.CreateBlur()
-    if Lighting:FindFirstChild("CryzenHubBlur") then
-        return Lighting.CryzenHubBlur
-    end
-    
-    local blur = Instance.new("BlurEffect")
-    blur.Name = "CryzenHubBlur"
-    blur.Size = 0
-    blur.Enabled = false
-    blur.Parent = Lighting
-    
-    return blur
-end
-
-function CryzenHub.Utils.CreateAcrylic(parent)
-    if not CryzenHub.Theme.UseAcrylic then return end
-    
-    local acrylic = Instance.new("Frame")
-    acrylic.Name = "Acrylic"
-    acrylic.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    acrylic.BackgroundTransparency = 0.3
-    acrylic.BorderSizePixel = 0
-    acrylic.Size = UDim2.fromScale(1, 1)
-    acrylic.ZIndex = parent.ZIndex - 1
-    CryzenHub.Utils.SetRoundedCorners(acrylic, CryzenHub.Theme.CornerRadius)
-    acrylic.Parent = parent
-    
-    -- Create blur effect when hovering over acrylic
-    local blur = CryzenHub.Utils.CreateBlur()
-    
-    local connection
-    connection = RunService.RenderStepped:Connect(function()
-        if not acrylic.Parent or not acrylic.Parent.Parent then
-            connection:Disconnect()
-            if blur.Enabled and not CryzenHub.Windows[1] then
-                blur.Enabled = false
+    RunService.Heartbeat:Connect(function()
+        frameCount = frameCount + 1
+        local currentTime = tick()
+        
+        if currentTime - lastTime >= 1 then
+            CryzenHub.Performance.FPS = frameCount
+            CryzenHub.Performance.Memory = gcinfo()
+            
+            -- Store history
+            table.insert(CryzenHub.Performance.History, {
+                Time = currentTime,
+                FPS = CryzenHub.Performance.FPS,
+                Memory = CryzenHub.Performance.Memory
+            })
+            
+            -- Limit history to last 60 seconds
+            if #CryzenHub.Performance.History > 60 then
+                table.remove(CryzenHub.Performance.History, 1)
             end
-            return
+            
+            frameCount = 0
+            lastTime = currentTime
+        end
+    end)
+end
+
+-- AI-Powered Features
+CryzenHub.AI = {
+    AutoConfig = function(gameId)
+        -- Automatically configure UI based on game
+        local configs = {
+            [606849621] = { -- Jailbreak
+                Theme = "Cyberpunk",
+                Features = {"ESP", "Speed", "Teleport", "Auto Rob"}
+            },
+            [292439477] = { -- Phantom Forces
+                Theme = "Neon",
+                Features = {"Aimbot", "ESP", "Speed", "No Recoil"}
+            }
+        }
+        
+        return configs[gameId] or {
+            Theme = "Ultra",
+            Features = {"Basic Features"}
+        }
+    end,
+    
+    OptimizePerformance = function()
+        local avgFPS = 0
+        for _, data in ipairs(CryzenHub.Performance.History) do
+            avgFPS = avgFPS + data.FPS
         end
         
-        local mousePos = GetMouseLocation()
-        local absPos = acrylic.AbsolutePosition
-        local absSize = acrylic.AbsoluteSize
-        
-        if IsInBounds(mousePos, absPos, absSize) then
-            if not blur.Enabled then
-                blur.Size = 0
-                blur.Enabled = true
-                CryzenHub.Utils.Tween(blur, {Size = CryzenHub.Theme.BlurSize}, 0.2)
+        if #CryzenHub.Performance.History > 0 then
+            avgFPS = avgFPS / #CryzenHub.Performance.History
+            
+            if avgFPS < 30 then
+                -- Reduce visual effects for better performance
+                CryzenHub.CurrentTheme.ParticleCount = 10
+                CryzenHub.CurrentTheme.BlurSize = 5
+                CryzenHub.CurrentTheme.GlowIntensity = 0.3
+            elseif avgFPS > 50 then
+                -- Increase visual effects for better experience
+                CryzenHub.CurrentTheme.ParticleCount = 100
+                CryzenHub.CurrentTheme.BlurSize = 25
+                CryzenHub.CurrentTheme.GlowIntensity = 1.2
             end
-        elseif blur.Enabled and not CryzenHub.Windows[1] then
-            CryzenHub.Utils.Tween(blur, {Size = 0}, 0.2, nil, nil, function()
-                if blur.Size <= 0 then
-                    blur.Enabled = false
+        end
+    end
+}
+
+-- Advanced Search Engine
+CryzenHub.SearchEngine = {
+    Index = {},
+    
+    AddToIndex = function(element, keywords)
+        table.insert(CryzenHub.SearchEngine.Index, {
+            Element = element,
+            Keywords = keywords,
+            Type = element.Type or "Unknown"
+        })
+    end,
+    
+    Search = function(query)
+        local results = {}
+        query = string.lower(query)
+        
+        for _, item in ipairs(CryzenHub.SearchEngine.Index) do
+            for _, keyword in ipairs(item.Keywords) do
+                if string.find(string.lower(keyword), query) then
+                    table.insert(results, item)
+                    break
                 end
-            end)
+            end
         end
-    end)
+        
+        return results
+    end,
     
-    return acrylic
-end
+    Filter = function(results, filterType)
+        if not filterType then return results end
+        
+        local filtered = {}
+        for _, result in ipairs(results) do
+            if result.Type == filterType then
+                table.insert(filtered, result)
+            end
+        end
+        
+        return filtered
+    end
+}
 
-function CryzenHub.Utils.CreateTooltip(text)
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "CryzenHubTooltip"
-    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    screenGui.DisplayOrder = 9999
-    
-    pcall(function()
-        if syn and syn.protect_gui then
-            syn.protect_gui(screenGui)
-            screenGui.Parent = CoreGui
-        else
-            screenGui.Parent = CoreGui
-        end
-    end)
-    
-    if not screenGui.Parent then
-        screenGui.Parent = Player:WaitForChild("PlayerGui")
-    end
-    
-    local tooltip = Instance.new("Frame")
-    tooltip.Name = "Tooltip"
-    tooltip.BackgroundColor3 = CryzenHub.Theme.Secondary
-    tooltip.BackgroundTransparency = 0.1
-    tooltip.BorderSizePixel = 0
-    tooltip.Position = UDim2.new(0, Mouse.X + 15, 0, Mouse.Y + 15)
-    tooltip.AutomaticSize = Enum.AutomaticSize.XY
-    tooltip.ZIndex = 10
-    tooltip.Parent = screenGui
-    CryzenHub.Utils.SetRoundedCorners(tooltip, CryzenHub.Theme.SmallCornerRadius)
-    CryzenHub.Utils.AddStroke(tooltip)
-    
-    if CryzenHub.Theme.EnableShadows then
-        CryzenHub.Utils.CreateShadow(tooltip)
-    end
-    
-    local paddingX, paddingY = 10, 6
-    
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Name = "Text"
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(1, -paddingX*2, 0, 0)
-    textLabel.Position = UDim2.new(0, paddingX, 0, paddingY)
-    textLabel.Font = CryzenHub.Theme.Font
-    textLabel.Text = text
-    textLabel.TextColor3 = CryzenHub.Theme.Text
-    textLabel.TextSize = CryzenHub.Theme.SubTextSize
-    textLabel.RichText = true
-    textLabel.TextWrapped = true
-    textLabel.TextXAlignment = Enum.TextXAlignment.Left
-    textLabel.TextYAlignment = Enum.TextYAlignment.Top
-    textLabel.ZIndex = 11
-    textLabel.AutomaticSize = Enum.AutomaticSize.Y
-    textLabel.Parent = tooltip
-    
-    -- Adjust tooltip size
-    tooltip.Size = UDim2.new(0, math.min(300, textLabel.TextBounds.X + paddingX * 2), 0, textLabel.TextBounds.Y + paddingY * 2)
-    
-    -- Position tooltip to avoid going off screen
-    local function updatePosition()
-        local mousePos = GetMouseLocation()
-        local tooltipSize = tooltip.AbsoluteSize
-        local viewportSize = ViewportSize
-        
-        local posX = mousePos.X + 15
-        local posY = mousePos.Y + 15
-        
-        if posX + tooltipSize.X > viewportSize.X then
-            posX = mousePos.X - tooltipSize.X - 15
-        end
-        
-        if posY + tooltipSize.Y > viewportSize.Y then
-            posY = mousePos.Y - tooltipSize.Y - 15
-        end
-        
-        tooltip.Position = UDim2.new(0, posX, 0, posY)
-    end
-    
-    updatePosition()
-    
-    local connection = RunService.RenderStepped:Connect(updatePosition)
-    
-    local tooltipObj = {
-        Instance = tooltip,
-        ScreenGui = screenGui,
-        Connection = connection,
-        Destroy = function()
-            connection:Disconnect()
-            screenGui:Destroy()
-        end
-    }
-    
-    return tooltipObj
-end
-
--- Create ScreenGui for UI
+-- Screen GUI Creation
 function CryzenHub.Utils.CreateScreenGui()
     local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "CryzenHubV2"
+    screenGui.Name = "CryzenHubV3_ULTRA"
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    screenGui.DisplayOrder = 100
+    screenGui.DisplayOrder = 999
     screenGui.ResetOnSpawn = false
+    screenGui.IgnoreGuiInset = true
     
-    -- Try to use CoreGui if possible (better synapse support)
+    -- Try to use CoreGui
     pcall(function()
         if syn and syn.protect_gui then
             syn.protect_gui(screenGui)
@@ -416,7 +582,6 @@ function CryzenHub.Utils.CreateScreenGui()
         end
     end)
     
-    -- Fallback to PlayerGui if CoreGui fails
     if not screenGui.Parent then
         screenGui.Parent = Player:WaitForChild("PlayerGui")
     end
@@ -424,241 +589,472 @@ function CryzenHub.Utils.CreateScreenGui()
     return screenGui
 end
 
--- Main Window Creator
+-- Main Window Creation
 function CryzenHub:CreateWindow(config)
     config = config or {}
     
-    -- Apply custom theme if provided
+    -- Apply theme
     if config.Theme then
-        for key, value in pairs(config.Theme) do
-            CryzenHub.Theme[key] = value
+        if type(config.Theme) == "string" and CryzenHub.Themes[config.Theme] then
+            CryzenHub.CurrentTheme = CryzenHub.Themes[config.Theme]
+        elseif type(config.Theme) == "table" then
+            for key, value in pairs(config.Theme) do
+                CryzenHub.CurrentTheme[key] = value
+            end
         end
     end
     
-    -- Create ScreenGui if not already created
+    -- AI Auto-Config
+    if config.AutoConfig ~= false then
+        local gameConfig = CryzenHub.AI.AutoConfig(game.PlaceId)
+        if gameConfig.Theme and CryzenHub.Themes[gameConfig.Theme] then
+            CryzenHub.CurrentTheme = CryzenHub.Themes[gameConfig.Theme]
+        end
+    end
+    
+    -- Create ScreenGui
     if not CryzenHub.ScreenGui then
         CryzenHub.ScreenGui = CryzenHub.Utils.CreateScreenGui()
     end
     
+    local theme = CryzenHub.CurrentTheme
+    
     -- Window properties
-    local title = config.Title or "CryzenHub"
-    local size = config.Size or UDim2.new(0, 600, 0, 450)
-    local position = config.Position or UDim2.new(0.5, -size.X.Offset/2, 0.5, -size.Y.Offset/2)
-    local minSize = config.MinSize or Vector2.new(400, 300)
-    local theme = CryzenHub.Theme
+    local title = config.Title or "CryzenHub ULTRA"
+    local size = config.Size or UDim2.new(0, 700, 0, 500)
+    local position = config.Position or UDim2.fromScale(0.5, 0.5)
+    local minSize = config.MinSize or Vector2.new(500, 400)
     
     local window = {
         Tabs = {},
         ActiveTab = nil,
         Flags = {},
+        Elements = {},
         Theme = theme,
-        MinSize = minSize
+        MinSize = minSize,
+        Visible = true,
+        Locked = false,
+        SearchResults = {},
+        Performance = {
+            FPS = 0,
+            Memory = 0,
+            ElementCount = 0
+        }
     }
     
-    -- Main Container
+    -- Main Container with ultra effects
     local mainContainer = Instance.new("Frame")
-    mainContainer.Name = "WindowContainer"
+    mainContainer.Name = "UltraContainer"
     mainContainer.Size = size
     mainContainer.Position = position
+    mainContainer.AnchorPoint = Vector2.new(0.5, 0.5)
     mainContainer.BackgroundColor3 = theme.Primary
-    mainContainer.BackgroundTransparency = 0
+    mainContainer.BackgroundTransparency = 0.1
     mainContainer.BorderSizePixel = 0
-    mainContainer.ClipsDescendants = true
+    mainContainer.ClipsDescendants = false
+    mainContainer.ZIndex = 1
     mainContainer.Parent = CryzenHub.ScreenGui
     window.Container = mainContainer
     
-    CryzenHub.Utils.SetRoundedCorners(mainContainer)
+    -- Ultra visual effects
+    CryzenHub.Utils.CreateCorner(mainContainer, theme.Radius.Large)
+    CryzenHub.Utils.CreateShadow(mainContainer, Color3.fromRGB(0, 0, 0), 40, 0.3)
+    CryzenHub.Utils.CreateGlow(mainContainer, theme.GlowPrimary, theme.GlowIntensity, 30)
+    CryzenHub.Utils.CreateAcrylic(mainContainer, 0.15, theme.Primary)
+    CryzenHub.Utils.CreateGradient(mainContainer, theme.PrimaryGradient, 135)
+    CryzenHub.Utils.CreateStroke(mainContainer, theme.Accent, 2, 0.5)
     
-    -- Add shadow
-    if theme.EnableShadows then
-        CryzenHub.Utils.CreateShadow(mainContainer)
+    -- Particle effects
+    if theme.ParticleCount > 0 then
+        CryzenHub.Utils.CreateParticles(mainContainer, theme.ParticleCount, theme.GlowSecondary)
     end
     
-    -- Add acrylic effect if enabled
-    if theme.UseAcrylic and theme.Blur then
-        CryzenHub.Utils.CreateAcrylic(mainContainer)
-    end
-    
-    -- Create gradient if enabled
-    if theme.UseGradients then
-        local gradient = Instance.new("UIGradient")
-        gradient.Color = theme.PrimaryGradient
-        gradient.Rotation = 45
-        gradient.Parent = mainContainer
-    end
-    
-    -- Create title bar
+    -- Ultra Title Bar
     local titleBar = Instance.new("Frame")
-    titleBar.Name = "TitleBar"
-    titleBar.Size = UDim2.new(1, 0, 0, 40)
+    titleBar.Name = "UltraTitleBar"
+    titleBar.Size = UDim2.new(1, 0, 0, 50)
     titleBar.BackgroundColor3 = theme.Secondary
-    titleBar.BackgroundTransparency = 0.2
+    titleBar.BackgroundTransparency = 0.3
     titleBar.BorderSizePixel = 0
+    titleBar.ZIndex = 2
     titleBar.Parent = mainContainer
     window.TitleBar = titleBar
     
-    -- Add title
+    CryzenHub.Utils.CreateGradient(titleBar, theme.AccentGradient, 90)
+    CryzenHub.Utils.CreateGlow(titleBar, theme.GlowPrimary, 0.6, 20)
+    
+    -- Animated title with glow effect
     local titleText = Instance.new("TextLabel")
-    titleText.Name = "Title"
-    titleText.Size = UDim2.new(1, -120, 1, 0)
-    titleText.Position = UDim2.new(0, 15, 0, 0)
+    titleText.Name = "UltraTitle"
+    titleText.Size = UDim2.new(1, -200, 1, 0)
+    titleText.Position = UDim2.new(0, 20, 0, 0)
     titleText.BackgroundTransparency = 1
     titleText.Text = title
     titleText.Font = theme.Font
-    titleText.TextSize = theme.HeaderSize
+    titleText.TextSize = theme.FontSize.Header
     titleText.TextColor3 = theme.Text
+    titleText.TextStrokeTransparency = 0.8
+    titleText.TextStrokeColor3 = theme.GlowPrimary
     titleText.TextXAlignment = Enum.TextXAlignment.Left
+    titleText.ZIndex = 3
     titleText.Parent = titleBar
     
-    -- Version label
-    local versionLabel = Instance.new("TextLabel")
-    versionLabel.Name = "Version"
-    versionLabel.Size = UDim2.new(0, 50, 0, 20)
-    versionLabel.Position = UDim2.new(0, titleText.TextBounds.X + 20, 0.5, -10)
-    versionLabel.BackgroundColor3 = theme.Accent
-    versionLabel.BackgroundTransparency = 0.7
-    versionLabel.Text = "v" .. CryzenHub.Version
-    versionLabel.TextColor3 = theme.Text
-    versionLabel.TextSize = theme.SubTextSize
-    versionLabel.Font = theme.Font
-    versionLabel.Parent = titleBar
-    CryzenHub.Utils.SetRoundedCorners(versionLabel, theme.SmallCornerRadius)
+    -- Animated text glow
+    local textGlow = CryzenHub.Utils.CreateGlow(titleText, theme.GlowPrimary, 0.5, 15)
     
-    -- Window controls
+    -- Version badge with ultra effects
+    local versionBadge = Instance.new("Frame")
+    versionBadge.Name = "VersionBadge"
+    versionBadge.Size = UDim2.new(0, 80, 0, 25)
+    versionBadge.Position = UDim2.new(0, titleText.TextBounds.X + 30, 0.5, -12.5)
+    versionBadge.BackgroundColor3 = theme.AccentSecondary
+    versionBadge.BackgroundTransparency = 0.2
+    versionBadge.ZIndex = 3
+    versionBadge.Parent = titleBar
+    
+    CryzenHub.Utils.CreateCorner(versionBadge, theme.Radius.Round)
+    CryzenHub.Utils.CreateGlow(versionBadge, theme.AccentSecondary, 0.8, 10)
+    CryzenHub.Utils.CreateStroke(versionBadge, theme.AccentSecondary, 1, 0.3)
+    
+    local versionText = Instance.new("TextLabel")
+    versionText.Name = "VersionText"
+    versionText.Size = UDim2.fromScale(1, 1)
+    versionText.BackgroundTransparency = 1
+    versionText.Text = "v" .. CryzenHub.Version .. " " .. CryzenHub.Build
+    versionText.Font = theme.Font
+    versionText.TextSize = theme.FontSize.Caption
+    versionText.TextColor3 = theme.Text
+    versionText.TextStrokeTransparency = 0.9
+    versionText.TextStrokeColor3 = theme.AccentSecondary
+    versionText.ZIndex = 4
+    versionText.Parent = versionBadge
+    
+    -- Performance monitor
+    local perfMonitor = Instance.new("Frame")
+    perfMonitor.Name = "PerformanceMonitor"
+    perfMonitor.Size = UDim2.new(0, 100, 0, 30)
+    perfMonitor.Position = UDim2.new(1, -220, 0.5, -15)
+    perfMonitor.BackgroundColor3 = theme.Tertiary
+    perfMonitor.BackgroundTransparency = 0.3
+    perfMonitor.ZIndex = 3
+    perfMonitor.Parent = titleBar
+    
+    CryzenHub.Utils.CreateCorner(perfMonitor, theme.Radius.Small)
+    CryzenHub.Utils.CreateStroke(perfMonitor, theme.Info, 1, 0.5)
+    
+    local fpsText = Instance.new("TextLabel")
+    fpsText.Name = "FPSText"
+    fpsText.Size = UDim2.new(0.5, -2, 1, 0)
+    fpsText.BackgroundTransparency = 1
+    fpsText.Text = "FPS: 60"
+    fpsText.Font = theme.Font
+    fpsText.TextSize = theme.FontSize.Small
+    fpsText.TextColor3 = theme.Success
+    fpsText.ZIndex = 4
+    fpsText.Parent = perfMonitor
+    
+    local memoryText = Instance.new("TextLabel")
+    memoryText.Name = "MemoryText"
+    memoryText.Size = UDim2.new(0.5, -2, 1, 0)
+    memoryText.Position = UDim2.new(0.5, 2, 0, 0)
+    memoryText.BackgroundTransparency = 1
+    memoryText.Text = "MEM: 0MB"
+    memoryText.Font = theme.Font
+    memoryText.TextSize = theme.FontSize.Small
+    memoryText.TextColor3 = theme.Info
+    memoryText.ZIndex = 4
+    memoryText.Parent = perfMonitor
+    
+    -- Update performance display
+    RunService.Heartbeat:Connect(function()
+        fpsText.Text = "FPS: " .. CryzenHub.Performance.FPS
+        memoryText.Text = "MEM: " .. math.floor(CryzenHub.Performance.Memory) .. "MB"
+        
+        -- Color based on performance
+        if CryzenHub.Performance.FPS >= 50 then
+            fpsText.TextColor3 = theme.Success
+        elseif CryzenHub.Performance.FPS >= 30 then
+            fpsText.TextColor3 = theme.Warning
+        else
+            fpsText.TextColor3 = theme.Error
+        end
+    end)
+    
+    -- Ultra Control Buttons
     local controlsContainer = Instance.new("Frame")
-    controlsContainer.Name = "Controls"
-    controlsContainer.Size = UDim2.new(0, 100, 1, 0)
-    controlsContainer.Position = UDim2.new(1, -100, 0, 0)
+    controlsContainer.Name = "UltraControls"
+    controlsContainer.Size = UDim2.new(0, 120, 1, 0)
+    controlsContainer.Position = UDim2.new(1, -120, 0, 0)
     controlsContainer.BackgroundTransparency = 1
+    controlsContainer.ZIndex = 3
     controlsContainer.Parent = titleBar
     
-    -- Control buttons (minimize, maximize, close)
     local buttonSize = 30
-    local buttonPositions = {
-        Close = UDim2.new(1, -buttonSize, 0.5, -buttonSize/2),
-        Maximize = UDim2.new(1, -buttonSize*2, 0.5, -buttonSize/2),
-        Minimize = UDim2.new(1, -buttonSize*3, 0.5, -buttonSize/2)
-    }
-    local buttonSymbols = {
-        Close = "✕",
-        Maximize = "□",
-        Minimize = "−"
-    }
-    local buttonColors = {
-        Close = theme.Error,
-        Maximize = theme.Warning,
-        Minimize = theme.Info
+    local buttonSpacing = 5
+    local buttonData = {
+        {Name = "Minimize", Symbol = "−", Color = theme.Info, Action = "minimize"},
+        {Name = "Maximize", Symbol = "□", Color = theme.Warning, Action = "maximize"},
+        {Name = "Close", Symbol = "✕", Color = theme.Error, Action = "close"}
     }
     
-    for name, position in pairs(buttonPositions) do
+    for i, data in ipairs(buttonData) do
         local button = Instance.new("TextButton")
-        button.Name = name .. "Button"
+        button.Name = data.Name .. "Button"
         button.Size = UDim2.new(0, buttonSize, 0, buttonSize)
-        button.Position = position
-        button.BackgroundColor3 = buttonColors[name]
-        button.BackgroundTransparency = 0.9
-        button.Text = buttonSymbols[name]
-        button.TextSize = 16
+        button.Position = UDim2.new(1, -(buttonSize + buttonSpacing) * i, 0.5, -buttonSize/2)
+        button.BackgroundColor3 = data.Color
+        button.BackgroundTransparency = 0.7
+        button.Text = data.Symbol
         button.Font = theme.Font
+        button.TextSize = theme.FontSize.Body
         button.TextColor3 = theme.Text
+        button.ZIndex = 4
         button.Parent = controlsContainer
-        CryzenHub.Utils.SetRoundedCorners(button, theme.RoundCornerRadius)
         
-        -- Hover effect
+        CryzenHub.Utils.CreateCorner(button, theme.Radius.Round)
+        CryzenHub.Utils.CreateGlow(button, data.Color, 0.6, 8)
+        
+        -- Ultra hover effects
         button.MouseEnter:Connect(function()
-            CryzenHub.Utils.Tween(button, {BackgroundTransparency = 0.5}, 0.2)
+            CryzenHub.Utils.PlaySound("Hover")
+            CryzenHub.Utils.Tween(button, {
+                BackgroundTransparency = 0.3,
+                Size = UDim2.new(0, buttonSize + 4, 0, buttonSize + 4)
+            }, 0.2)
         end)
         
         button.MouseLeave:Connect(function()
-            CryzenHub.Utils.Tween(button, {BackgroundTransparency = 0.9}, 0.2)
+            CryzenHub.Utils.Tween(button, {
+                BackgroundTransparency = 0.7,
+                Size = UDim2.new(0, buttonSize, 0, buttonSize)
+            }, 0.2)
         end)
         
-        -- Click effect
         button.MouseButton1Down:Connect(function()
-            CryzenHub.Utils.Tween(button, {BackgroundTransparency = 0.3}, 0.1)
+            CryzenHub.Utils.CreateRipple(button, UserInputService:GetMouseLocation(), data.Color)
         end)
         
-        button.MouseButton1Up:Connect(function()
-            CryzenHub.Utils.Tween(button, {BackgroundTransparency = 0.5}, 0.1)
-        end)
+        -- Button actions
+        if data.Action == "close" then
+            button.MouseButton1Click:Connect(function()
+                CryzenHub.Utils.PlaySound("Click")
+                
+                -- Ultra close animation
+                CryzenHub.Utils.Tween(mainContainer, {
+                    Size = UDim2.new(0, 0, 0, 0),
+                    BackgroundTransparency = 1
+                }, 0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In, function()
+                    mainContainer:Destroy()
+                    
+                    -- Remove from windows list
+                    for i, win in ipairs(CryzenHub.Windows) do
+                        if win == window then
+                            table.remove(CryzenHub.Windows, i)
+                            break
+                        end
+                    end
+                    
+                    -- Disable blur if no windows
+                    if #CryzenHub.Windows == 0 then
+                        local blur = CryzenHub.Utils.CreateBlur()
+                        CryzenHub.Utils.Tween(blur, {Size = 0}, 0.3, nil, nil, function()
+                            blur.Enabled = false
+                        end)
+                    end
+                end)
+            end)
+        elseif data.Action == "minimize" then
+            local isMinimized = false
+            local originalSize = size
+            
+            button.MouseButton1Click:Connect(function()
+                CryzenHub.Utils.PlaySound("Click")
+                isMinimized = not isMinimized
+                
+                if isMinimized then
+                    CryzenHub.Utils.Tween(mainContainer, {
+                        Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 50)
+                    }, 0.3)
+                else
+                    CryzenHub.Utils.Tween(mainContainer, {
+                        Size = originalSize
+                    }, 0.3)
+                end
+            end)
+        elseif data.Action == "maximize" then
+            local isMaximized = false
+            local originalSize = size
+            local originalPosition = position
+            
+            button.MouseButton1Click:Connect(function()
+                CryzenHub.Utils.PlaySound("Click")
+                isMaximized = not isMaximized
+                
+                if isMaximized then
+                    originalSize = mainContainer.Size
+                    originalPosition = mainContainer.Position
+                    
+                    CryzenHub.Utils.Tween(mainContainer, {
+                        Size = UDim2.new(1, -40, 1, -40),
+                        Position = UDim2.fromScale(0.5, 0.5)
+                    }, 0.3)
+                else
+                    CryzenHub.Utils.Tween(mainContainer, {
+                        Size = originalSize,
+                        Position = originalPosition
+                    }, 0.3)
+                end
+            end)
+        end
     end
     
-    -- Button functionality
-    local closeButton = controlsContainer:FindFirstChild("CloseButton")
-    local minimizeButton = controlsContainer:FindFirstChild("MinimizeButton")
-    local maximizeButton = controlsContainer:FindFirstChild("MaximizeButton")
+    -- Ultra Search Bar
+    local searchContainer = Instance.new("Frame")
+    searchContainer.Name = "UltraSearch"
+    searchContainer.Size = UDim2.new(1, -40, 0, 40)
+    searchContainer.Position = UDim2.new(0, 20, 0, 60)
+    searchContainer.BackgroundColor3 = theme.Tertiary
+    searchContainer.BackgroundTransparency = 0.2
+    searchContainer.ZIndex = 2
+    searchContainer.Parent = mainContainer
     
-    -- Close button
-    closeButton.MouseButton1Click:Connect(function()
-        CryzenHub.Utils.Tween(mainContainer, {
-            Position = UDim2.new(1, size.X.Offset/2, mainContainer.Position.Y.Scale, mainContainer.Position.Y.Offset),
-            Size = UDim2.new(0, 0, 0, size.Y.Offset)
-        }, 0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In, function()
-            mainContainer:Destroy()
-            table.remove(CryzenHub.Windows, table.find(CryzenHub.Windows, window))
+    CryzenHub.Utils.CreateCorner(searchContainer, theme.Radius.Medium)
+    CryzenHub.Utils.CreateGlow(searchContainer, theme.GlowSecondary, 0.4, 15)
+    CryzenHub.Utils.CreateStroke(searchContainer, theme.GlowSecondary, 1, 0.6)
+    
+    local searchIcon = Instance.new("ImageLabel")
+    searchIcon.Name = "SearchIcon"
+    searchIcon.Size = UDim2.new(0, 20, 0, 20)
+    searchIcon.Position = UDim2.new(0, 15, 0.5, -10)
+    searchIcon.BackgroundTransparency = 1
+    searchIcon.Image = "rbxassetid://7072717958"
+    searchIcon.ImageColor3 = theme.TextSecondary
+    searchIcon.ZIndex = 3
+    searchIcon.Parent = searchContainer
+    
+    local searchBox = Instance.new("TextBox")
+    searchBox.Name = "SearchBox"
+    searchBox.Size = UDim2.new(1, -50, 1, 0)
+    searchBox.Position = UDim2.new(0, 45, 0, 0)
+    searchBox.BackgroundTransparency = 1
+    searchBox.Text = ""
+    searchBox.PlaceholderText = "Search for features..."
+    searchBox.Font = theme.Font
+    searchBox.TextSize = theme.FontSize.Body
+    searchBox.TextColor3 = theme.Text
+    searchBox.PlaceholderColor3 = theme.TextSecondary
+    searchBox.TextXAlignment = Enum.TextXAlignment.Left
+    searchBox.ClearTextOnFocus = false
+    searchBox.ZIndex = 3
+    searchBox.Parent = searchContainer
+    
+    -- Search functionality with AI
+    local searchResults = Instance.new("ScrollingFrame")
+    searchResults.Name = "SearchResults"
+    searchResults.Size = UDim2.new(1, 0, 0, 200)
+    searchResults.Position = UDim2.new(0, 0, 1, 5)
+    searchResults.BackgroundColor3 = theme.Secondary
+    searchResults.BackgroundTransparency = 0.1
+    searchResults.ScrollBarThickness = 4
+    searchResults.ScrollBarImageColor3 = theme.Accent
+    searchResults.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    searchResults.Visible = false
+    searchResults.ZIndex = 10
+    searchResults.Parent = searchContainer
+    
+    CryzenHub.Utils.CreateCorner(searchResults, theme.Radius.Medium)
+    CryzenHub.Utils.CreateShadow(searchResults, Color3.fromRGB(0, 0, 0), 20, 0.6)
+    
+    local resultsLayout = Instance.new("UIListLayout")
+    resultsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    resultsLayout.Padding = UDim.new(0, 2)
+    resultsLayout.Parent = searchResults
+    
+    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+        local query = searchBox.Text
+        
+        if query and #query > 0 then
+            local results = CryzenHub.SearchEngine.Search(query)
             
-            -- Disable blur if no windows are open
-            if #CryzenHub.Windows == 0 then
-                local blur = Lighting:FindFirstChild("CryzenHubBlur")
-                if blur and blur.Enabled then
-                    CryzenHub.Utils.Tween(blur, {Size = 0}, 0.2, nil, nil, function()
-                        blur.Enabled = false
-                    end)
+            -- Clear previous results
+            for _, child in ipairs(searchResults:GetChildren()) do
+                if child:IsA("GuiObject") and child ~= resultsLayout then
+                    child:Destroy()
                 end
             end
-        end)
-    end)
-    
-    -- Minimize button
-    local isMinimized = false
-    local originalSize = size
-    minimizeButton.MouseButton1Click:Connect(function()
-        isMinimized = not isMinimized
-        
-        if isMinimized then
-            CryzenHub.Utils.Tween(mainContainer, {
-                Size = UDim2.new(size.X.Scale, size.X.Offset, 0, 40)
-            }, 0.3)
-        else
-            CryzenHub.Utils.Tween(mainContainer, {
-                Size = originalSize
-            }, 0.3)
-        end
-    end)
-    
-    -- Maximize button
-    local isMaximized = false
-    local originalPosition = position
-    maximizeButton.MouseButton1Click:Connect(function()
-        isMaximized = not isMaximized
-        
-        if isMaximized then
-            originalSize = mainContainer.Size
-            originalPosition = mainContainer.Position
             
-            CryzenHub.Utils.Tween(mainContainer, {
-                Size = UDim2.new(1, -40, 1, -40),
-                Position = UDim2.new(0, 20, 0, 20)
-            }, 0.3)
+            -- Show results
+            if #results > 0 then
+                searchResults.Visible = true
+                
+                for i, result in ipairs(results) do
+                    local resultItem = Instance.new("TextButton")
+                    resultItem.Name = "Result" .. i
+                    resultItem.Size = UDim2.new(1, -10, 0, 30)
+                    resultItem.BackgroundColor3 = theme.Tertiary
+                    resultItem.BackgroundTransparency = 0.3
+                    resultItem.Text = table.concat(result.Keywords, " | ")
+                    resultItem.Font = theme.Font
+                    resultItem.TextSize = theme.FontSize.Body
+                    resultItem.TextColor3 = theme.Text
+                    resultItem.TextXAlignment = Enum.TextXAlignment.Left
+                    resultItem.ZIndex = 11
+                    resultItem.Parent = searchResults
+                    
+                    CryzenHub.Utils.CreateCorner(resultItem, theme.Radius.Small)
+                    
+                    resultItem.MouseEnter:Connect(function()
+                        CryzenHub.Utils.Tween(resultItem, {BackgroundTransparency = 0.1}, 0.2)
+                    end)
+                    
+                    resultItem.MouseLeave:Connect(function()
+                        CryzenHub.Utils.Tween(resultItem, {BackgroundTransparency = 0.3}, 0.2)
+                    end)
+                    
+                    resultItem.MouseButton1Click:Connect(function()
+                        -- Navigate to element
+                        if result.Element and result.Element.Instance then
+                            -- Scroll to element or highlight it
+                            searchBox.Text = ""
+                            searchResults.Visible = false
+                        end
+                    end)
+                end
+            else
+                searchResults.Visible = false
+            end
         else
-            CryzenHub.Utils.Tween(mainContainer, {
-                Size = originalSize,
-                Position = originalPosition
-            }, 0.3)
+            searchResults.Visible = false
         end
     end)
     
-    -- Make window draggable
+    -- Hide search results when clicking outside
+    UserInputService.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            local mousePos = UserInputService:GetMouseLocation()
+            local searchPos = searchContainer.AbsolutePosition
+            local searchSize = searchContainer.AbsoluteSize
+            
+            if not (mousePos.X >= searchPos.X and mousePos.X <= searchPos.X + searchSize.X and
+                   mousePos.Y >= searchPos.Y and mousePos.Y <= searchPos.Y + searchSize.Y + 200) then
+                searchResults.Visible = false
+            end
+        end
+    end)
+    
+    -- Make window draggable with ultra smooth movement
     local dragging = false
     local dragInput
     local dragStart
     local startPos
     
     titleBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and not window.Locked then
             dragging = true
             dragStart = input.Position
             startPos = mainContainer.Position
+            
+            CryzenHub.Utils.PlaySound("Click")
             
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
@@ -675,9 +1071,10 @@ function CryzenHub:CreateWindow(config)
     end)
     
     UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging and not isMaximized then
+        if input == dragInput and dragging then
             local delta = input.Position - dragStart
             
+            -- Ultra smooth dragging with momentum
             CryzenHub.Utils.Tween(mainContainer, {
                 Position = UDim2.new(
                     startPos.X.Scale,
@@ -685,27 +1082,45 @@ function CryzenHub:CreateWindow(config)
                     startPos.Y.Scale,
                     startPos.Y.Offset + delta.Y
                 )
-            }, 0.05, Enum.EasingStyle.Linear)
+            }, 0.05, Enum.EasingStyle.Quart)
         end
     end)
     
-    -- Make window resizable
-    local resizing = false
-    local resizeCorner = Instance.new("TextButton")
-    resizeCorner.Name = "ResizeCorner"
-    resizeCorner.Size = UDim2.new(0, 20, 0, 20)
-    resizeCorner.Position = UDim2.new(1, -20, 1, -20)
-    resizeCorner.BackgroundTransparency = 1
-    resizeCorner.Text = "◢"
-    resizeCorner.TextColor3 = theme.TextDark
-    resizeCorner.Font = Enum.Font.SourceSans
-    resizeCorner.TextSize = 16
-    resizeCorner.Parent = mainContainer
+    -- Ultra resizing
+    local resizeHandle = Instance.new("Frame")
+    resizeHandle.Name = "UltraResizeHandle"
+    resizeHandle.Size = UDim2.new(0, 20, 0, 20)
+    resizeHandle.Position = UDim2.new(1, -20, 1, -20)
+    resizeHandle.BackgroundColor3 = theme.Accent
+    resizeHandle.BackgroundTransparency = 0.7
+    resizeHandle.ZIndex = 5
+    resizeHandle.Parent = mainContainer
     
-    resizeCorner.MouseButton1Down:Connect(function()
-        resizing = true
-        dragStart = GetMouseLocation()
-        startSize = mainContainer.Size
+    CryzenHub.Utils.CreateCorner(resizeHandle, UDim.new(0, 4))
+    CryzenHub.Utils.CreateGlow(resizeHandle, theme.Accent, 0.6, 8)
+    
+    local resizeIcon = Instance.new("TextLabel")
+    resizeIcon.Size = UDim2.fromScale(1, 1)
+    resizeIcon.BackgroundTransparency = 1
+    resizeIcon.Text = "◢"
+    resizeIcon.Font = theme.Font
+    resizeIcon.TextSize = theme.FontSize.Body
+    resizeIcon.TextColor3 = theme.Text
+    resizeIcon.ZIndex = 6
+    resizeIcon.Parent = resizeHandle
+    
+    local resizing = false
+    local resizeStart
+    local startSize
+    
+    resizeHandle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            resizing = true
+            resizeStart = UserInputService:GetMouseLocation()
+            startSize = mainContainer.Size
+            
+            CryzenHub.Utils.PlaySound("Click")
+        end
     end)
     
     UserInputService.InputEnded:Connect(function(input)
@@ -716,7 +1131,9 @@ function CryzenHub:CreateWindow(config)
     
     UserInputService.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement and resizing then
-            local delta = GetMouseLocation() - dragStart
+            local currentMouse = UserInputService:GetMouseLocation()
+            local delta = currentMouse - resizeStart
+            
             local newSize = UDim2.new(
                 startSize.X.Scale,
                 math.max(window.MinSize.X, startSize.X.Offset + delta.X),
@@ -725,168 +1142,190 @@ function CryzenHub:CreateWindow(config)
             )
             
             CryzenHub.Utils.Tween(mainContainer, {Size = newSize}, 0.05, Enum.EasingStyle.Linear)
-            originalSize = newSize
         end
     end)
     
-    -- Content area
+    -- Content area with ultra design
     local contentArea = Instance.new("Frame")
-    contentArea.Name = "ContentArea"
+    contentArea.Name = "UltraContentArea"
+    contentArea.Size = UDim2.new(1, -40, 1, -150)
+    contentArea.Position = UDim2.new(0, 20, 0, 110)
     contentArea.BackgroundTransparency = 1
-    contentArea.Size = UDim2.new(1, 0, 1, -40) -- Subtract title bar height
-    contentArea.Position = UDim2.new(0, 0, 0, 40)
+    contentArea.ZIndex = 2
     contentArea.Parent = mainContainer
     window.ContentArea = contentArea
     
-    -- Tab navigation
-    local tabContainer = Instance.new("Frame")
-    tabContainer.Name = "TabContainer"
-    tabContainer.BackgroundColor3 = theme.Secondary
-    tabContainer.BackgroundTransparency = 0.2
-    tabContainer.Size = UDim2.new(0, 60, 1, 0)
-    tabContainer.BorderSizePixel = 0
-    tabContainer.Parent = contentArea
-    window.TabContainer = tabContainer
+    -- Ultra Navigation (Left Side)
+    local navigation = Instance.new("Frame")
+    navigation.Name = "UltraNavigation"
+    navigation.Size = UDim2.new(0, 80, 1, 0)
+    navigation.BackgroundColor3 = theme.Secondary
+    navigation.BackgroundTransparency = 0.3
+    navigation.ZIndex = 3
+    navigation.Parent = contentArea
+    window.Navigation = navigation
     
-    local tabContainerSeparator = Instance.new("Frame")
-    tabContainerSeparator.Name = "Separator"
-    tabContainerSeparator.BackgroundColor3 = theme.Stroke
-    tabContainerSeparator.BackgroundTransparency = 0.5
-    tabContainerSeparator.BorderSizePixel = 0
-    tabContainerSeparator.Size = UDim2.new(0, 1, 1, 0)
-    tabContainerSeparator.Position = UDim2.new(1, 0, 0, 0)
-    tabContainerSeparator.Parent = tabContainer
+    CryzenHub.Utils.CreateCorner(navigation, theme.Radius.Medium)
+    CryzenHub.Utils.CreateGlow(navigation, theme.GlowSecondary, 0.3, 12)
+    CryzenHub.Utils.CreateStroke(navigation, theme.GlowSecondary, 1, 0.7)
     
-    local tabButtonContainer = Instance.new("ScrollingFrame")
-    tabButtonContainer.Name = "TabButtonContainer"
-    tabButtonContainer.BackgroundTransparency = 1
-    tabButtonContainer.Size = UDim2.new(1, 0, 1, 0)
-    tabButtonContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
-    tabButtonContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    tabButtonContainer.ScrollBarThickness = 0
-    tabButtonContainer.ScrollingEnabled = true
-    tabButtonContainer.Parent = tabContainer
+    -- Navigation separator
+    local navSeparator = Instance.new("Frame")
+    navSeparator.Name = "Separator"
+    navSeparator.Size = UDim2.new(0, 2, 1, -20)
+    navSeparator.Position = UDim2.new(1, -1, 0, 10)
+    navSeparator.BackgroundColor3 = theme.Accent
+    navSeparator.BorderSizePixel = 0
+    navSeparator.ZIndex = 4
+    navSeparator.Parent = navigation
     
-    local tabButtonLayout = Instance.new("UIListLayout")
-    tabButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabButtonLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    tabButtonLayout.Padding = UDim.new(0, theme.ElementPadding)
-    tabButtonLayout.Parent = tabButtonContainer
+    CryzenHub.Utils.CreateGlow(navSeparator, theme.Accent, 0.8, 6)
     
-    local tabButtonPadding = Instance.new("UIPadding")
-    tabButtonPadding.PaddingTop = UDim.new(0, theme.ElementPadding)
-    tabButtonPadding.PaddingBottom = UDim.new(0, theme.ElementPadding)
-    tabButtonPadding.Parent = tabButtonContainer
+    -- Tab buttons container
+    local tabButtonsContainer = Instance.new("ScrollingFrame")
+    tabButtonsContainer.Name = "TabButtons"
+    tabButtonsContainer.Size = UDim2.new(1, 0, 1, -20)
+    tabButtonsContainer.Position = UDim2.new(0, 0, 0, 10)
+    tabButtonsContainer.BackgroundTransparency = 1
+    tabButtonsContainer.ScrollBarThickness = 0
+    tabButtonsContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    tabButtonsContainer.ZIndex = 4
+    tabButtonsContainer.Parent = navigation
+    
+    local tabButtonsLayout = Instance.new("UIListLayout")
+    tabButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabButtonsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    tabButtonsLayout.Padding = UDim.new(0, theme.Padding.Medium)
+    tabButtonsLayout.Parent = tabButtonsContainer
+    
+    local tabButtonsPadding = Instance.new("UIPadding")
+    tabButtonsPadding.PaddingTop = UDim.new(0, theme.Padding.Medium)
+    tabButtonsPadding.PaddingBottom = UDim.new(0, theme.Padding.Medium)
+    tabButtonsPadding.Parent = tabButtonsContainer
     
     -- Tab content area
-    local tabContentContainer = Instance.new("Frame")
-    tabContentContainer.Name = "TabContentContainer"
-    tabContentContainer.BackgroundTransparency = 1
-    tabContentContainer.Size = UDim2.new(1, -60, 1, 0)
-    tabContentContainer.Position = UDim2.new(0, 60, 0, 0)
-    tabContentContainer.Parent = contentArea
-    window.TabContentContainer = tabContentContainer
+    local tabContentArea = Instance.new("Frame")
+    tabContentArea.Name = "UltraTabContent"
+    tabContentArea.Size = UDim2.new(1, -90, 1, 0)
+    tabContentArea.Position = UDim2.new(0, 90, 0, 0)
+    tabContentArea.BackgroundTransparency = 1
+    tabContentArea.ZIndex = 3
+    tabContentArea.Parent = contentArea
+    window.TabContentArea = tabContentArea
     
     -- Tab creation function
     function window:Tab(name, icon)
         local tab = {
             Name = name,
-            Icon = icon,
+            Icon = icon or "rbxassetid://7059346373",
             Sections = {},
-            Elements = {}
+            Elements = {},
+            Visible = false
         }
         
-        -- Create tab button
+        -- Ultra Tab Button
         local tabButton = Instance.new("TextButton")
         tabButton.Name = name .. "Button"
-        tabButton.Size = UDim2.new(0, 40, 0, 40)
+        tabButton.Size = UDim2.new(0, 60, 0, 60)
         tabButton.BackgroundColor3 = theme.Tertiary
-        tabButton.BackgroundTransparency = 0.9
+        tabButton.BackgroundTransparency = 0.4
         tabButton.Text = ""
-        tabButton.Parent = tabButtonContainer
+        tabButton.ZIndex = 5
+        tabButton.Parent = tabButtonsContainer
         tab.Button = tabButton
-        CryzenHub.Utils.SetRoundedCorners(tabButton, theme.SmallCornerRadius)
         
-        -- Active indicator
+        CryzenHub.Utils.CreateCorner(tabButton, theme.Radius.Medium)
+        
+        -- Ultra Active Indicator
         local activeIndicator = Instance.new("Frame")
         activeIndicator.Name = "ActiveIndicator"
-        activeIndicator.Size = UDim2.new(0, 3, 0.7, 0)
-        activeIndicator.Position = UDim2.new(0, 0, 0.15, 0)
+        activeIndicator.Size = UDim2.new(0, 4, 0.8, 0)
+        activeIndicator.Position = UDim2.new(0, -2, 0.1, 0)
         activeIndicator.BackgroundColor3 = theme.Accent
         activeIndicator.BackgroundTransparency = 1
         activeIndicator.BorderSizePixel = 0
+        activeIndicator.ZIndex = 6
         activeIndicator.Parent = tabButton
-        CryzenHub.Utils.SetRoundedCorners(activeIndicator, UDim.new(0, 2))
+        
+        CryzenHub.Utils.CreateCorner(activeIndicator, UDim.new(0, 2))
+        CryzenHub.Utils.CreateGlow(activeIndicator, theme.Accent, 1.0, 8)
         tab.ActiveIndicator = activeIndicator
         
-        -- Tab icon
-        local iconImage = Instance.new("ImageLabel")
-        iconImage.Name = "Icon"
-        iconImage.Size = UDim2.new(0, 20, 0, 20)
-        iconImage.Position = UDim2.new(0.5, 0, 0.5, 0)
-        iconImage.AnchorPoint = Vector2.new(0.5, 0.5)
-        iconImage.BackgroundTransparency = 1
-        iconImage.Image = icon or ""
-        iconImage.ImageColor3 = theme.TextDark
-        iconImage.ImageTransparency = 0
-        iconImage.Parent = tabButton
-        tab.IconImage = iconImage
+        -- Ultra Tab Icon
+        local tabIcon = Instance.new("ImageLabel")
+        tabIcon.Name = "Icon"
+        tabIcon.Size = UDim2.new(0, 30, 0, 30)
+        tabIcon.Position = UDim2.fromScale(0.5, 0.4)
+        tabIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+        tabIcon.BackgroundTransparency = 1
+        tabIcon.Image = tab.Icon
+        tabIcon.ImageColor3 = theme.TextSecondary
+        tabIcon.ZIndex = 6
+        tabIcon.Parent = tabButton
+        tab.IconImage = tabIcon
         
-        -- Tab tooltip
-        local tooltipText = name
-        local tooltipConnection
-        local activeTooltip
+        -- Tab Name Label
+        local tabNameLabel = Instance.new("TextLabel")
+        tabNameLabel.Name = "NameLabel"
+        tabNameLabel.Size = UDim2.new(1, -4, 0, 20)
+        tabNameLabel.Position = UDim2.new(0, 2, 0.7, 0)
+        tabNameLabel.BackgroundTransparency = 1
+        tabNameLabel.Text = name
+        tabNameLabel.Font = theme.Font
+        tabNameLabel.TextSize = theme.FontSize.Small
+        tabNameLabel.TextColor3 = theme.TextTertiary
+        tabNameLabel.TextScaled = true
+        tabNameLabel.ZIndex = 6
+        tabNameLabel.Parent = tabButton
+        tab.NameLabel = tabNameLabel
         
+        -- Ultra hover effects
         tabButton.MouseEnter:Connect(function()
-            tooltipConnection = task.delay(0.5, function()
-                activeTooltip = CryzenHub.Utils.CreateTooltip(tooltipText)
-            end)
-            
             if window.ActiveTab ~= tab then
-                CryzenHub.Utils.Tween(tabButton, {BackgroundTransparency = 0.7}, 0.2)
+                CryzenHub.Utils.PlaySound("Hover")
+                CryzenHub.Utils.Tween(tabButton, {
+                    BackgroundTransparency = 0.1,
+                    Size = UDim2.new(0, 64, 0, 64)
+                }, 0.2)
+                CryzenHub.Utils.Tween(tabIcon, {ImageColor3 = theme.TextSecondary}, 0.2)
             end
         end)
         
         tabButton.MouseLeave:Connect(function()
-            if tooltipConnection then
-                task.cancel(tooltipConnection)
-                tooltipConnection = nil
-            end
-            
-            if activeTooltip then
-                activeTooltip:Destroy()
-                activeTooltip = nil
-            end
-            
             if window.ActiveTab ~= tab then
-                CryzenHub.Utils.Tween(tabButton, {BackgroundTransparency = 0.9}, 0.2)
+                CryzenHub.Utils.Tween(tabButton, {
+                    BackgroundTransparency = 0.4,
+                    Size = UDim2.new(0, 60, 0, 60)
+                }, 0.2)
+                CryzenHub.Utils.Tween(tabIcon, {ImageColor3 = theme.TextSecondary}, 0.2)
             end
         end)
         
-        -- Tab content
+        tabButton.MouseButton1Down:Connect(function()
+            CryzenHub.Utils.CreateRipple(tabButton, UserInputService:GetMouseLocation(), theme.Accent)
+        end)
+        
+        -- Tab Content
         local tabContent = Instance.new("ScrollingFrame")
         tabContent.Name = name .. "Content"
+        tabContent.Size = UDim2.fromScale(1, 1)
         tabContent.BackgroundTransparency = 1
-        tabContent.Size = UDim2.new(1, 0, 1, 0)
-        tabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-        tabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
-        tabContent.ScrollBarThickness = 3
+        tabContent.ScrollBarThickness = 6
         tabContent.ScrollBarImageColor3 = theme.Accent
-        tabContent.ScrollingEnabled = true
+        tabContent.ScrollBarImageTransparency = 0.3
+        tabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
         tabContent.Visible = false
-        tabContent.Parent = tabContentContainer
+        tabContent.ZIndex = 4
+        tabContent.Parent = tabContentArea
         tab.Content = tabContent
         
         local contentLayout = Instance.new("UIListLayout")
         contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        contentLayout.Padding = UDim.new(0, theme.ElementPadding)
+        contentLayout.Padding = UDim.new(0, theme.Padding.Large)
         contentLayout.Parent = tabContent
         
         local contentPadding = Instance.new("UIPadding")
-        contentPadding.PaddingTop = UDim.new(0, theme.WindowPadding)
-        contentPadding.PaddingLeft = UDim.new(0, theme.WindowPadding)
-        contentPadding.PaddingRight = UDim.new(0, theme.WindowPadding)
-        contentPadding.PaddingBottom = UDim.new(0, theme.WindowPadding)
+        contentPadding.PaddingAll = UDim.new(0, theme.Padding.Large)
         contentPadding.Parent = tabContent
         
         -- Tab selection
@@ -894,93 +1333,113 @@ function CryzenHub:CreateWindow(config)
             window:SelectTab(tab)
         end)
         
-        -- Section creator
+        -- Ultra Section Creator
         function tab:Section(title)
             local section = {
                 Title = title,
-                Elements = {}
+                Elements = {},
+                Collapsed = false
             }
             
-            -- Create section container
+            -- Ultra Section Container
             local sectionContainer = Instance.new("Frame")
             sectionContainer.Name = title .. "Section"
             sectionContainer.BackgroundColor3 = theme.Secondary
             sectionContainer.BackgroundTransparency = 0.2
-            sectionContainer.Size = UDim2.new(1, 0, 0, 40) -- Will be auto-sized
+            sectionContainer.Size = UDim2.new(1, 0, 0, 50)
             sectionContainer.AutomaticSize = Enum.AutomaticSize.Y
+            sectionContainer.ZIndex = 5
             sectionContainer.Parent = tabContent
             section.Container = sectionContainer
-            CryzenHub.Utils.SetRoundedCorners(sectionContainer)
-            CryzenHub.Utils.AddStroke(sectionContainer, theme.Stroke, 1, 0.5)
             
-            -- Section header
+            CryzenHub.Utils.CreateCorner(sectionContainer, theme.Radius.Large)
+            CryzenHub.Utils.CreateGlow(sectionContainer, theme.GlowSecondary, 0.2, 15)
+            CryzenHub.Utils.CreateStroke(sectionContainer, theme.Accent, 1, 0.8)
+            
+            -- Section Header
             local sectionHeader = Instance.new("Frame")
             sectionHeader.Name = "Header"
-            sectionHeader.BackgroundTransparency = 1
-            sectionHeader.Size = UDim2.new(1, 0, 0, 36)
+            sectionHeader.Size = UDim2.new(1, 0, 0, 45)
+            sectionHeader.BackgroundColor3 = theme.Tertiary
+            sectionHeader.BackgroundTransparency = 0.3
+            sectionHeader.ZIndex = 6
             sectionHeader.Parent = sectionContainer
             
+            CryzenHub.Utils.CreateCorner(sectionHeader, theme.Radius.Large)
+            CryzenHub.Utils.CreateGradient(sectionHeader, theme.AccentGradient, 90)
+            
+            -- Section Icon
+            local sectionIcon = Instance.new("ImageLabel")
+            sectionIcon.Name = "Icon"
+            sectionIcon.Size = UDim2.new(0, 24, 0, 24)
+            sectionIcon.Position = UDim2.new(0, 15, 0.5, -12)
+            sectionIcon.BackgroundTransparency = 1
+            sectionIcon.Image = "rbxassetid://7072717958"
+            sectionIcon.ImageColor3 = theme.Accent
+            sectionIcon.ZIndex = 7
+            sectionIcon.Parent = sectionHeader
+            
+            CryzenHub.Utils.CreateGlow(sectionIcon, theme.Accent, 0.6, 8)
+            
+            -- Section Title
             local sectionTitle = Instance.new("TextLabel")
             sectionTitle.Name = "Title"
+            sectionTitle.Size = UDim2.new(1, -100, 1, 0)
+            sectionTitle.Position = UDim2.new(0, 50, 0, 0)
             sectionTitle.BackgroundTransparency = 1
-            sectionTitle.Size = UDim2.new(1, -40, 1, 0)
-            sectionTitle.Position = UDim2.new(0, 15, 0, 0)
-            sectionTitle.Font = theme.Font
             sectionTitle.Text = title
+            sectionTitle.Font = theme.Font
+            sectionTitle.TextSize = theme.FontSize.Title
             sectionTitle.TextColor3 = theme.Text
-            sectionTitle.TextSize = theme.TextSize
+            sectionTitle.TextStrokeTransparency = 0.9
+            sectionTitle.TextStrokeColor3 = theme.Accent
             sectionTitle.TextXAlignment = Enum.TextXAlignment.Left
+            sectionTitle.ZIndex = 7
             sectionTitle.Parent = sectionHeader
             
-            -- Collapse button
-            local collapseButton = Instance.new("ImageButton")
+            -- Collapse Button
+            local collapseButton = Instance.new("TextButton")
             collapseButton.Name = "CollapseButton"
-            collapseButton.BackgroundTransparency = 1
-            collapseButton.Size = UDim2.new(0, 20, 0, 20)
-            collapseButton.Position = UDim2.new(1, -30, 0.5, -10)
-            collapseButton.Image = "rbxassetid://7072706318" -- Chevron icon
-            collapseButton.ImageColor3 = theme.TextDark
-            collapseButton.Rotation = 0
+            collapseButton.Size = UDim2.new(0, 30, 0, 30)
+            collapseButton.Position = UDim2.new(1, -40, 0.5, -15)
+            collapseButton.BackgroundColor3 = theme.Quaternary
+            collapseButton.BackgroundTransparency = 0.3
+            collapseButton.Text = "⌄"
+            collapseButton.Font = theme.Font
+            collapseButton.TextSize = theme.FontSize.Body
+            collapseButton.TextColor3 = theme.Text
+            collapseButton.ZIndex = 7
             collapseButton.Parent = sectionHeader
             
-            -- Section divider
-            local divider = Instance.new("Frame")
-            divider.Name = "Divider"
-            divider.BackgroundColor3 = theme.Stroke
-            divider.BackgroundTransparency = 0.5
-            divider.BorderSizePixel = 0
-            divider.Size = UDim2.new(1, -30, 0, 1)
-            divider.Position = UDim2.new(0, 15, 1, 0)
-            divider.Parent = sectionHeader
+            CryzenHub.Utils.CreateCorner(collapseButton, theme.Radius.Round)
+            CryzenHub.Utils.CreateGlow(collapseButton, theme.Info, 0.4, 6)
             
-            -- Content container
+            -- Section Content
             local sectionContent = Instance.new("Frame")
             sectionContent.Name = "Content"
-            sectionContent.BackgroundTransparency = 1
             sectionContent.Size = UDim2.new(1, 0, 0, 0)
-            sectionContent.Position = UDim2.new(0, 0, 0, 36)
+            sectionContent.Position = UDim2.new(0, 0, 0, 45)
+            sectionContent.BackgroundTransparency = 1
             sectionContent.AutomaticSize = Enum.AutomaticSize.Y
+            sectionContent.ZIndex = 6
             sectionContent.Parent = sectionContainer
             section.Content = sectionContent
             
             local contentLayout = Instance.new("UIListLayout")
             contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            contentLayout.Padding = UDim.new(0, theme.ElementPadding)
+            contentLayout.Padding = UDim.new(0, theme.Padding.Medium)
             contentLayout.Parent = sectionContent
             
             local contentPadding = Instance.new("UIPadding")
-            contentPadding.PaddingTop = UDim.new(0, theme.ElementPadding)
-            contentPadding.PaddingLeft = UDim.new(0, 15)
-            contentPadding.PaddingRight = UDim.new(0, 15)
-            contentPadding.PaddingBottom = UDim.new(0, theme.ElementPadding)
+            contentPadding.PaddingAll = UDim.new(0, theme.Padding.Large)
             contentPadding.Parent = sectionContent
             
             -- Collapse functionality
-            local collapsed = false
             collapseButton.MouseButton1Click:Connect(function()
-                collapsed = not collapsed
+                section.Collapsed = not section.Collapsed
+                CryzenHub.Utils.PlaySound("Click")
                 
-                if collapsed then
+                if section.Collapsed then
                     CryzenHub.Utils.Tween(collapseButton, {Rotation = -90}, 0.3)
                     sectionContent.Visible = false
                 else
@@ -989,40 +1448,49 @@ function CryzenHub:CreateWindow(config)
                 end
             end)
             
-            -- Element creation functions
+            -- Ultra Element Creation Functions
             function section:Label(text, options)
                 options = options or {}
                 local element = {
                     Type = "Label",
-                    Text = text
+                    Text = text,
+                    Instance = nil
                 }
                 
                 local labelFrame = Instance.new("Frame")
-                labelFrame.Name = "Label"
+                labelFrame.Name = "UltraLabel"
+                labelFrame.Size = UDim2.new(1, 0, 0, options.Height or 30)
                 labelFrame.BackgroundTransparency = 1
-                labelFrame.Size = UDim2.new(1, 0, 0, options.Height or 26)
+                labelFrame.ZIndex = 7
                 labelFrame.Parent = sectionContent
                 element.Instance = labelFrame
                 
                 local labelText = Instance.new("TextLabel")
                 labelText.Name = "Text"
+                labelText.Size = UDim2.fromScale(1, 1)
                 labelText.BackgroundTransparency = 1
-                labelText.Size = UDim2.new(1, 0, 1, 0)
-                labelText.Font = theme.Font
                 labelText.Text = text
+                labelText.Font = options.Font or theme.Font
+                labelText.TextSize = options.TextSize or theme.FontSize.Body
                 labelText.TextColor3 = options.Color or theme.Text
-                labelText.TextSize = options.TextSize or theme.TextSize
                 labelText.TextWrapped = true
                 labelText.RichText = true
                 labelText.TextXAlignment = options.TextXAlignment or Enum.TextXAlignment.Left
+                labelText.ZIndex = 8
                 labelText.Parent = labelFrame
                 element.TextLabel = labelText
                 
-                -- Update function
+                if options.Glow then
+                    CryzenHub.Utils.CreateGlow(labelText, options.Color or theme.Text, 0.3, 8)
+                end
+                
                 function element:Update(newText)
                     self.Text = newText
                     labelText.Text = newText
                 end
+                
+                -- Add to search index
+                CryzenHub.SearchEngine.AddToIndex(element, {text, "label", title})
                 
                 table.insert(section.Elements, element)
                 tab.Elements[options.Flag or "Label_" .. #section.Elements] = element
@@ -1039,85 +1507,100 @@ function CryzenHub:CreateWindow(config)
                 }
                 
                 local buttonFrame = Instance.new("Frame")
-                buttonFrame.Name = "ButtonFrame"
+                buttonFrame.Name = "UltraButtonFrame"
+                buttonFrame.Size = UDim2.new(1, 0, 0, 40)
                 buttonFrame.BackgroundTransparency = 1
-                buttonFrame.Size = UDim2.new(1, 0, 0, 32)
+                buttonFrame.ZIndex = 7
                 buttonFrame.Parent = sectionContent
                 element.Instance = buttonFrame
                 
                 local button = Instance.new("TextButton")
-                button.Name = "Button"
+                button.Name = "UltraButton"
+                button.Size = UDim2.fromScale(1, 1)
                 button.BackgroundColor3 = theme.Tertiary
-                button.BackgroundTransparency = 0
-                button.Size = UDim2.new(1, 0, 1, 0)
-                button.Font = theme.Font
+                button.BackgroundTransparency = 0.1
                 button.Text = text
+                button.Font = theme.Font
+                button.TextSize = theme.FontSize.Body
                 button.TextColor3 = theme.Text
-                button.TextSize = theme.TextSize
+                button.TextStrokeTransparency = 0.9
+                button.TextStrokeColor3 = theme.Accent
                 button.ClipsDescendants = true
+                button.ZIndex = 8
                 button.Parent = buttonFrame
                 element.Button = button
-                CryzenHub.Utils.SetRoundedCorners(button, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(button, theme.Stroke, 1, 0.5)
                 
-                -- Button functionality
-                button.MouseButton1Down:Connect(function(x, y)
+                CryzenHub.Utils.CreateCorner(button, theme.Radius.Medium)
+                CryzenHub.Utils.CreateGradient(button, theme.AccentGradient, 135)
+                CryzenHub.Utils.CreateGlow(button, theme.Accent, 0.3, 12)
+                CryzenHub.Utils.CreateStroke(button, theme.Accent, 1, 0.6)
+                
+                -- Ultra button effects
+                button.MouseEnter:Connect(function()
                     if not element.Enabled then return end
-                    CryzenHub.Utils.CreateRipple(button, Vector2.new(x, y))
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Accent}, 0.2)
+                    CryzenHub.Utils.PlaySound("Hover")
+                    CryzenHub.Utils.Tween(button, {
+                        BackgroundTransparency = 0,
+                        Size = UDim2.new(1, 4, 1, 4)
+                    }, 0.2)
+                end)
+                
+                button.MouseLeave:Connect(function()
+                    if not element.Enabled then return end
+                    CryzenHub.Utils.Tween(button, {
+                        BackgroundTransparency = 0.1,
+                        Size = UDim2.fromScale(1, 1)
+                    }, 0.2)
+                end)
+                
+                button.MouseButton1Down:Connect(function()
+                    if not element.Enabled then return end
+                    CryzenHub.Utils.CreateRipple(button, UserInputService:GetMouseLocation(), theme.AccentSecondary)
+                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Accent}, 0.1)
                 end)
                 
                 button.MouseButton1Up:Connect(function()
                     if not element.Enabled then return end
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Tertiary}, 0.2)
+                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Tertiary}, 0.1)
                 end)
                 
                 button.MouseButton1Click:Connect(function()
                     if not element.Enabled then return end
+                    CryzenHub.Utils.PlaySound("Click")
                     
                     if callback then
                         task.spawn(callback)
                     end
                 end)
                 
-                -- Hover effect
-                button.MouseEnter:Connect(function()
-                    if not element.Enabled then return end
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = CryzenHub.Utils.LightenColor(theme.Tertiary, 0.1)}, 0.2)
-                end)
-                
-                button.MouseLeave:Connect(function()
-                    if not element.Enabled then return end
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Tertiary}, 0.2)
-                end)
-                
-                -- Update function
                 function element:Update(newText)
                     self.Text = newText
                     button.Text = newText
                 end
                 
-                -- Enable/disable functions
                 function element:Enable()
                     self.Enabled = true
                     button.TextColor3 = theme.Text
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Tertiary}, 0.2)
+                    CryzenHub.Utils.Tween(button, {BackgroundTransparency = 0.1}, 0.2)
                 end
                 
                 function element:Disable()
                     self.Enabled = false
-                    button.TextColor3 = theme.TextDark
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = CryzenHub.Utils.DarkenColor(theme.Tertiary, 0.1)}, 0.2)
+                    button.TextColor3 = theme.TextTertiary
+                    CryzenHub.Utils.Tween(button, {BackgroundTransparency = 0.5}, 0.2)
                 end
+                
+                -- Add to search index
+                CryzenHub.SearchEngine.AddToIndex(element, {text, "button", title})
                 
                 table.insert(section.Elements, element)
                 tab.Elements[options.Flag or "Button_" .. #section.Elements] = element
                 return element
             end
             
-            function section:Toggle(text, default, callback, options)
+            function section:Toggle(text, options, callback)
                 options = options or {}
-                default = default or false
+                local default = options.Default or false
                 local flag = options.Flag or "Toggle_" .. #section.Elements + 1
                 
                 local element = {
@@ -1129,79 +1612,140 @@ function CryzenHub:CreateWindow(config)
                 }
                 
                 local toggleFrame = Instance.new("Frame")
-                toggleFrame.Name = "ToggleFrame"
+                toggleFrame.Name = "UltraToggleFrame"
+                toggleFrame.Size = UDim2.new(1, 0, 0, 40)
                 toggleFrame.BackgroundTransparency = 1
-                toggleFrame.Size = UDim2.new(1, 0, 0, 32)
+                toggleFrame.ZIndex = 7
                 toggleFrame.Parent = sectionContent
                 element.Instance = toggleFrame
                 
                 local toggleButton = Instance.new("TextButton")
                 toggleButton.Name = "ToggleButton"
+                toggleButton.Size = UDim2.fromScale(1, 1)
                 toggleButton.BackgroundTransparency = 1
-                toggleButton.Size = UDim2.new(1, 0, 1, 0)
                 toggleButton.Text = ""
+                toggleButton.ZIndex = 8
                 toggleButton.Parent = toggleFrame
                 
                 local toggleLabel = Instance.new("TextLabel")
                 toggleLabel.Name = "Label"
+                toggleLabel.Size = UDim2.new(1, -80, 1, 0)
                 toggleLabel.BackgroundTransparency = 1
-                toggleLabel.Size = UDim2.new(1, -50, 1, 0)
-                toggleLabel.Font = theme.Font
                 toggleLabel.Text = text
+                toggleLabel.Font = theme.Font
+                toggleLabel.TextSize = theme.FontSize.Body
                 toggleLabel.TextColor3 = theme.Text
-                toggleLabel.TextSize = theme.TextSize
                 toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+                toggleLabel.ZIndex = 9
                 toggleLabel.Parent = toggleFrame
                 
-                local toggleBackground = Instance.new("Frame")
-                toggleBackground.Name = "Background"
-                toggleBackground.BackgroundColor3 = default and theme.Accent or theme.Tertiary
-                toggleBackground.Size = UDim2.new(0, 40, 0, 20)
-                toggleBackground.Position = UDim2.new(1, -45, 0.5, -10)
-                toggleBackground.Parent = toggleFrame
-                CryzenHub.Utils.SetRoundedCorners(toggleBackground, theme.RoundCornerRadius)
-                CryzenHub.Utils.AddStroke(toggleBackground, theme.Stroke, 1, 0.5)
+                -- Ultra Toggle Switch
+                local toggleSwitch = Instance.new("Frame")
+                toggleSwitch.Name = "Switch"
+                toggleSwitch.Size = UDim2.new(0, 60, 0, 30)
+                toggleSwitch.Position = UDim2.new(1, -65, 0.5, -15)
+                toggleSwitch.BackgroundColor3 = default and theme.Accent or theme.Quaternary
+                toggleSwitch.BackgroundTransparency = 0.1
+                toggleSwitch.ZIndex = 9
+                toggleSwitch.Parent = toggleFrame
                 
+                CryzenHub.Utils.CreateCorner(toggleSwitch, theme.Radius.Round)
+                CryzenHub.Utils.CreateGlow(toggleSwitch, default and theme.Accent or theme.Quaternary, 0.6, 10)
+                CryzenHub.Utils.CreateStroke(toggleSwitch, default and theme.Accent or theme.TextTertiary, 1, 0.5)
+                
+                -- Toggle Indicator
                 local toggleIndicator = Instance.new("Frame")
                 toggleIndicator.Name = "Indicator"
+                toggleIndicator.Size = UDim2.new(0, 24, 0, 24)
+                toggleIndicator.Position = UDim2.new(default and 1 or 0, default and -27 or 3, 0.5, -12)
                 toggleIndicator.BackgroundColor3 = theme.Text
-                toggleIndicator.Size = UDim2.new(0, 16, 0, 16)
-                toggleIndicator.Position = UDim2.new(default and 1 or 0, default and -18 or 2, 0.5, -8)
-                toggleIndicator.Parent = toggleBackground
-                CryzenHub.Utils.SetRoundedCorners(toggleIndicator, theme.RoundCornerRadius)
+                toggleIndicator.ZIndex = 10
+                toggleIndicator.Parent = toggleSwitch
                 
-                -- Update toggle state
+                CryzenHub.Utils.CreateCorner(toggleIndicator, theme.Radius.Round)
+                CryzenHub.Utils.CreateGlow(toggleIndicator, theme.Text, 0.8, 8)
+                CryzenHub.Utils.CreateShadow(toggleIndicator, Color3.fromRGB(0, 0, 0), 8, 0.4)
+                
+                -- Keybind support
+                local keybindButton = Instance.new("TextButton")
+                keybindButton.Name = "KeybindButton"
+                keybindButton.Size = UDim2.new(0, 20, 0, 20)
+                keybindButton.Position = UDim2.new(1, -25, 0, 0)
+                keybindButton.BackgroundColor3 = theme.Info
+                keybindButton.BackgroundTransparency = 0.7
+                keybindButton.Text = "K"
+                keybindButton.Font = theme.Font
+                keybindButton.TextSize = theme.FontSize.Small
+                keybindButton.TextColor3 = theme.Text
+                keybindButton.Visible = false
+                keybindButton.ZIndex = 10
+                keybindButton.Parent = toggleFrame
+                
+                CryzenHub.Utils.CreateCorner(keybindButton, theme.Radius.Round)
+                
+                local keybind = nil
+                local waitingForKeybind = false
+                
+                -- Right-click to set keybind
+                toggleButton.MouseButton2Click:Connect(function()
+                    keybindButton.Visible = true
+                    waitingForKeybind = true
+                    keybindButton.Text = "..."
+                    
+                    local connection
+                    connection = UserInputService.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.Keyboard then
+                            keybind = input.KeyCode
+                            keybindButton.Text = input.KeyCode.Name:sub(1, 1)
+                            waitingForKeybind = false
+                            connection:Disconnect()
+                        end
+                    end)
+                end)
+                
+                -- Listen for keybind
+                UserInputService.InputBegan:Connect(function(input, processed)
+                    if not processed and keybind and input.KeyCode == keybind and not waitingForKeybind then
+                        element:SetValue(not element.Value)
+                    end
+                end)
+                
+                -- Update function
                 local function updateToggle(value)
                     element.Value = value
-                    CryzenHub.Utils.Tween(toggleBackground, {BackgroundColor3 = value and theme.Accent or theme.Tertiary}, 0.2)
-                    CryzenHub.Utils.Tween(toggleIndicator, {Position = UDim2.new(value and 1 or 0, value and -18 or 2, 0.5, -8)}, 0.2)
-                    
-                    -- Update flag value
                     window.Flags[flag] = value
                     
-                    -- Call callback
+                    CryzenHub.Utils.Tween(toggleSwitch, {
+                        BackgroundColor3 = value and theme.Accent or theme.Quaternary
+                    }, 0.3)
+                    
+                    CryzenHub.Utils.Tween(toggleIndicator, {
+                        Position = UDim2.new(value and 1 or 0, value and -27 or 3, 0.5, -12)
+                    }, 0.3, Enum.EasingStyle.Quart)
+                    
                     if callback then
                         task.spawn(callback, value)
                     end
                 end
                 
-                -- Set initial value
+                -- Initialize
                 window.Flags[flag] = default
                 
-                -- Toggle button functionality
                 toggleButton.MouseButton1Click:Connect(function()
+                    CryzenHub.Utils.PlaySound("Toggle")
                     updateToggle(not element.Value)
                 end)
                 
-                -- Update function
-                function element:Update(value)
-                    updateToggle(value)
-                end
-                
-                -- Set value function
                 function element:SetValue(value)
                     updateToggle(value)
                 end
+                
+                function element:GetValue()
+                    return self.Value
+                end
+                
+                -- Add to search index
+                CryzenHub.SearchEngine.AddToIndex(element, {text, "toggle", title})
                 
                 table.insert(section.Elements, element)
                 tab.Elements[flag] = element
@@ -1217,7 +1761,6 @@ function CryzenHub:CreateWindow(config)
                 local suffix = options.Suffix or ""
                 local flag = options.Flag or "Slider_" .. #section.Elements + 1
                 
-                -- Validate default value
                 default = math.clamp(default, min, max)
                 
                 local element = {
@@ -1233,61 +1776,90 @@ function CryzenHub:CreateWindow(config)
                 }
                 
                 local sliderFrame = Instance.new("Frame")
-                sliderFrame.Name = "SliderFrame"
+                sliderFrame.Name = "UltraSliderFrame"
+                sliderFrame.Size = UDim2.new(1, 0, 0, 60)
                 sliderFrame.BackgroundTransparency = 1
-                sliderFrame.Size = UDim2.new(1, 0, 0, 50)
+                sliderFrame.ZIndex = 7
                 sliderFrame.Parent = sectionContent
                 element.Instance = sliderFrame
                 
                 local sliderLabel = Instance.new("TextLabel")
                 sliderLabel.Name = "Label"
+                sliderLabel.Size = UDim2.new(1, 0, 0, 25)
                 sliderLabel.BackgroundTransparency = 1
-                sliderLabel.Size = UDim2.new(1, 0, 0, 20)
-                sliderLabel.Font = theme.Font
                 sliderLabel.Text = text
+                sliderLabel.Font = theme.Font
+                sliderLabel.TextSize = theme.FontSize.Body
                 sliderLabel.TextColor3 = theme.Text
-                sliderLabel.TextSize = theme.TextSize
                 sliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+                sliderLabel.ZIndex = 8
                 sliderLabel.Parent = sliderFrame
                 
                 local valueLabel = Instance.new("TextBox")
                 valueLabel.Name = "Value"
+                valueLabel.Size = UDim2.new(0, 80, 0, 25)
+                valueLabel.Position = UDim2.new(1, -80, 0, 0)
                 valueLabel.BackgroundColor3 = theme.Tertiary
-                valueLabel.Size = UDim2.new(0, 60, 0, 20)
-                valueLabel.Position = UDim2.new(1, -60, 0, 0)
-                valueLabel.Font = theme.Font
+                valueLabel.BackgroundTransparency = 0.3
                 valueLabel.Text = tostring(default) .. suffix
+                valueLabel.Font = theme.Font
+                valueLabel.TextSize = theme.FontSize.Body
                 valueLabel.TextColor3 = theme.Text
-                valueLabel.TextSize = theme.TextSize
+                valueLabel.TextXAlignment = Enum.TextXAlignment.Center
+                valueLabel.ZIndex = 8
                 valueLabel.Parent = sliderFrame
-                CryzenHub.Utils.SetRoundedCorners(valueLabel, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(valueLabel, theme.Stroke, 1, 0.5)
                 
-                local sliderBackground = Instance.new("Frame")
-                sliderBackground.Name = "Background"
-                sliderBackground.BackgroundColor3 = theme.Tertiary
-                sliderBackground.Size = UDim2.new(1, 0, 0, 10)
-                sliderBackground.Position = UDim2.new(0, 0, 0, 30)
-                sliderBackground.Parent = sliderFrame
-                CryzenHub.Utils.SetRoundedCorners(sliderBackground, theme.RoundCornerRadius)
-                CryzenHub.Utils.AddStroke(sliderBackground, theme.Stroke, 1, 0.5)
+                CryzenHub.Utils.CreateCorner(valueLabel, theme.Radius.Small)
+                CryzenHub.Utils.CreateStroke(valueLabel, theme.Accent, 1, 0.7)
                 
+                -- Ultra Slider Track
+                local sliderTrack = Instance.new("Frame")
+                sliderTrack.Name = "Track"
+                sliderTrack.Size = UDim2.new(1, 0, 0, 12)
+                sliderTrack.Position = UDim2.new(0, 0, 0, 35)
+                sliderTrack.BackgroundColor3 = theme.Quaternary
+                sliderTrack.BackgroundTransparency = 0.2
+                sliderTrack.ZIndex = 8
+                sliderTrack.Parent = sliderFrame
+                
+                CryzenHub.Utils.CreateCorner(sliderTrack, theme.Radius.Round)
+                CryzenHub.Utils.CreateGlow(sliderTrack, theme.Quaternary, 0.3, 8)
+                CryzenHub.Utils.CreateStroke(sliderTrack, theme.TextTertiary, 1, 0.8)
+                
+                -- Slider Fill
                 local sliderFill = Instance.new("Frame")
                 sliderFill.Name = "Fill"
-                sliderFill.BackgroundColor3 = theme.Accent
                 sliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-                sliderFill.Position = UDim2.new(0, 0, 0, 0)
-                sliderFill.Parent = sliderBackground
-                CryzenHub.Utils.SetRoundedCorners(sliderFill, theme.RoundCornerRadius)
+                sliderFill.BackgroundColor3 = theme.Accent
+                sliderFill.BackgroundTransparency = 0.1
+                sliderFill.ZIndex = 9
+                sliderFill.Parent = sliderTrack
                 
+                CryzenHub.Utils.CreateCorner(sliderFill, theme.Radius.Round)
+                CryzenHub.Utils.CreateGlow(sliderFill, theme.Accent, 0.8, 10)
+                CryzenHub.Utils.CreateGradient(sliderFill, theme.AccentGradient, 90)
+                
+                -- Ultra Slider Knob
                 local sliderKnob = Instance.new("Frame")
                 sliderKnob.Name = "Knob"
+                sliderKnob.Size = UDim2.new(0, 20, 0, 20)
+                sliderKnob.Position = UDim2.new((default - min) / (max - min), -10, 0.5, -10)
                 sliderKnob.BackgroundColor3 = theme.Text
-                sliderKnob.Size = UDim2.new(0, 16, 0, 16)
-                sliderKnob.Position = UDim2.new((default - min) / (max - min), -8, 0.5, -8)
-                sliderKnob.Parent = sliderBackground
-                CryzenHub.Utils.SetRoundedCorners(sliderKnob, theme.RoundCornerRadius)
-                CryzenHub.Utils.AddStroke(sliderKnob, theme.Stroke, 1, 0.5)
+                sliderKnob.ZIndex = 10
+                sliderKnob.Parent = sliderTrack
+                
+                CryzenHub.Utils.CreateCorner(sliderKnob, theme.Radius.Round)
+                CryzenHub.Utils.CreateGlow(sliderKnob, theme.Text, 1.0, 12)
+                CryzenHub.Utils.CreateShadow(sliderKnob, Color3.fromRGB(0, 0, 0), 10, 0.5)
+                CryzenHub.Utils.CreateStroke(sliderKnob, theme.Accent, 2, 0.3)
+                
+                local sliderButton = Instance.new("TextButton")
+                sliderButton.Name = "SliderButton"
+                sliderButton.Size = UDim2.fromScale(1, 1)
+                sliderButton.BackgroundTransparency = 1
+                sliderButton.Text = ""
+                sliderButton.ZIndex = 11
+                sliderButton.Parent = sliderTrack
                 
                 -- Slider functionality
                 local isDragging = false
@@ -1304,7 +1876,6 @@ function CryzenHub:CreateWindow(config)
                 local function updateSlider(value, fromInput)
                     value = math.clamp(value, min, max)
                     
-                    -- Round to decimals
                     if decimals == 0 then
                         value = math.floor(value)
                     else
@@ -1313,26 +1884,22 @@ function CryzenHub:CreateWindow(config)
                     end
                     
                     element.Value = value
+                    window.Flags[flag] = value
                     
-                    -- Update visual elements
                     if not fromInput then
                         valueLabel.Text = formatValue(value)
                     end
                     
                     local percent = (value - min) / (max - min)
                     CryzenHub.Utils.Tween(sliderFill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
-                    CryzenHub.Utils.Tween(sliderKnob, {Position = UDim2.new(percent, -8, 0.5, -8)}, 0.1)
+                    CryzenHub.Utils.Tween(sliderKnob, {Position = UDim2.new(percent, -10, 0.5, -10)}, 0.1)
                     
-                    -- Update flag value
-                    window.Flags[flag] = value
-                    
-                    -- Call callback
                     if callback then
                         task.spawn(callback, value)
                     end
                 end
                 
-                -- Set initial value
+                -- Initialize
                 window.Flags[flag] = default
                 
                 -- Direct value input
@@ -1348,32 +1915,31 @@ function CryzenHub:CreateWindow(config)
                 
                 -- Mouse interaction
                 local function onSliderInteraction(input)
-                    local sliderPosition = sliderBackground.AbsolutePosition
-                    local sliderSize = sliderBackground.AbsoluteSize
+                    local trackPosition = sliderTrack.AbsolutePosition
+                    local trackSize = sliderTrack.AbsoluteSize
                     local mousePosition = input.Position.X
                     
-                    local percent = math.clamp((mousePosition - sliderPosition.X) / sliderSize.X, 0, 1)
+                    local percent = math.clamp((mousePosition - trackPosition.X) / trackSize.X, 0, 1)
                     local value = min + (max - min) * percent
                     
                     updateSlider(value)
                 end
                 
-                sliderBackground.InputBegan:Connect(function(input)
+                sliderButton.InputBegan:Connect(function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         isDragging = true
+                        CryzenHub.Utils.PlaySound("Slide")
                         onSliderInteraction(input)
-                    end
-                end)
-                
-                sliderKnob.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        isDragging = true
+                        
+                        -- Knob hover effect
+                        CryzenHub.Utils.Tween(sliderKnob, {Size = UDim2.new(0, 24, 0, 24)}, 0.2)
                     end
                 end)
                 
                 UserInputService.InputEnded:Connect(function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         isDragging = false
+                        CryzenHub.Utils.Tween(sliderKnob, {Size = UDim2.new(0, 20, 0, 20)}, 0.2)
                     end
                 end)
                 
@@ -1383,26 +1949,24 @@ function CryzenHub:CreateWindow(config)
                     end
                 end)
                 
-                -- Update function
-                function element:Update(value)
-                    updateSlider(value)
-                end
-                
-                -- Set value function
                 function element:SetValue(value)
                     updateSlider(value)
                 end
                 
-                -- Set min/max function
+                function element:GetValue()
+                    return self.Value
+                end
+                
                 function element:SetMinMax(newMin, newMax)
                     self.Min = newMin
                     self.Max = newMax
                     min = newMin
                     max = newMax
-                    
-                    -- Update slider with current value
                     updateSlider(math.clamp(element.Value, min, max))
                 end
+                
+                -- Add to search index
+                CryzenHub.SearchEngine.AddToIndex(element, {text, "slider", title})
                 
                 table.insert(section.Elements, element)
                 tab.Elements[flag] = element
@@ -1429,103 +1993,114 @@ function CryzenHub:CreateWindow(config)
                 }
                 
                 local dropdownFrame = Instance.new("Frame")
-                dropdownFrame.Name = "DropdownFrame"
+                dropdownFrame.Name = "UltraDropdownFrame"
+                dropdownFrame.Size = UDim2.new(1, 0, 0, 70)
                 dropdownFrame.BackgroundTransparency = 1
-                dropdownFrame.Size = UDim2.new(1, 0, 0, 50)
+                dropdownFrame.ZIndex = 7
                 dropdownFrame.Parent = sectionContent
                 element.Instance = dropdownFrame
                 
                 local dropdownLabel = Instance.new("TextLabel")
                 dropdownLabel.Name = "Label"
+                dropdownLabel.Size = UDim2.new(1, 0, 0, 25)
                 dropdownLabel.BackgroundTransparency = 1
-                dropdownLabel.Size = UDim2.new(1, 0, 0, 20)
-                dropdownLabel.Font = theme.Font
                 dropdownLabel.Text = text
+                dropdownLabel.Font = theme.Font
+                dropdownLabel.TextSize = theme.FontSize.Body
                 dropdownLabel.TextColor3 = theme.Text
-                dropdownLabel.TextSize = theme.TextSize
                 dropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
+                dropdownLabel.ZIndex = 8
                 dropdownLabel.Parent = dropdownFrame
                 
                 local dropdownButton = Instance.new("TextButton")
                 dropdownButton.Name = "Button"
+                dropdownButton.Size = UDim2.new(1, 0, 0, 40)
+                dropdownButton.Position = UDim2.new(0, 0, 0, 30)
                 dropdownButton.BackgroundColor3 = theme.Tertiary
-                dropdownButton.Size = UDim2.new(1, 0, 0, 30)
-                dropdownButton.Position = UDim2.new(0, 0, 0, 20)
-                dropdownButton.Font = theme.Font
+                dropdownButton.BackgroundTransparency = 0.1
                 dropdownButton.Text = ""
-                dropdownButton.TextColor3 = theme.Text
-                dropdownButton.TextSize = theme.TextSize
+                dropdownButton.ZIndex = 8
                 dropdownButton.Parent = dropdownFrame
-                CryzenHub.Utils.SetRoundedCorners(dropdownButton, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(dropdownButton, theme.Stroke, 1, 0.5)
+                
+                CryzenHub.Utils.CreateCorner(dropdownButton, theme.Radius.Medium)
+                CryzenHub.Utils.CreateGlow(dropdownButton, theme.Tertiary, 0.3, 10)
+                CryzenHub.Utils.CreateStroke(dropdownButton, theme.Accent, 1, 0.7)
                 
                 local selectedText = Instance.new("TextLabel")
                 selectedText.Name = "SelectedText"
+                selectedText.Size = UDim2.new(1, -40, 1, 0)
+                selectedText.Position = UDim2.new(0, 15, 0, 0)
                 selectedText.BackgroundTransparency = 1
-                selectedText.Size = UDim2.new(1, -30, 1, 0)
-                selectedText.Position = UDim2.new(0, 10, 0, 0)
-                selectedText.Font = theme.Font
                 selectedText.Text = multiSelect 
                     and (#selected > 0 and table.concat(selected, ", ") or "None") 
                     or (selected or "Select...")
+                selectedText.Font = theme.Font
+                selectedText.TextSize = theme.FontSize.Body
                 selectedText.TextColor3 = theme.Text
-                selectedText.TextSize = theme.TextSize
                 selectedText.TextXAlignment = Enum.TextXAlignment.Left
                 selectedText.TextTruncate = Enum.TextTruncate.AtEnd
+                selectedText.ZIndex = 9
                 selectedText.Parent = dropdownButton
                 
                 local dropdownIcon = Instance.new("ImageLabel")
                 dropdownIcon.Name = "Icon"
-                dropdownIcon.BackgroundTransparency = 1
                 dropdownIcon.Size = UDim2.new(0, 20, 0, 20)
-                dropdownIcon.Position = UDim2.new(1, -25, 0.5, -10)
+                dropdownIcon.Position = UDim2.new(1, -30, 0.5, -10)
+                dropdownIcon.BackgroundTransparency = 1
                 dropdownIcon.Image = "rbxassetid://7072706318"
-                dropdownIcon.ImageColor3 = theme.TextDark
+                dropdownIcon.ImageColor3 = theme.TextSecondary
                 dropdownIcon.Rotation = 0
+                dropdownIcon.ZIndex = 9
                 dropdownIcon.Parent = dropdownButton
                 
-                -- Dropdown container
+                CryzenHub.Utils.CreateGlow(dropdownIcon, theme.TextSecondary, 0.4, 6)
+                
+                -- Ultra Dropdown Container
                 local dropdownContainer = Instance.new("Frame")
                 dropdownContainer.Name = "Container"
-                dropdownContainer.BackgroundColor3 = theme.Tertiary
-                dropdownContainer.BackgroundTransparency = 0
-                dropdownContainer.BorderSizePixel = 0
                 dropdownContainer.Size = UDim2.new(1, 0, 0, 0)
                 dropdownContainer.Position = UDim2.new(0, 0, 1, 5)
+                dropdownContainer.BackgroundColor3 = theme.Secondary
+                dropdownContainer.BackgroundTransparency = 0.1
                 dropdownContainer.ClipsDescendants = true
                 dropdownContainer.Visible = false
-                dropdownContainer.ZIndex = 10
+                dropdownContainer.ZIndex = 20
                 dropdownContainer.Parent = dropdownFrame
-                CryzenHub.Utils.SetRoundedCorners(dropdownContainer, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(dropdownContainer, theme.Stroke, 1, 0.5)
+                
+                CryzenHub.Utils.CreateCorner(dropdownContainer, theme.Radius.Medium)
+                CryzenHub.Utils.CreateGlow(dropdownContainer, theme.Secondary, 0.4, 15)
+                CryzenHub.Utils.CreateStroke(dropdownContainer, theme.Accent, 1, 0.5)
+                CryzenHub.Utils.CreateShadow(dropdownContainer, Color3.fromRGB(0, 0, 0), 20, 0.6)
                 
                 -- Search bar
                 local searchBar = Instance.new("TextBox")
                 searchBar.Name = "SearchBar"
-                searchBar.BackgroundColor3 = theme.Secondary
-                searchBar.BackgroundTransparency = 0.5
-                searchBar.Size = UDim2.new(1, -10, 0, 24)
+                searchBar.Size = UDim2.new(1, -10, 0, 30)
                 searchBar.Position = UDim2.new(0, 5, 0, 5)
-                searchBar.Font = theme.Font
+                searchBar.BackgroundColor3 = theme.Tertiary
+                searchBar.BackgroundTransparency = 0.3
                 searchBar.PlaceholderText = "Search..."
                 searchBar.Text = ""
+                searchBar.Font = theme.Font
+                searchBar.TextSize = theme.FontSize.Body
                 searchBar.TextColor3 = theme.Text
-                searchBar.TextSize = theme.TextSize
-                searchBar.ZIndex = 11
+                searchBar.TextXAlignment = Enum.TextXAlignment.Left
+                searchBar.ZIndex = 21
                 searchBar.Parent = dropdownContainer
-                CryzenHub.Utils.SetRoundedCorners(searchBar, theme.SmallCornerRadius)
+                
+                CryzenHub.Utils.CreateCorner(searchBar, theme.Radius.Small)
+                CryzenHub.Utils.CreateStroke(searchBar, theme.GlowSecondary, 1, 0.7)
                 
                 -- Items container
                 local itemsContainer = Instance.new("ScrollingFrame")
                 itemsContainer.Name = "Items"
+                itemsContainer.Size = UDim2.new(1, 0, 1, -40)
+                itemsContainer.Position = UDim2.new(0, 0, 0, 40)
                 itemsContainer.BackgroundTransparency = 1
-                itemsContainer.Size = UDim2.new(1, 0, 1, -34)
-                itemsContainer.Position = UDim2.new(0, 0, 0, 34)
-                itemsContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
-                itemsContainer.ScrollBarThickness = 3
+                itemsContainer.ScrollBarThickness = 4
                 itemsContainer.ScrollBarImageColor3 = theme.Accent
                 itemsContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
-                itemsContainer.ZIndex = 11
+                itemsContainer.ZIndex = 21
                 itemsContainer.Parent = dropdownContainer
                 
                 local itemsLayout = Instance.new("UIListLayout")
@@ -1534,10 +2109,7 @@ function CryzenHub:CreateWindow(config)
                 itemsLayout.Parent = itemsContainer
                 
                 local itemsPadding = Instance.new("UIPadding")
-                itemsPadding.PaddingLeft = UDim.new(0, 5)
-                itemsPadding.PaddingRight = UDim.new(0, 5)
-                itemsPadding.PaddingTop = UDim.new(0, 5)
-                itemsPadding.PaddingBottom = UDim.new(0, 5)
+                itemsPadding.PaddingAll = UDim.new(0, 5)
                 itemsPadding.Parent = itemsContainer
                 
                 -- Dropdown functionality
@@ -1558,7 +2130,6 @@ function CryzenHub:CreateWindow(config)
                 local function updateDropdown(newValue)
                     element.Value = newValue
                     window.Flags[flag] = newValue
-                    
                     updateText()
                     
                     if callback then
@@ -1566,21 +2137,24 @@ function CryzenHub:CreateWindow(config)
                     end
                 end
                 
-                -- Initialize value
+                -- Initialize
                 window.Flags[flag] = selected
                 
                 -- Toggle dropdown
                 dropdownButton.MouseButton1Click:Connect(function()
                     isOpen = not isOpen
+                    CryzenHub.Utils.PlaySound("Click")
                     
                     if isOpen then
                         dropdownContainer.Visible = true
-                        CryzenHub.Utils.Tween(dropdownContainer, {Size = UDim2.new(1, 0, 0, math.min(150, #items * 30 + 34))}, 0.2)
-                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 180}, 0.2)
+                        CryzenHub.Utils.Tween(dropdownContainer, {
+                            Size = UDim2.new(1, 0, 0, math.min(200, #items * 35 + 45))
+                        }, 0.3)
+                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 180}, 0.3)
                     else
-                        CryzenHub.Utils.Tween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
-                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 0}, 0.2)
-                        task.delay(0.2, function()
+                        CryzenHub.Utils.Tween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.3)
+                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 0}, 0.3)
+                        task.delay(0.3, function()
                             dropdownContainer.Visible = false
                         end)
                     end
@@ -1615,69 +2189,71 @@ function CryzenHub:CreateWindow(config)
                     for i, item in ipairs(items) do
                         local itemButton = Instance.new("TextButton")
                         itemButton.Name = "Item_" .. i
-                        itemButton.BackgroundColor3 = theme.Secondary
-                        itemButton.BackgroundTransparency = 0.8
-                        itemButton.Size = UDim2.new(1, 0, 0, 28)
-                        itemButton.Font = theme.Font
+                        itemButton.Size = UDim2.new(1, 0, 0, 30)
+                        itemButton.BackgroundColor3 = theme.Tertiary
+                        itemButton.BackgroundTransparency = 0.3
                         itemButton.Text = item
+                        itemButton.Font = theme.Font
+                        itemButton.TextSize = theme.FontSize.Body
                         itemButton.TextColor3 = theme.Text
-                        itemButton.TextSize = theme.TextSize
-                        itemButton.ZIndex = 12
+                        itemButton.TextXAlignment = Enum.TextXAlignment.Left
+                        itemButton.ZIndex = 22
                         itemButton.Parent = itemsContainer
-                        CryzenHub.Utils.SetRoundedCorners(itemButton, theme.SmallCornerRadius)
+                        
+                        CryzenHub.Utils.CreateCorner(itemButton, theme.Radius.Small)
                         
                         -- Highlight selected items
                         if multiSelect and table.find(selected, item) then
                             itemButton.BackgroundColor3 = theme.Accent
-                            itemButton.BackgroundTransparency = 0.7
+                            itemButton.BackgroundTransparency = 0.2
+                            CryzenHub.Utils.CreateGlow(itemButton, theme.Accent, 0.4, 8)
                         elseif not multiSelect and selected == item then
                             itemButton.BackgroundColor3 = theme.Accent
-                            itemButton.BackgroundTransparency = 0.7
+                            itemButton.BackgroundTransparency = 0.2
+                            CryzenHub.Utils.CreateGlow(itemButton, theme.Accent, 0.4, 8)
                         end
                         
-                        -- Item selection
+                        -- Selection logic
                         itemButton.MouseButton1Click:Connect(function()
                             if multiSelect then
-                                -- Toggle selection
                                 local index = table.find(selected, item)
                                 if index then
                                     table.remove(selected, index)
-                                    itemButton.BackgroundColor3 = theme.Secondary
-                                    itemButton.BackgroundTransparency = 0.8
+                                    itemButton.BackgroundColor3 = theme.Tertiary
+                                    itemButton.BackgroundTransparency = 0.3
                                 else
                                     table.insert(selected, item)
                                     itemButton.BackgroundColor3 = theme.Accent
-                                    itemButton.BackgroundTransparency = 0.7
+                                    itemButton.BackgroundTransparency = 0.2
+                                    CryzenHub.Utils.CreateGlow(itemButton, theme.Accent, 0.4, 8)
                                 end
-                                
                                 updateDropdown(selected)
                             else
-                                -- Single selection
                                 selected = item
                                 updateDropdown(selected)
                                 
                                 -- Close dropdown
                                 isOpen = false
-                                CryzenHub.Utils.Tween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
-                                CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 0}, 0.2)
-                                task.delay(0.2, function()
+                                CryzenHub.Utils.Tween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.3)
+                                CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 0}, 0.3)
+                                task.delay(0.3, function()
                                     dropdownContainer.Visible = false
                                 end)
                             end
                         end)
                         
-                        -- Hover effect
+                        -- Hover effects
                         itemButton.MouseEnter:Connect(function()
                             if (multiSelect and not table.find(selected, item)) or 
                                (not multiSelect and selected ~= item) then
-                                CryzenHub.Utils.Tween(itemButton, {BackgroundTransparency = 0.5}, 0.2)
+                                CryzenHub.Utils.Tween(itemButton, {BackgroundTransparency = 0.1}, 0.2)
                             end
                         end)
                         
                         itemButton.MouseLeave:Connect(function()
                             if (multiSelect and not table.find(selected, item)) or 
                                (not multiSelect and selected ~= item) then
-                                CryzenHub.Utils.Tween(itemButton, {BackgroundTransparency = 0.8}, 0.2)
+                                CryzenHub.Utils.Tween(itemButton, {BackgroundTransparency = 0.3}, 0.2)
                             end
                         end)
                     end
@@ -1685,35 +2261,28 @@ function CryzenHub:CreateWindow(config)
                 
                 createItems()
                 
-                -- Update function
                 function element:Update(newItems)
                     self.Items = newItems
                     items = newItems
                     createItems()
-                    
-                    -- Update selected text
                     updateText()
                 end
                 
-                -- Set value function
                 function element:SetValue(newValue)
                     if multiSelect then
                         selected = type(newValue) == "table" and newValue or {newValue}
                     else
                         selected = newValue
                     end
-                    
                     updateDropdown(selected)
-                    createItems() -- Refresh to highlight selected items
+                    createItems()
                 end
                 
-                -- Add item function
                 function element:AddItem(newItem)
                     table.insert(items, newItem)
                     createItems()
                 end
                 
-                -- Remove item function
                 function element:RemoveItem(item)
                     for i, v in ipairs(items) do
                         if v == item then
@@ -1722,7 +2291,6 @@ function CryzenHub:CreateWindow(config)
                         end
                     end
                     
-                    -- Remove from selected if it's there
                     if multiSelect then
                         local index = table.find(selected, item)
                         if index then
@@ -1737,7 +2305,6 @@ function CryzenHub:CreateWindow(config)
                     createItems()
                 end
                 
-                -- Clear function
                 function element:Clear()
                     items = {}
                     if multiSelect then
@@ -1745,797 +2312,19 @@ function CryzenHub:CreateWindow(config)
                     else
                         selected = nil
                     end
-                    
                     updateDropdown(selected)
                     createItems()
                 end
                 
-                table.insert(section.Elements, element)
-                tab.Elements[flag] = element
-                return element
-            end
-            
-            function section:Textbox(text, options, callback)
-                options = options or {}
-                local default = options.Default or ""
-                local placeholder = options.Placeholder or "Enter text..."
-                local clearOnFocus = options.ClearOnFocus
-                if clearOnFocus == nil then clearOnFocus = false end
-                local flag = options.Flag or "Textbox_" .. #section.Elements + 1
-                
-                local element = {
-                    Type = "Textbox",
-                    Text = text,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
-                
-                local textboxFrame = Instance.new("Frame")
-                textboxFrame.Name = "TextboxFrame"
-                textboxFrame.BackgroundTransparency = 1
-                textboxFrame.Size = UDim2.new(1, 0, 0, 50)
-                textboxFrame.Parent = sectionContent
-                element.Instance = textboxFrame
-                
-                local textboxLabel = Instance.new("TextLabel")
-                textboxLabel.Name = "Label"
-                textboxLabel.BackgroundTransparency = 1
-                textboxLabel.Size = UDim2.new(1, 0, 0, 20)
-                textboxLabel.Font = theme.Font
-                textboxLabel.Text = text
-                textboxLabel.TextColor3 = theme.Text
-                textboxLabel.TextSize = theme.TextSize
-                textboxLabel.TextXAlignment = Enum.TextXAlignment.Left
-                textboxLabel.Parent = textboxFrame
-                
-                local textboxContainer = Instance.new("Frame")
-                textboxContainer.Name = "Container"
-                textboxContainer.BackgroundColor3 = theme.Tertiary
-                textboxContainer.Size = UDim2.new(1, 0, 0, 30)
-                textboxContainer.Position = UDim2.new(0, 0, 0, 20)
-                textboxContainer.Parent = textboxFrame
-                CryzenHub.Utils.SetRoundedCorners(textboxContainer, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(textboxContainer, theme.Stroke, 1, 0.5)
-                
-                local textbox = Instance.new("TextBox")
-                textbox.Name = "Textbox"
-                textbox.BackgroundTransparency = 1
-                textbox.Size = UDim2.new(1, -10, 1, 0)
-                textbox.Position = UDim2.new(0, 5, 0, 0)
-                textbox.Font = theme.Font
-                textbox.Text = default
-                textbox.PlaceholderText = placeholder
-                textbox.TextColor3 = theme.Text
-                textbox.TextSize = theme.TextSize
-                textbox.TextXAlignment = Enum.TextXAlignment.Left
-                textbox.ClearTextOnFocus = clearOnFocus
-                textbox.Parent = textboxContainer
-                
-                -- Initialize flag
-                window.Flags[flag] = default
-                
-                -- Textbox functionality
-                textbox.Focused:Connect(function()
-                    CryzenHub.Utils.Tween(textboxContainer, {BackgroundColor3 = CryzenHub.Utils.LightenColor(theme.Tertiary, 0.1)}, 0.2)
-                end)
-                
-                textbox.FocusLost:Connect(function(enterPressed)
-                    CryzenHub.Utils.Tween(textboxContainer, {BackgroundColor3 = theme.Tertiary}, 0.2)
-                    
-                    element.Value = textbox.Text
-                    window.Flags[flag] = textbox.Text
-                    
-                    if callback then
-                        task.spawn(callback, textbox.Text, enterPressed)
-                    end
-                end)
-                
-                -- Update function
-                function element:Update(value)
-                    self.Value = value
-                    textbox.Text = value
-                    window.Flags[flag] = value
-                    
-                    if callback then
-                        task.spawn(callback, value, false)
-                    end
-                end
-                
-                -- Set value function
-                function element:SetValue(value)
-                    self:Update(value)
-                end
+                -- Add to search index
+                CryzenHub.SearchEngine.AddToIndex(element, {text, "dropdown", title})
                 
                 table.insert(section.Elements, element)
                 tab.Elements[flag] = element
                 return element
             end
             
-            function section:ColorPicker(text, options, callback)
-                options = options or {}
-                local default = options.Default or Color3.fromRGB(255, 255, 255)
-                local flag = options.Flag or "ColorPicker_" .. #section.Elements + 1
-                
-                local element = {
-                    Type = "ColorPicker",
-                    Text = text,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
-                
-                local colorPickerFrame = Instance.new("Frame")
-                colorPickerFrame.Name = "ColorPickerFrame"
-                colorPickerFrame.BackgroundTransparency = 1
-                colorPickerFrame.Size = UDim2.new(1, 0, 0, 32)
-                colorPickerFrame.Parent = sectionContent
-                element.Instance = colorPickerFrame
-                
-                local colorPickerLabel = Instance.new("TextLabel")
-                colorPickerLabel.Name = "Label"
-                colorPickerLabel.BackgroundTransparency = 1
-                colorPickerLabel.Size = UDim2.new(1, -40, 1, 0)
-                colorPickerLabel.Font = theme.Font
-                colorPickerLabel.Text = text
-                colorPickerLabel.TextColor3 = theme.Text
-                colorPickerLabel.TextSize = theme.TextSize
-                colorPickerLabel.TextXAlignment = Enum.TextXAlignment.Left
-                colorPickerLabel.Parent = colorPickerFrame
-                
-                local colorDisplay = Instance.new("Frame")
-                colorDisplay.Name = "ColorDisplay"
-                colorDisplay.BackgroundColor3 = default
-                colorDisplay.Size = UDim2.new(0, 30, 0, 30)
-                colorDisplay.Position = UDim2.new(1, -30, 0.5, -15)
-                colorDisplay.Parent = colorPickerFrame
-                CryzenHub.Utils.SetRoundedCorners(colorDisplay, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(colorDisplay, theme.Stroke, 1, 0.5)
-                
-                local colorButton = Instance.new("TextButton")
-                colorButton.Name = "ColorButton"
-                colorButton.BackgroundTransparency = 1
-                colorButton.Size = UDim2.new(1, 0, 1, 0)
-                colorButton.Text = ""
-                colorButton.Parent = colorDisplay
-                
-                -- Color picker popup
-                local pickerPopup = Instance.new("Frame")
-                pickerPopup.Name = "PickerPopup"
-                pickerPopup.BackgroundColor3 = theme.Secondary
-                pickerPopup.BackgroundTransparency = 0
-                pickerPopup.Size = UDim2.new(0, 260, 0, 260)
-                pickerPopup.Position = UDim2.new(1, 10, 0, 0)
-                pickerPopup.Visible = false
-                pickerPopup.ZIndex = 100
-                pickerPopup.Parent = colorPickerFrame
-                CryzenHub.Utils.SetRoundedCorners(pickerPopup, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(pickerPopup, theme.Stroke, 1, 0.5)
-                
-                -- Color saturation/value panel
-                local colorPanel = Instance.new("ImageLabel")
-                colorPanel.Name = "ColorPanel"
-                colorPanel.BackgroundColor3 = default
-                colorPanel.Size = UDim2.new(0, 200, 0, 200)
-                colorPanel.Position = UDim2.new(0.5, -100, 0, 10)
-                colorPanel.Image = "rbxassetid://4155801252" -- Saturation/value gradient
-                colorPanel.ZIndex = 101
-                colorPanel.Parent = pickerPopup
-                CryzenHub.Utils.SetRoundedCorners(colorPanel, theme.SmallCornerRadius)
-                
-                -- Hue slider
-                local hueSlider = Instance.new("Frame")
-                hueSlider.Name = "HueSlider"
-                hueSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                hueSlider.Size = UDim2.new(0, 200, 0, 20)
-                hueSlider.Position = UDim2.new(0.5, -100, 0, 220)
-                hueSlider.ZIndex = 101
-                hueSlider.Parent = pickerPopup
-                CryzenHub.Utils.SetRoundedCorners(hueSlider, theme.SmallCornerRadius)
-                
-                -- Hue gradient
-                local hueGradient = Instance.new("UIGradient")
-                hueGradient.Color = ColorSequence.new({
-                    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-                    ColorSequenceKeypoint.new(0.167, Color3.fromRGB(255, 255, 0)),
-                    ColorSequenceKeypoint.new(0.333, Color3.fromRGB(0, 255, 0)),
-                    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-                    ColorSequenceKeypoint.new(0.667, Color3.fromRGB(0, 0, 255)),
-                    ColorSequenceKeypoint.new(0.833, Color3.fromRGB(255, 0, 255)),
-                    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
-                })
-                hueGradient.Parent = hueSlider
-                
-                -- SV selector
-                local svSelector = Instance.new("Frame")
-                svSelector.Name = "SVSelector"
-                svSelector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                svSelector.BackgroundTransparency = 0
-                svSelector.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                svSelector.BorderSizePixel = 1
-                svSelector.Size = UDim2.new(0, 10, 0, 10)
-                svSelector.ZIndex = 102
-                svSelector.Parent = colorPanel
-                CryzenHub.Utils.SetRoundedCorners(svSelector, theme.RoundCornerRadius)
-                
-                -- Hue selector
-                local hueSelector = Instance.new("Frame")
-                hueSelector.Name = "HueSelector"
-                hueSelector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                hueSelector.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                hueSelector.BorderSizePixel = 1
-                hueSelector.Size = UDim2.new(0, 5, 1, 0)
-                hueSelector.ZIndex = 102
-                hueSelector.Parent = hueSlider
-                CryzenHub.Utils.SetRoundedCorners(hueSelector, UDim.new(0, 2))
-                
-                -- RGB inputs
-                local rgbContainer = Instance.new("Frame")
-                rgbContainer.Name = "RGBContainer"
-                rgbContainer.BackgroundTransparency = 1
-                rgbContainer.Size = UDim2.new(0, 200, 0, 20)
-                rgbContainer.Position = UDim2.new(0.5, -100, 0, 245)
-                rgbContainer.ZIndex = 101
-                rgbContainer.Parent = pickerPopup
-                
-                local function createRGBInput(name, xPos)
-                    local container = Instance.new("Frame")
-                    container.Name = name
-                    container.BackgroundColor3 = theme.Tertiary
-                    container.Size = UDim2.new(0, 60, 0, 20)
-                    container.Position = UDim2.new(0, xPos, 0, 0)
-                    container.ZIndex = 101
-                    container.Parent = rgbContainer
-                    CryzenHub.Utils.SetRoundedCorners(container, theme.SmallCornerRadius)
-                    
-                    local label = Instance.new("TextLabel")
-                    label.Name = "Label"
-                    label.BackgroundTransparency = 1
-                    label.Size = UDim2.new(0, 15, 1, 0)
-                    label.Font = theme.Font
-                    label.Text = string.sub(name, 1, 1)
-                    label.TextColor3 = theme.Text
-                    label.TextSize = theme.SubTextSize
-                    label.ZIndex = 102
-                    label.Parent = container
-                    
-                    local input = Instance.new("TextBox")
-                    input.Name = "Input"
-                    input.BackgroundTransparency = 1
-                    input.Size = UDim2.new(1, -15, 1, 0)
-                    input.Position = UDim2.new(0, 15, 0, 0)
-                    input.Font = theme.Font
-                    input.Text = "255"
-                    input.TextColor3 = theme.Text
-                    input.TextSize = theme.SubTextSize
-                    input.ZIndex = 102
-                    input.Parent = container
-                    
-                    return input
-                end
-                
-                local rInput = createRGBInput("Red", 0)
-                local gInput = createRGBInput("Green", 70)
-                local bInput = createRGBInput("Blue", 140)
-                
-                -- Color picker variables
-                local hue, saturation, value = 0, 0, 1
-                local hsvDragging = false
-                local hueDragging = false
-                
-                -- Initialize flag
-                window.Flags[flag] = default
-                
-                -- Functions for color manipulation
-                local function updateRGB()
-                    local color = element.Value
-                    rInput.Text = math.floor(color.R * 255 + 0.5)
-                    gInput.Text = math.floor(color.G * 255 + 0.5)
-                    bInput.Text = math.floor(color.B * 255 + 0.5)
-                end
-                
-                local function updateFromRGB()
-                    local r = tonumber(rInput.Text) or 255
-                    local g = tonumber(gInput.Text) or 255
-                    local b = tonumber(bInput.Text) or 255
-                    
-                    r = math.clamp(r, 0, 255)
-                    g = math.clamp(g, 0, 255)
-                    b = math.clamp(b, 0, 255)
-                    
-                    rInput.Text = tostring(math.floor(r))
-                    gInput.Text = tostring(math.floor(g))
-                    bInput.Text = tostring(math.floor(b))
-                    
-                    local newColor = Color3.fromRGB(r, g, b)
-                    element.Value = newColor
-                    colorDisplay.BackgroundColor3 = newColor
-                    window.Flags[flag] = newColor
-                    
-                    -- Update HSV
-                    hue, saturation, value = Color3.toHSV(newColor)
-                    
-                    -- Update color panel
-                    colorPanel.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
-                    
-                    -- Update selectors
-                    svSelector.Position = UDim2.new(saturation, -5, 1 - value, -5)
-                    hueSelector.Position = UDim2.new(hue, -2.5, 0, 0)
-                    
-                    if callback then
-                        task.spawn(callback, newColor)
-                    end
-                end
-                
-                local function HSVToRGB(h, s, v)
-                    return Color3.fromHSV(h, s, v)
-                end
-                
-                local function updateColor()
-                    local newColor = HSVToRGB(hue, saturation, value)
-                    element.Value = newColor
-                    colorDisplay.BackgroundColor3 = newColor
-                    colorPanel.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
-                    window.Flags[flag] = newColor
-                    
-                    updateRGB()
-                    
-                    if callback then
-                        task.spawn(callback, newColor)
-                    end
-                end
-                
-                -- Set initial color
-                updateRGB()
-                
-                -- RGB input handlers
-                rInput.FocusLost:Connect(updateFromRGB)
-                gInput.FocusLost:Connect(updateFromRGB)
-                bInput.FocusLost:Connect(updateFromRGB)
-                
-                -- Color panel interaction
-                colorPanel.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        hsvDragging = true
-                        
-                        -- Get initial position
-                        local panelPosition = colorPanel.AbsolutePosition
-                        local panelSize = colorPanel.AbsoluteSize
-                        local mousePosition = input.Position
-                        
-                        -- Calculate saturation and value
-                        local relativeX = math.clamp((mousePosition.X - panelPosition.X) / panelSize.X, 0, 1)
-                        local relativeY = math.clamp((mousePosition.Y - panelPosition.Y) / panelSize.Y, 0, 1)
-                        
-                        saturation = relativeX
-                        value = 1 - relativeY
-                        
-                        -- Update selector position
-                        svSelector.Position = UDim2.new(relativeX, -5, relativeY, -5)
-                        
-                        -- Update color
-                        updateColor()
-                    end
-                end)
-                
-                colorPanel.InputChanged:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseMovement and hsvDragging then
-                        -- Get position
-                        local panelPosition = colorPanel.AbsolutePosition
-                        local panelSize = colorPanel.AbsoluteSize
-                        local mousePosition = input.Position
-                        
-                        -- Calculate saturation and value
-                        local relativeX = math.clamp((mousePosition.X - panelPosition.X) / panelSize.X, 0, 1)
-                        local relativeY = math.clamp((mousePosition.Y - panelPosition.Y) / panelSize.Y, 0, 1)
-                        
-                        saturation = relativeX
-                        value = 1 - relativeY
-                        
-                        -- Update selector position
-                        svSelector.Position = UDim2.new(relativeX, -5, relativeY, -5)
-                        
-                        -- Update color
-                        updateColor()
-                    end
-                end)
-                
-                -- Hue slider interaction
-                hueSlider.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        hueDragging = true
-                        
-                        -- Get initial position
-                        local sliderPosition = hueSlider.AbsolutePosition
-                        local sliderSize = hueSlider.AbsoluteSize
-                        local mousePosition = input.Position
-                        
-                        -- Calculate hue
-                        local relativeX = math.clamp((mousePosition.X - sliderPosition.X) / sliderSize.X, 0, 1)
-                        
-                        hue = relativeX
-                        
-                        -- Update selector position
-                        hueSelector.Position = UDim2.new(relativeX, -2.5, 0, 0)
-                        
-                        -- Update color
-                        updateColor()
-                    end
-                end)
-                
-                hueSlider.InputChanged:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseMovement and hueDragging then
-                        -- Get position
-                        local sliderPosition = hueSlider.AbsolutePosition
-                        local sliderSize = hueSlider.AbsoluteSize
-                        local mousePosition = input.Position
-                        
-                        -- Calculate hue
-                        local relativeX = math.clamp((mousePosition.X - sliderPosition.X) / sliderSize.X, 0, 1)
-                        
-                        hue = relativeX
-                        
-                        -- Update selector position
-                        hueSelector.Position = UDim2.new(relativeX, -2.5, 0, 0)
-                        
-                        -- Update color
-                        updateColor()
-                    end
-                end)
-                
-                -- End dragging
-                UserInputService.InputEnded:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        hsvDragging = false
-                        hueDragging = false
-                    end
-                end)
-                
-                -- Toggle color picker popup
-                local isPickerOpen = false
-                
-                colorButton.MouseButton1Click:Connect(function()
-                    isPickerOpen = not isPickerOpen
-                    pickerPopup.Visible = isPickerOpen
-                end)
-                
-                -- Close picker when clicking elsewhere
-                UserInputService.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 and isPickerOpen then
-                        local mousePosition = UserInputService:GetMouseLocation()
-                        
-                        local pickerPos = pickerPopup.AbsolutePosition
-                        local pickerSize = pickerPopup.AbsoluteSize
-                        
-                        local colorDisplayPos = colorDisplay.AbsolutePosition
-                        local colorDisplaySize = colorDisplay.AbsoluteSize
-                        
-                        if not (mousePosition.X >= pickerPos.X and mousePosition.X <= pickerPos.X + pickerSize.X and
-                                mousePosition.Y >= pickerPos.Y and mousePosition.Y <= pickerPos.Y + pickerSize.Y) and
-                           not (mousePosition.X >= colorDisplayPos.X and mousePosition.X <= colorDisplayPos.X + colorDisplaySize.X and
-                                mousePosition.Y >= colorDisplayPos.Y and mousePosition.Y <= colorDisplayPos.Y + colorDisplaySize.Y) then
-                            
-                            isPickerOpen = false
-                            pickerPopup.Visible = false
-                        end
-                    end
-                end)
-                
-                -- Update function
-                function element:Update(newColor)
-                    self.Value = newColor
-                    colorDisplay.BackgroundColor3 = newColor
-                    window.Flags[flag] = newColor
-                    
-                    -- Update HSV
-                    hue, saturation, value = Color3.toHSV(newColor)
-                    
-                    -- Update color panel
-                    colorPanel.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
-                    
-                    -- Update selectors
-                    svSelector.Position = UDim2.new(saturation, -5, 1 - value, -5)
-                    hueSelector.Position = UDim2.new(hue, -2.5, 0, 0)
-                    
-                    -- Update RGB inputs
-                    updateRGB()
-                    
-                    if callback then
-                        task.spawn(callback, newColor)
-                    end
-                end
-                
-                -- Set value function
-                function element:SetValue(newColor)
-                    self:Update(newColor)
-                end
-                
-                table.insert(section.Elements, element)
-                tab.Elements[flag] = element
-                return element
-            end
-            
-            function section:Keybind(text, options, callback)
-                options = options or {}
-                local default = options.Default
-                local flag = options.Flag or "Keybind_" .. #section.Elements + 1
-                
-                local element = {
-                    Type = "Keybind",
-                    Text = text,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
-                
-                local keybindFrame = Instance.new("Frame")
-                keybindFrame.Name = "KeybindFrame"
-                keybindFrame.BackgroundTransparency = 1
-                keybindFrame.Size = UDim2.new(1, 0, 0, 32)
-                keybindFrame.Parent = sectionContent
-                element.Instance = keybindFrame
-                
-                local keybindLabel = Instance.new("TextLabel")
-                keybindLabel.Name = "Label"
-                keybindLabel.BackgroundTransparency = 1
-                keybindLabel.Size = UDim2.new(1, -80, 1, 0)
-                keybindLabel.Font = theme.Font
-                keybindLabel.Text = text
-                keybindLabel.TextColor3 = theme.Text
-                keybindLabel.TextSize = theme.TextSize
-                keybindLabel.TextXAlignment = Enum.TextXAlignment.Left
-                keybindLabel.Parent = keybindFrame
-                
-                local keybindButton = Instance.new("TextButton")
-                keybindButton.Name = "Button"
-                keybindButton.BackgroundColor3 = theme.Tertiary
-                keybindButton.Size = UDim2.new(0, 70, 0, 30)
-                keybindButton.Position = UDim2.new(1, -70, 0.5, -15)
-                keybindButton.Font = theme.Font
-                keybindButton.Text = default and default.Name or "None"
-                keybindButton.TextColor3 = theme.Text
-                keybindButton.TextSize = theme.TextSize
-                keybindButton.Parent = keybindFrame
-                CryzenHub.Utils.SetRoundedCorners(keybindButton, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(keybindButton, theme.Stroke, 1, 0.5)
-                
-                -- Initialize flag
-                window.Flags[flag] = default
-                
-                -- Variables
-                local waitingForInput = false
-                
-                -- Update keybind display
-                local function updateKeybind(key)
-                    element.Value = key
-                    keybindButton.Text = key and key.Name or "None"
-                    window.Flags[flag] = key
-                    
-                    -- Reset state
-                    waitingForInput = false
-                    
-                    if callback then
-                        task.spawn(callback, key)
-                    end
-                end
-                
-                -- Button click to change keybind
-                keybindButton.MouseButton1Click:Connect(function()
-                    waitingForInput = true
-                    keybindButton.Text = "..."
-                    
-                    -- Wait for input
-                    local inputConnection
-                    inputConnection = UserInputService.InputBegan:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.Keyboard then
-                            -- Escape to cancel
-                            if input.KeyCode == Enum.KeyCode.Escape then
-                                updateKeybind(element.Value)
-                            else
-                                updateKeybind(input.KeyCode)
-                            end
-                            
-                            inputConnection:Disconnect()
-                        end
-                    end)
-                    
-                    -- Cancel binding if clicked elsewhere
-                    local cancelConnection
-                    cancelConnection = UserInputService.InputBegan:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                            local mousePos = UserInputService:GetMouseLocation()
-                            local buttonPos = keybindButton.AbsolutePosition
-                            local buttonSize = keybindButton.AbsoluteSize
-                            
-                            if not (mousePos.X >= buttonPos.X and mousePos.X <= buttonPos.X + buttonSize.X and
-                                   mousePos.Y >= buttonPos.Y and mousePos.Y <= buttonPos.Y + buttonSize.Y) then
-                                
-                                updateKeybind(element.Value)
-                                inputConnection:Disconnect()
-                                cancelConnection:Disconnect()
-                            end
-                        end
-                    end)
-                end)
-                
-                -- Listen for keybind presses
-                UserInputService.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.Keyboard and 
-                       element.Value and input.KeyCode == element.Value and not waitingForInput then
-                        
-                        if callback then
-                            task.spawn(callback, element.Value)
-                        end
-                    end
-                end)
-                
-                -- Hover effects
-                keybindButton.MouseEnter:Connect(function()
-                    CryzenHub.Utils.Tween(keybindButton, {BackgroundColor3 = CryzenHub.Utils.LightenColor(theme.Tertiary, 0.1)}, 0.2)
-                end)
-                
-                keybindButton.MouseLeave:Connect(function()
-                    CryzenHub.Utils.Tween(keybindButton, {BackgroundColor3 = theme.Tertiary}, 0.2)
-                end)
-                
-                -- Update function
-                function element:Update(key)
-                    updateKeybind(key)
-                end
-                
-                -- Set value function
-                function element:SetValue(key)
-                    updateKeybind(key)
-                end
-                
-                table.insert(section.Elements, element)
-                tab.Elements[flag] = element
-                return element
-            end
-            
-            function section:Checkbox(text, default, callback, options)
-                options = options or {}
-                default = default or false
-                local flag = options.Flag or "Checkbox_" .. #section.Elements + 1
-                
-                local element = {
-                    Type = "Checkbox",
-                    Text = text,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
-                
-                local checkboxFrame = Instance.new("Frame")
-                checkboxFrame.Name = "CheckboxFrame"
-                checkboxFrame.BackgroundTransparency = 1
-                checkboxFrame.Size = UDim2.new(1, 0, 0, 32)
-                checkboxFrame.Parent = sectionContent
-                element.Instance = checkboxFrame
-                
-                local checkboxLabel = Instance.new("TextLabel")
-                checkboxLabel.Name = "Label"
-                checkboxLabel.BackgroundTransparency = 1
-                checkboxLabel.Size = UDim2.new(1, -30, 1, 0)
-                checkboxLabel.Position = UDim2.new(0, 30, 0, 0)
-                checkboxLabel.Font = theme.Font
-                checkboxLabel.Text = text
-                checkboxLabel.TextColor3 = theme.Text
-                checkboxLabel.TextSize = theme.TextSize
-                checkboxLabel.TextXAlignment = Enum.TextXAlignment.Left
-                checkboxLabel.Parent = checkboxFrame
-                
-                local checkboxButton = Instance.new("TextButton")
-                checkboxButton.Name = "Button"
-                checkboxButton.BackgroundColor3 = theme.Tertiary
-                checkboxButton.Size = UDim2.new(0, 20, 0, 20)
-                checkboxButton.Position = UDim2.new(0, 0, 0.5, -10)
-                checkboxButton.Text = ""
-                checkboxButton.Parent = checkboxFrame
-                CryzenHub.Utils.SetRoundedCorners(checkboxButton, theme.SmallCornerRadius)
-                CryzenHub.Utils.AddStroke(checkboxButton, theme.Stroke, 1, 0.5)
-                
-                local checkmark = Instance.new("ImageLabel")
-                checkmark.Name = "Checkmark"
-                checkmark.BackgroundTransparency = 1
-                checkmark.Size = UDim2.new(0.8, 0, 0.8, 0)
-                checkmark.Position = UDim2.new(0.1, 0, 0.1, 0)
-                checkmark.Image = "rbxassetid://7072706620" -- Checkmark icon
-                checkmark.ImageColor3 = theme.Text
-                checkmark.ImageTransparency = default and 0 or 1
-                checkmark.Parent = checkboxButton
-                
-                -- Initialize flag
-                window.Flags[flag] = default
-                
-                -- Update checkbox state
-                local function updateCheckbox(value)
-                    element.Value = value
-                    CryzenHub.Utils.Tween(checkboxButton, {BackgroundColor3 = value and theme.Accent or theme.Tertiary}, 0.2)
-                    CryzenHub.Utils.Tween(checkmark, {ImageTransparency = value and 0 or 1}, 0.2)
-                    window.Flags[flag] = value
-                    
-                    if callback then
-                        task.spawn(callback, value)
-                    end
-                end
-                
-                -- Set initial state
-                if default then
-                    checkboxButton.BackgroundColor3 = theme.Accent
-                end
-                
-                -- Checkbox functionality
-                checkboxButton.MouseButton1Click:Connect(function()
-                    updateCheckbox(not element.Value)
-                end)
-                
-                -- Click on label too
-                local textButton = Instance.new("TextButton")
-                textButton.Name = "TextButton"
-                textButton.BackgroundTransparency = 1
-                textButton.Size = UDim2.new(1, 0, 1, 0)
-                textButton.Text = ""
-                textButton.Parent = checkboxLabel
-                
-                textButton.MouseButton1Click:Connect(function()
-                    updateCheckbox(not element.Value)
-                end)
-                
-                -- Hover effects
-                checkboxButton.MouseEnter:Connect(function()
-                    if not element.Value then
-                        CryzenHub.Utils.Tween(checkboxButton, {BackgroundColor3 = CryzenHub.Utils.LightenColor(theme.Tertiary, 0.1)}, 0.2)
-                    end
-                end)
-                
-                checkboxButton.MouseLeave:Connect(function()
-                    if not element.Value then
-                        CryzenHub.Utils.Tween(checkboxButton, {BackgroundColor3 = theme.Tertiary}, 0.2)
-                    end
-                end)
-                
-                -- Update function
-                function element:Update(value)
-                    updateCheckbox(value)
-                end
-                
-                -- Set value function
-                function element:SetValue(value)
-                    updateCheckbox(value)
-                end
-                
-                table.insert(section.Elements, element)
-                tab.Elements[flag] = element
-                return element
-            end
-            
-            function section:Divider(options)
-                options = options or {}
-                local element = {
-                    Type = "Divider"
-                }
-                
-                local dividerFrame = Instance.new("Frame")
-                dividerFrame.Name = "Divider"
-                dividerFrame.BackgroundTransparency = 1
-                dividerFrame.Size = UDim2.new(1, 0, 0, 10)
-                dividerFrame.Parent = sectionContent
-                element.Instance = dividerFrame
-                
-                local dividerLine = Instance.new("Frame")
-                dividerLine.Name = "Line"
-                dividerLine.BackgroundColor3 = options.Color or theme.Stroke
-                dividerLine.BackgroundTransparency = options.Transparency or 0.5
-                dividerLine.BorderSizePixel = 0
-                dividerLine.Size = UDim2.new(1, 0, 0, 1)
-                dividerLine.Position = UDim2.new(0, 0, 0.5, 0)
-                dividerLine.Parent = dividerFrame
-                
-                table.insert(section.Elements, element)
-                return element
-            end
-            
+            table.insert(tab.Sections, section)
             return section
         end
         
@@ -2543,173 +2332,210 @@ function CryzenHub:CreateWindow(config)
         return tab
     end
     
-    -- Select a tab
+    -- Select tab function
     function window:SelectTab(tab)
         if window.ActiveTab then
-            -- Deselect current tab
             local currentTab = window.ActiveTab
-            currentTab.Button.BackgroundTransparency = 0.9
-            currentTab.IconImage.ImageColor3 = theme.TextDark
-            currentTab.ActiveIndicator.BackgroundTransparency = 1
+            
+            -- Deselect current tab
+            CryzenHub.Utils.Tween(currentTab.Button, {
+                BackgroundTransparency = 0.4,
+                Size = UDim2.new(0, 60, 0, 60)
+            }, 0.3)
+            CryzenHub.Utils.Tween(currentTab.IconImage, {ImageColor3 = theme.TextSecondary}, 0.3)
+            CryzenHub.Utils.Tween(currentTab.NameLabel, {TextColor3 = theme.TextTertiary}, 0.3)
+            CryzenHub.Utils.Tween(currentTab.ActiveIndicator, {BackgroundTransparency = 1}, 0.3)
             currentTab.Content.Visible = false
         end
         
         -- Select new tab
         window.ActiveTab = tab
-        tab.Button.BackgroundTransparency = 0.5
-        tab.IconImage.ImageColor3 = theme.Accent
-        tab.ActiveIndicator.BackgroundTransparency = 0
+        CryzenHub.Utils.PlaySound("Click")
+        
+        CryzenHub.Utils.Tween(tab.Button, {
+            BackgroundTransparency = 0.1,
+            Size = UDim2.new(0, 64, 0, 64)
+        }, 0.3)
+        CryzenHub.Utils.Tween(tab.IconImage, {ImageColor3 = theme.Accent}, 0.3)
+        CryzenHub.Utils.Tween(tab.NameLabel, {TextColor3 = theme.Text}, 0.3)
+        CryzenHub.Utils.Tween(tab.ActiveIndicator, {BackgroundTransparency = 0}, 0.3)
         tab.Content.Visible = true
     end
     
-    -- Notify function
+    -- Ultra Notification System
     function window:Notify(options)
         options = options or {}
         local title = options.Title or "Notification"
         local message = options.Message or ""
-        local duration = options.Duration or 3
-        local type = options.Type or "Info" -- Info, Success, Warning, Error
+        local duration = options.Duration or 4
+        local type = options.Type or "Info"
         
-        -- Create notification container if it doesn't exist
-        if not CryzenHub.ScreenGui:FindFirstChild("NotificationContainer") then
+        -- Create notification container if needed
+        if not CryzenHub.ScreenGui:FindFirstChild("UltraNotificationContainer") then
             local container = Instance.new("Frame")
-            container.Name = "NotificationContainer"
-            container.Size = UDim2.new(0, 300, 1, 0)
-            container.Position = UDim2.new(1, -320, 0, 0)
+            container.Name = "UltraNotificationContainer"
+            container.Size = UDim2.new(0, 350, 1, 0)
+            container.Position = UDim2.new(1, -370, 0, 0)
             container.BackgroundTransparency = 1
+            container.ZIndex = 1000
             container.Parent = CryzenHub.ScreenGui
             
             local listLayout = Instance.new("UIListLayout")
             listLayout.SortOrder = Enum.SortOrder.LayoutOrder
             listLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-            listLayout.Padding = UDim.new(0, 10)
+            listLayout.Padding = UDim.new(0, theme.Padding.Medium)
             listLayout.Parent = container
             
             local padding = Instance.new("UIPadding")
-            padding.PaddingBottom = UDim.new(0, 20)
+            padding.PaddingAll = UDim.new(0, theme.Padding.Large)
             padding.Parent = container
         end
         
-        local container = CryzenHub.ScreenGui:FindFirstChild("NotificationContainer")
+        local container = CryzenHub.ScreenGui:FindFirstChild("UltraNotificationContainer")
         
-        -- Get notification color based on type
-        local typeColors = {
-            Info = theme.Info,
-            Success = theme.Success,
-            Warning = theme.Warning,
-            Error = theme.Error
+        -- Type configurations
+        local typeConfig = {
+            Info = {Color = theme.Info, Icon = "rbxassetid://7072717958"},
+            Success = {Color = theme.Success, Icon = "rbxassetid://7072706620"},
+            Warning = {Color = theme.Warning, Icon = "rbxassetid://7072718266"},
+            Error = {Color = theme.Error, Icon = "rbxassetid://7072718631"}
         }
-        local color = typeColors[type] or theme.Info
+        
+        local config = typeConfig[type] or typeConfig.Info
         
         -- Create notification
         local notification = Instance.new("Frame")
-        notification.Name = "Notification"
-        notification.Size = UDim2.new(1, -20, 0, 0) -- Will be sized based on content
+        notification.Name = "UltraNotification"
+        notification.Size = UDim2.new(1, -20, 0, 0)
         notification.BackgroundColor3 = theme.Secondary
         notification.BackgroundTransparency = 0.1
         notification.ClipsDescendants = true
+        notification.ZIndex = 1001
         notification.Parent = container
-        CryzenHub.Utils.SetRoundedCorners(notification)
-        CryzenHub.Utils.AddStroke(notification, theme.Stroke, 1, 0.5)
         
-        if theme.EnableShadows then
-            CryzenHub.Utils.CreateShadow(notification)
-        end
+        CryzenHub.Utils.CreateCorner(notification, theme.Radius.Large)
+        CryzenHub.Utils.CreateGlow(notification, config.Color, 0.6, 20)
+        CryzenHub.Utils.CreateStroke(notification, config.Color, 2, 0.4)
+        CryzenHub.Utils.CreateShadow(notification, Color3.fromRGB(0, 0, 0), 25, 0.7)
         
-        -- Notification header
+        -- Header with glow
         local header = Instance.new("Frame")
         header.Name = "Header"
-        header.Size = UDim2.new(1, 0, 0, 28)
-        header.BackgroundColor3 = color
-        header.BackgroundTransparency = 0.8
-        header.BorderSizePixel = 0
+        header.Size = UDim2.new(1, 0, 0, 40)
+        header.BackgroundColor3 = config.Color
+        header.BackgroundTransparency = 0.7
+        header.ZIndex = 1002
         header.Parent = notification
+        
+        CryzenHub.Utils.CreateGradient(header, ColorSequence.new({
+            ColorSequenceKeypoint.new(0, CryzenHub.Utils.LightenColor(config.Color, 0.2)),
+            ColorSequenceKeypoint.new(1, config.Color)
+        }), 90)
+        
+        -- Icon with ultra effects
+        local icon = Instance.new("ImageLabel")
+        icon.Name = "Icon"
+        icon.Size = UDim2.new(0, 20, 0, 20)
+        icon.Position = UDim2.new(0, 15, 0.5, -10)
+        icon.BackgroundTransparency = 1
+        icon.Image = config.Icon
+        icon.ImageColor3 = theme.Text
+        icon.ZIndex = 1003
+        icon.Parent = header
+        
+        CryzenHub.Utils.CreateGlow(icon, config.Color, 1.0, 10)
         
         -- Title
         local titleLabel = Instance.new("TextLabel")
         titleLabel.Name = "Title"
-        titleLabel.Size = UDim2.new(1, -30, 1, 0)
-        titleLabel.Position = UDim2.new(0, 30, 0, 0)
+        titleLabel.Size = UDim2.new(1, -80, 1, 0)
+        titleLabel.Position = UDim2.new(0, 45, 0, 0)
         titleLabel.BackgroundTransparency = 1
-        titleLabel.Font = theme.Font
         titleLabel.Text = title
+        titleLabel.Font = theme.Font
+        titleLabel.TextSize = theme.FontSize.Body
         titleLabel.TextColor3 = theme.Text
-        titleLabel.TextSize = theme.TextSize
+        titleLabel.TextStrokeTransparency = 0.9
+        titleLabel.TextStrokeColor3 = config.Color
         titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+        titleLabel.ZIndex = 1003
         titleLabel.Parent = header
-        
-        -- Icon
-        local icons = {
-            Info = "rbxassetid://7072717958", -- Info icon
-            Success = "rbxassetid://7072706620", -- Checkmark
-            Warning = "rbxassetid://7072718266", -- Warning
-            Error = "rbxassetid://7072718631" -- X
-        }
-        
-        local icon = Instance.new("ImageLabel")
-        icon.Name = "Icon"
-        icon.Size = UDim2.new(0, 16, 0, 16)
-        icon.Position = UDim2.new(0, 8, 0.5, -8)
-        icon.BackgroundTransparency = 1
-        icon.Image = icons[type] or icons.Info
-        icon.ImageColor3 = color
-        icon.Parent = header
         
         -- Close button
         local closeButton = Instance.new("TextButton")
         closeButton.Name = "CloseButton"
-        closeButton.Size = UDim2.new(0, 20, 0, 20)
-        closeButton.Position = UDim2.new(1, -20, 0, 4)
-        closeButton.BackgroundTransparency = 1
+        closeButton.Size = UDim2.new(0, 25, 0, 25)
+        closeButton.Position = UDim2.new(1, -30, 0.5, -12.5)
+        closeButton.BackgroundColor3 = theme.Error
+        closeButton.BackgroundTransparency = 0.7
         closeButton.Text = "✕"
-        closeButton.TextColor3 = theme.TextDark
         closeButton.Font = theme.Font
-        closeButton.TextSize = 14
+        closeButton.TextSize = theme.FontSize.Small
+        closeButton.TextColor3 = theme.Text
+        closeButton.ZIndex = 1003
         closeButton.Parent = header
+        
+        CryzenHub.Utils.CreateCorner(closeButton, theme.Radius.Round)
+        CryzenHub.Utils.CreateGlow(closeButton, theme.Error, 0.6, 6)
         
         -- Message
         local messageLabel = Instance.new("TextLabel")
         messageLabel.Name = "Message"
         messageLabel.Size = UDim2.new(1, -20, 0, 0)
-        messageLabel.Position = UDim2.new(0, 10, 0, 28)
+        messageLabel.Position = UDim2.new(0, 10, 0, 45)
         messageLabel.BackgroundTransparency = 1
-        messageLabel.Font = theme.Font
         messageLabel.Text = message
-        messageLabel.TextColor3 = theme.TextDark
-        messageLabel.TextSize = theme.TextSize
+        messageLabel.Font = theme.Font
+        messageLabel.TextSize = theme.FontSize.Body
+        messageLabel.TextColor3 = theme.TextSecondary
         messageLabel.TextWrapped = true
         messageLabel.TextXAlignment = Enum.TextXAlignment.Left
         messageLabel.TextYAlignment = Enum.TextYAlignment.Top
         messageLabel.AutomaticSize = Enum.AutomaticSize.Y
+        messageLabel.ZIndex = 1003
         messageLabel.Parent = notification
         
-        -- Progress bar
+        -- Progress bar with ultra effects
         local progressBar = Instance.new("Frame")
         progressBar.Name = "ProgressBar"
-        progressBar.Size = UDim2.new(1, 0, 0, 2)
-        progressBar.Position = UDim2.new(0, 0, 1, -2)
-        progressBar.BackgroundColor3 = color
+        progressBar.Size = UDim2.new(1, 0, 0, 4)
+        progressBar.Position = UDim2.new(0, 0, 1, -4)
+        progressBar.BackgroundColor3 = config.Color
         progressBar.BorderSizePixel = 0
+        progressBar.ZIndex = 1003
         progressBar.Parent = notification
         
-        -- Size notification based on message
+        CryzenHub.Utils.CreateGlow(progressBar, config.Color, 1.0, 8)
+        
+        -- Size notification and animate
         task.spawn(function()
             task.wait()
             local messageHeight = messageLabel.TextBounds.Y
-            local totalHeight = messageHeight + 40 -- Header + padding
+            local totalHeight = messageHeight + 55
             notification.Size = UDim2.new(1, -20, 0, totalHeight)
             
-            -- Animate in
+            -- Ultra entrance animation
             notification.Position = UDim2.new(1, 0, 0, 0)
-            CryzenHub.Utils.Tween(notification, {Position = UDim2.new(0, 0, 0, 0)}, 0.3)
+            notification.BackgroundTransparency = 1
             
-            -- Animate progress bar
-            CryzenHub.Utils.Tween(progressBar, {Size = UDim2.new(0, 0, 0, 2)}, duration)
+            CryzenHub.Utils.Tween(notification, {
+                Position = UDim2.new(0, 0, 0, 0),
+                BackgroundTransparency = 0.1
+            }, 0.5, Enum.EasingStyle.Quart)
+            
+            -- Progress bar animation
+            CryzenHub.Utils.Tween(progressBar, {Size = UDim2.new(0, 0, 0, 4)}, duration)
+            
+            -- Sound effect
+            CryzenHub.Utils.PlaySound("Notification")
             
             -- Auto close
             task.delay(duration, function()
                 if notification and notification.Parent then
-                    CryzenHub.Utils.Tween(notification, {Position = UDim2.new(1, 0, 0, 0)}, 0.3, nil, nil, function()
+                    CryzenHub.Utils.Tween(notification, {
+                        Position = UDim2.new(1, 0, 0, 0),
+                        BackgroundTransparency = 1
+                    }, 0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In, function()
                         notification:Destroy()
                     end)
                 end
@@ -2718,31 +2544,40 @@ function CryzenHub:CreateWindow(config)
         
         -- Close button functionality
         closeButton.MouseButton1Click:Connect(function()
-            CryzenHub.Utils.Tween(notification, {Position = UDim2.new(1, 0, 0, 0)}, 0.3, nil, nil, function()
+            CryzenHub.Utils.PlaySound("Click")
+            CryzenHub.Utils.Tween(notification, {
+                Position = UDim2.new(1, 0, 0, 0),
+                BackgroundTransparency = 1
+            }, 0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In, function()
                 notification:Destroy()
             end)
         end)
         
-        -- Hover effect
+        -- Hover effects
         closeButton.MouseEnter:Connect(function()
-            closeButton.TextColor3 = theme.Text
+            CryzenHub.Utils.Tween(closeButton, {BackgroundTransparency = 0.3}, 0.2)
         end)
         
         closeButton.MouseLeave:Connect(function()
-            closeButton.TextColor3 = theme.TextDark
+            CryzenHub.Utils.Tween(closeButton, {BackgroundTransparency = 0.7}, 0.2)
         end)
         
         return notification
     end
-
-    -- Save/Load Config functions
+    
+    -- Save/Load Configuration with AI optimization
     function window:SaveConfig(name)
         local config = {
-            Flags = {}
+            Flags = {},
+            Theme = CryzenHub.CurrentTheme.Name,
+            Performance = CryzenHub.Performance,
+            AI = {
+                AutoOptimize = true,
+                GameSpecific = game.PlaceId
+            }
         }
         
         for flag, value in pairs(window.Flags) do
-            -- Handle different value types
             if typeof(value) == "Color3" then
                 config.Flags[flag] = {
                     Type = "Color3",
@@ -2766,11 +2601,10 @@ function CryzenHub:CreateWindow(config)
             end
         end
         
-        -- Save to file if writefile exists
         local success = false
         if writefile then
             local json = HttpService:JSONEncode(config)
-            writefile("CryzenHub_" .. name .. ".json", json)
+            writefile("CryzenHub_ULTRA_" .. name .. ".json", json)
             success = true
         end
         
@@ -2781,9 +2615,8 @@ function CryzenHub:CreateWindow(config)
         local config
         local success = false
         
-        -- Try to load from file
-        if isfile and isfile("CryzenHub_" .. name .. ".json") and readfile then
-            local json = readfile("CryzenHub_" .. name .. ".json")
+        if isfile and isfile("CryzenHub_ULTRA_" .. name .. ".json") and readfile then
+            local json = readfile("CryzenHub_ULTRA_" .. name .. ".json")
             config = HttpService:JSONDecode(json)
             success = true
         elseif type(name) == "table" then
@@ -2792,12 +2625,19 @@ function CryzenHub:CreateWindow(config)
         end
         
         if success and config then
+            -- Load theme
+            if config.Theme and CryzenHub.Themes[config.Theme] then
+                CryzenHub.CurrentTheme = CryzenHub.Themes[config.Theme]
+                -- Apply theme to window
+                -- ... theme application code ...
+            end
+            
+            -- Load flags
             for flag, data in pairs(config.Flags) do
-                local element = self:GetElementByFlag(flag)
-                if element then
+                local element = window:GetElementByFlag(flag)
+                if element and element.SetValue then
                     local value
                     
-                    -- Convert value based on type
                     if data.Type == "Color3" then
                         value = Color3.new(table.unpack(data.Value))
                     elseif data.Type == "Enum" then
@@ -2809,16 +2649,19 @@ function CryzenHub:CreateWindow(config)
                         value = data.Value
                     end
                     
-                    -- Update element
                     element:SetValue(value)
                 end
+            end
+            
+            -- AI optimization
+            if config.AI and config.AI.AutoOptimize then
+                CryzenHub.AI.OptimizePerformance()
             end
         end
         
         return success
     end
     
-    -- Get element by flag
     function window:GetElementByFlag(flag)
         for _, tab in pairs(self.Tabs) do
             if tab.Elements[flag] then
@@ -2828,10 +2671,37 @@ function CryzenHub:CreateWindow(config)
         return nil
     end
     
-    -- Add window to list
-    table.insert(CryzenHub.Windows, window)
+    -- Initialize window
+    CryzenHub.Utils.CreateBlur()
+    local blur = CryzenHub.Utils.CreateBlur()
+    blur.Enabled = true
+    CryzenHub.Utils.Tween(blur, {Size = theme.BlurSize}, 0.5)
     
+    -- Ultra entrance animation
+    mainContainer.Size = UDim2.new(0, 0, 0, 0)
+    mainContainer.BackgroundTransparency = 1
+    
+    CryzenHub.Utils.Tween(mainContainer, {
+        Size = size,
+        BackgroundTransparency = 0.1
+    }, 0.8, Enum.EasingStyle.Quart)
+    
+    -- Play entrance sound
+    CryzenHub.Utils.PlaySound("Success")
+    
+    table.insert(CryzenHub.Windows, window)
     return window
 end
+
+-- Start performance monitoring
+CryzenHub.Performance.StartMonitoring()
+
+-- Initialize AI optimization
+task.spawn(function()
+    while true do
+        task.wait(5) -- Check every 5 seconds
+        CryzenHub.AI.OptimizePerformance()
+    end
+end)
 
 return CryzenHub
