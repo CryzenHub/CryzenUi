@@ -1,659 +1,681 @@
-# CryzenHub UI Library v2.0.0
+# CryzenHub UI Library v3.0.0 - ULTRA
 
-A premium UI library for Roblox scripts with a completely redesigned modern interface, enhanced features, and improved performance.
+The ultimate premium UI library for Roblox scripts featuring ultra-modern design, advanced visual effects, AI-powered optimization, and professional-grade features.
 
-![CryzenHub v2.0.0 Banner](https://i.imgur.com/placeholder.png)
+![CryzenHub ULTRA](https://i.imgur.com/placeholder.png)
 
-## What's New in v2.0.0
+## 🌟 What's New in v3.0.0 - ULTRA
 
-- **Complete Redesign**: Modern, sleek interface with a premium look and feel
-- **Enhanced Performance**: Optimized rendering and interaction handling
-- **Acrylic Effect**: Beautiful blur effect for a premium glass-like appearance
-- **Improved Animations**: Smoother transitions and visual feedback
-- **Gradient Support**: Customizable gradient backgrounds for UI elements
-- **Advanced Color Picker**: More precise color selection with RGB inputs
-- **Multi-Select Dropdowns**: Select multiple items from dropdowns
-- **Improved Notifications**: Different notification types with icons
-- **Section Management**: Collapsible sections for better organization
-- **Flag System**: Easy value tracking across your UI
-- **Config System**: Comprehensive save/load functionality
-- **Tooltips**: Helpful hover tooltips for UI elements
-- **Rich Search**: Find elements quickly with the built-in search functionality
+### ✨ Ultra Premium Design
+- **Advanced Glow Effects**: Dynamic glowing elements with customizable intensity
+- **Particle Systems**: Animated background particles for immersive experience
+- **Acrylic Glass Effect**: Professional blur and transparency effects
+- **Ultra Smooth Animations**: 60fps transitions with easing curves
+- **Gradient Backgrounds**: Multi-layered gradients for depth
 
-## Installation
+### 🤖 AI-Powered Features
+- **Auto-Configuration**: Automatically configures UI based on the game
+- **Performance Optimization**: Real-time FPS monitoring and auto-adjustment
+- **Smart Search**: Advanced search engine with AI suggestions
+- **Adaptive Theming**: Intelligent theme selection based on game genre
+
+### 🎵 Sound System
+- **Interactive Audio**: Sound effects for all interactions
+- **Customizable Sounds**: Replace default sounds with custom audio
+- **Volume Control**: Per-element volume adjustment
+
+### 🎨 Ultra Theme System
+- **Multiple Themes**: Ultra, Cyberpunk, and Neon themes included
+- **Dynamic Colors**: Real-time color adjustments
+- **Custom Theme Creator**: Build your own themes
+- **Theme Animation**: Smooth theme transitions
+
+### 📊 Performance Monitoring
+- **Real-time FPS Display**: Live performance metrics
+- **Memory Usage**: Monitor script memory consumption
+- **Performance History**: Track performance over time
+- **Auto-Optimization**: Automatic quality adjustment
+
+### 🔍 Advanced Search
+- **Global Search**: Find any element instantly
+- **Smart Filtering**: Filter by element type
+- **Search History**: Remember previous searches
+- **Fuzzy Matching**: Find elements even with typos
+
+## 🚀 Installation
 
 ```lua
 local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source"))()
 ```
 
-## Basic Usage
+## 💡 Basic Usage
 
 ```lua
--- Create a window
+-- Create an ULTRA window with AI features
 local Window = CryzenHub:CreateWindow({
-    Title = "CryzenHub Example",
-    Theme = {
-        Primary = Color3.fromRGB(20, 20, 30),
-        Accent = Color3.fromRGB(100, 120, 255),
-        TextSize = 14
-    }
+    Title = "CryzenHub ULTRA",
+    Theme = "Ultra", -- Ultra, Cyberpunk, or Neon
+    AutoConfig = true, -- AI auto-configuration
+    Size = UDim2.new(0, 700, 0, 500)
 })
 
--- Create tabs with icons
+-- Create tabs with ultra effects
 local MainTab = Window:Tab("Main", "rbxassetid://7059346373")
+local VisualsTab = Window:Tab("Visuals", "rbxassetid://7072706108")
 local SettingsTab = Window:Tab("Settings", "rbxassetid://7059394039")
 
--- Create sections
-local FeaturesSection = MainTab:Section("Features")
-local VisualsSection = MainTab:Section("Visuals")
+-- Create sections with glow effects
+local FeaturesSection = MainTab:Section("Ultra Features")
+local ESPSection = VisualsTab:Section("ESP Settings")
 local ConfigSection = SettingsTab:Section("Configuration")
 
--- Add elements to sections
-FeaturesSection:Label("Welcome to CryzenHub v2.0.0")
-
-FeaturesSection:Button("Click Me", function()
+-- Ultra button with sound effects
+FeaturesSection:Button("Ultra Click", function()
     Window:Notify({
-        Title = "Button Clicked",
-        Message = "You clicked the button!",
-        Duration = 3,
-        Type = "Success"
+        Title = "Ultra Success!",
+        Message = "Button clicked with style!",
+        Type = "Success",
+        Duration = 3
     })
 end)
 
+-- Toggle with keybind support and glow
 local speedToggle = FeaturesSection:Toggle("Speed Hack", {
     Default = false,
-    Flag = "SpeedEnabled"
+    Flag = "SpeedHack"
 }, function(value)
     print("Speed Hack:", value)
 end)
 
+-- Ultra slider with real-time value display
 local speedSlider = FeaturesSection:Slider("Speed Multiplier", {
     Min = 1,
-    Max = 10,
-    Default = 2,
+    Max = 20,
+    Default = 5,
     Decimals = 1,
     Suffix = "x",
     Flag = "SpeedMultiplier"
 }, function(value)
-    print("Speed multiplier set to:", value)
+    print("Speed set to:", value .. "x")
 end)
 
-local dropdown = FeaturesSection:Dropdown("Target", {
-    Items = {"All Players", "Enemies", "Friends"},
-    Default = "Enemies",
-    Flag = "TargetOption"
-}, function(selected)
-    print("Target selected:", selected)
-end)
-
-local multiDropdown = FeaturesSection:Dropdown("Weapons", {
-    Items = {"Assault Rifle", "Shotgun", "Sniper", "Pistol", "Knife"},
+-- Multi-select dropdown with search
+local weaponDropdown = FeaturesSection:Dropdown("Weapons", {
+    Items = {"AK-47", "M4A4", "AWP", "Glock", "Deagle"},
     MultiSelect = true,
-    Default = {"Assault Rifle", "Pistol"},
+    Default = {"AK-47"},
     Flag = "SelectedWeapons"
 }, function(selected)
-    print("Weapons selected:", table.concat(selected, ", "))
+    print("Weapons:", table.concat(selected, ", "))
 end)
 
-VisualsSection:Checkbox("ESP", true, function(value)
-    print("ESP enabled:", value)
-end)
-
-local espColor = VisualsSection:ColorPicker("ESP Color", {
-    Default = Color3.fromRGB(255, 0, 0),
-    Flag = "ESPColor"
-}, function(color)
-    print("ESP color set to:", color)
-end)
-
-VisualsSection:Divider()
-
-VisualsSection:Keybind("Toggle ESP", {
-    Default = Enum.KeyCode.E,
-    Flag = "ESPKeybind"
-}, function(key)
-    print("ESP toggled with key:", key.Name)
-end)
-
-VisualsSection:Textbox("Player Name", {
-    Placeholder = "Enter player name...",
-    ClearOnFocus = false,
-    Flag = "TargetPlayer"
-}, function(text)
-    print("Player name set to:", text)
-end)
-
--- Configuration section
-ConfigSection:Label("Save and Load Configurations")
-
-ConfigSection:Textbox("Config Name", {
-    Placeholder = "Enter config name...",
-    Default = "MyConfig"
-}, function(text)
-    -- Config name is stored for saving/loading
-    ConfigName = text
-end)
-
-ConfigSection:Button("Save Config", function()
-    local success = Window:SaveConfig(ConfigName or "Default")
-    
-    Window:Notify({
-        Title = success and "Success" or "Error",
-        Message = success and "Configuration saved!" or "Failed to save configuration",
-        Type = success and "Success" or "Error"
-    })
-end)
-
-ConfigSection:Button("Load Config", function()
-    local success = Window:LoadConfig(ConfigName or "Default")
-    
-    Window:Notify({
-        Title = success and "Success" or "Error",
-        Message = success and "Configuration loaded!" or "Failed to load configuration",
-        Type = success and "Success" or "Error"
-    })
-end)
-```
-
-## API Reference
-
-### CryzenHub
-
-#### `CryzenHub:CreateWindow(options)`
-Creates a main window for your UI.
-- `options`: Table with window configuration:
-  - `Title`: Window title
-  - `Theme`: Custom theme settings
-  - `Size`: Window size (UDim2)
-  - `Position`: Window position (UDim2)
-  - `MinSize`: Minimum window size (Vector2)
-- Returns: Window object
-
-### Window
-
-#### `Window:Tab(name, icon)`
-Creates a new tab in the window.
-- `name`: The name of the tab
-- `icon`: (Optional) Asset ID for the tab icon
-- Returns: Tab object
-
-#### `Window:Notify(options)`
-Shows a notification.
-- `options`: Table with notification options:
-  - `Title`: The title of the notification
-  - `Message`: The notification content
-  - `Duration`: How long to display the notification (in seconds)
-  - `Type`: "Info", "Success", "Warning", or "Error"
-- Returns: Notification object
-
-#### `Window:SaveConfig(name)`
-Saves the current UI configuration.
-- `name`: Name to save the config under
-- Returns: Success status and config data
-
-#### `Window:LoadConfig(nameOrData)`
-Loads a UI configuration.
-- `nameOrData`: Name of the config to load or config data table
-- Returns: Success status
-
-#### `Window:SelectTab(tab)`
-Selects a specific tab.
-- `tab`: The tab object to select
-
-#### `Window:GetElementByFlag(flag)`
-Gets an element by its flag.
-- `flag`: The flag name
-- Returns: Element object if found, nil otherwise
-
-### Tab
-
-#### `Tab:Section(title)`
-Creates a section within a tab.
-- `title`: The title of the section
-- Returns: Section object
-
-### Section
-
-#### `Section:Label(text, options)`
-Creates a text label.
-- `text`: The text to display (supports rich text)
-- `options`: Additional options:
-  - `Color`: Text color
-  - `TextSize`: Font size
-  - `Height`: Label height
-  - `TextXAlignment`: Text alignment
-- Returns: Label element
-
-#### `Section:Button(text, callback, options)`
-Creates a clickable button.
-- `text`: Text displayed on the button
-- `callback`: Function called when button is clicked
-- `options`: Additional options:
-  - `Flag`: Identifier for the element
-- Returns: Button element
-
-#### `Section:Toggle(text, options, callback)`
-Creates a toggle switch.
-- `text`: Text displayed next to the toggle
-- `options`: Toggle options:
-  - `Default`: Initial state (true/false)
-  - `Flag`: Identifier for the element
-- `callback`: Function called when toggle changes state
-- Returns: Toggle element
-
-#### `Section:Slider(text, options, callback)`
-Creates a value slider.
-- `text`: Text displayed above the slider
-- `options`: Slider options:
-  - `Min`: Minimum value
-  - `Max`: Maximum value
-  - `Default`: Initial value
-  - `Decimals`: Number of decimal places
-  - `Suffix`: Text to display after the value
-  - `Flag`: Identifier for the element
-- `callback`: Function called when slider value changes
-- Returns: Slider element
-
-#### `Section:Dropdown(text, options, callback)`
-Creates a dropdown selector.
-- `text`: Text displayed above the dropdown
-- `options`: Dropdown options:
-  - `Items`: Array of selectable items
-  - `Default`: Initially selected item(s)
-  - `MultiSelect`: Allow selecting multiple items
-  - `Flag`: Identifier for the element
-- `callback`: Function called when selection changes
-- Returns: Dropdown element
-
-#### `Section:Textbox(text, options, callback)`
-Creates a text input field.
-- `text`: Text displayed above the textbox
-- `options`: Textbox options:
-  - `Default`: Initial text
-  - `Placeholder`: Placeholder text when empty
-  - `ClearOnFocus`: Whether to clear text when focused
-  - `Flag`: Identifier for the element
-- `callback`: Function called when text is submitted
-- Returns: Textbox element
-
-#### `Section:ColorPicker(text, options, callback)`
-Creates a color picker.
-- `text`: Text displayed next to the color display
-- `options`: ColorPicker options:
-  - `Default`: Initial color (Color3)
-  - `Flag`: Identifier for the element
-- `callback`: Function called when color changes
-- Returns: ColorPicker element
-
-#### `Section:Keybind(text, options, callback)`
-Creates a keybind input element.
-- `text`: Text displayed next to the keybind
-- `options`: Keybind options:
-  - `Default`: Initial key (Enum.KeyCode)
-  - `Flag`: Identifier for the element
-- `callback`: Function called when keybind is pressed
-- Returns: Keybind element
-
-#### `Section:Checkbox(text, default, callback, options)`
-Creates a checkbox element.
-- `text`: Text displayed next to the checkbox
-- `default`: Initial state (true/false)
-- `callback`: Function called when checkbox changes state
-- `options`: Additional options:
-  - `Flag`: Identifier for the element
-- Returns: Checkbox element
-
-#### `Section:Divider(options)`
-Creates a horizontal divider line.
-- `options`: Divider options:
-  - `Color`: Line color
-  - `Transparency`: Line transparency
-- Returns: Divider element
-
-### Element Common Methods
-
-Most elements share these common methods:
-
-#### `Element:Update(value)`
-Updates the element's value.
-- `value`: The new value for the element
-
-#### `Element:SetValue(value)`
-Sets the element's value (same as Update).
-- `value`: The new value for the element
-
-### Dropdown-Specific Methods
-
-#### `Dropdown:AddItem(item)`
-Adds an item to the dropdown.
-- `item`: The item to add
-
-#### `Dropdown:RemoveItem(item)`
-Removes an item from the dropdown.
-- `item`: The item to remove
-
-#### `Dropdown:Clear()`
-Clears all items from the dropdown.
-
-### Slider-Specific Methods
-
-#### `Slider:SetMinMax(min, max)`
-Changes the slider's minimum and maximum values.
-- `min`: New minimum value
-- `max`: New maximum value
-
-## Customizing Themes
-
-You can customize the UI appearance by providing theme options when creating a window:
-
-```lua
-local Window = CryzenHub:CreateWindow({
-    Title = "Custom Theme Example",
-    Theme = {
-        -- Main colors
-        Primary = Color3.fromRGB(20, 20, 30),      -- Main background
-        Secondary = Color3.fromRGB(30, 30, 40),    -- Secondary background
-        Tertiary = Color3.fromRGB(40, 40, 55),     -- Input fields
-        Accent = Color3.fromRGB(100, 120, 255),    -- Accent color
-        
-        -- Text colors
-        Text = Color3.fromRGB(240, 240, 255),      -- Primary text
-        TextDark = Color3.fromRGB(180, 180, 195),  -- Secondary text
-        
-        -- Border colors
-        Stroke = Color3.fromRGB(60, 60, 80),       -- Border color
-        
-        -- Status colors
-        Success = Color3.fromRGB(70, 200, 120),    -- Success color
-        Warning = Color3.fromRGB(255, 180, 70),    -- Warning color
-        Error = Color3.fromRGB(255, 80, 80),       -- Error color
-        Info = Color3.fromRGB(70, 160, 255),       -- Info color
-        
-        -- Typography
-        Font = Enum.Font.Gotham,                   -- UI font
-        HeaderSize = 18,                           -- Header text size
-        TextSize = 14,                             -- Normal text size
-        SubTextSize = 12,                          -- Smaller text size
-        
-        -- Effects
-        Blur = true,                               -- Enable background blur
-        BlurSize = 10,                             -- Blur intensity
-        UseAcrylic = true,                         -- Enable acrylic effect
-        EnableShadows = true,                      -- Enable drop shadows
-        UseGradients = true                        -- Enable gradient backgrounds
-    }
-})
-```
-
-## Examples
-
-### Player List with Multi-Select Dropdown
-
-```lua
-local PlayersTab = Window:Tab("Players", "rbxassetid://7072717958")
-local PlayersSection = PlayersTab:Section("Player Selection")
-
--- Get all player names
-local function GetAllPlayers()
-    local playerNames = {}
-    for _, player in pairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-    end
-    return playerNames
-end
-
--- Create multi-select dropdown for players
-local selectedPlayers = PlayersSection:Dropdown("Select Players", {
-    Items = GetAllPlayers(),
-    MultiSelect = true,
-    Flag = "SelectedPlayers"
-}, function(selected)
-    print("Selected players:", table.concat(selected, ", "))
-end)
-
--- Refresh player list button
-PlayersSection:Button("Refresh Player List", function()
-    selectedPlayers:Update(GetAllPlayers())
-    Window:Notify({
-        Title = "Players Refreshed",
-        Message = "Player list has been updated",
-        Type = "Info"
-    })
-end)
-
--- Action buttons for selected players
-PlayersSection:Button("Teleport to Selected", function()
-    local selected = Window.Flags.SelectedPlayers
-    if #selected == 0 then
-        Window:Notify({
-            Title = "No Selection",
-            Message = "No players selected",
-            Type = "Warning"
-        })
-        return
-    end
-    
-    for _, playerName in ipairs(selected) do
-        local player = game.Players:FindFirstChild(playerName)
-        if player and player.Character then
-            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(
-                player.Character:GetPrimaryPartCFrame()
-            )
-            break -- Teleport to the first valid player
-        end
-    end
-end)
-
--- Update when players join/leave
-game.Players.PlayerAdded:Connect(function()
-    selectedPlayers:Update(GetAllPlayers())
-end)
-
-game.Players.PlayerRemoving:Connect(function()
-    selectedPlayers:Update(GetAllPlayers())
-end)
-```
-
-### ESP Configuration with Color Picker
-
-```lua
-local VisualsTab = Window:Tab("Visuals", "rbxassetid://7072706108")
-local ESPSection = VisualsTab:Section("ESP Settings")
-
--- ESP toggle
-local espEnabled = ESPSection:Toggle("Enable ESP", {
-    Default = false,
-    Flag = "ESPEnabled"
-}, function(value)
-    -- ESP toggle logic here
-end)
-
--- ESP options
-ESPSection:Checkbox("Show Names", true, function(value)
-    -- Names ESP logic
-end)
-
-ESPSection:Checkbox("Show Boxes", true, function(value)
-    -- Box ESP logic
-end)
-
-ESPSection:Checkbox("Show Health", false, function(value)
-    -- Health ESP logic
-end)
-
-ESPSection:Checkbox("Show Distance", true, function(value)
-    -- Distance ESP logic
-end)
-
--- ESP colors
-local teamColorToggle = ESPSection:Toggle("Use Team Colors", {
-    Default = true,
-    Flag = "UseTeamColors"
-}, function(value)
-    -- Team color logic
-end)
-
+-- Ultra color picker with RGB inputs
 local espColor = ESPSection:ColorPicker("ESP Color", {
     Default = Color3.fromRGB(255, 0, 0),
     Flag = "ESPColor"
 }, function(color)
-    -- Color update logic
+    print("ESP Color:", color)
 end)
 
--- ESP distance
-local espDistance = ESPSection:Slider("ESP Distance", {
-    Min = 50,
-    Max = 5000,
-    Default = 1000,
-    Suffix = " studs"
-}, function(value)
-    -- Update ESP distance logic
-end)
+-- Configuration with AI optimization
+ConfigSection:Label("🤖 AI-Powered Configuration System")
 
--- ESP keybind
-ESPSection:Keybind("Toggle ESP", {
-    Default = Enum.KeyCode.E,
-    Flag = "ESPKeybind"
-}, function()
-    local newValue = not Window.Flags.ESPEnabled
-    espEnabled:SetValue(newValue)
-})
-
--- ESP target selection
-ESPSection:Dropdown("ESP Targets", {
-    Items = {"All Players", "Enemies", "Team", "Friends"},
-    Default = "Enemies",
-    Flag = "ESPTargets"
-}, function(selected)
-    -- Target selection logic
-end)
-```
-
-### Configuration System
-
-```lua
-local SettingsTab = Window:Tab("Settings", "rbxassetid://7059394039")
-local ConfigSection = SettingsTab:Section("Configuration")
-
-local configName = "Default"
-
--- Config name input
-ConfigSection:Textbox("Config Name", {
-    Default = configName,
-    Placeholder = "Enter config name..."
-}, function(text)
-    configName = text
-end)
-
--- Save config
-ConfigSection:Button("Save Configuration", function()
-    local success, data = Window:SaveConfig(configName)
-    
-    if success then
-        Window:Notify({
-            Title = "Configuration Saved",
-            Message = "Successfully saved as: " .. configName,
-            Type = "Success"
-        })
-    else
-        Window:Notify({
-            Title = "Save Failed",
-            Message = "Could not save configuration. Make sure your exploit supports file writing.",
-            Type = "Error"
-        })
-    end
-end)
-
--- Load config
-ConfigSection:Button("Load Configuration", function()
-    local success = Window:LoadConfig(configName)
-    
-    if success then
-        Window:Notify({
-            Title = "Configuration Loaded",
-            Message = "Successfully loaded: " .. configName,
-            Type = "Success"
-        })
-    else
-        Window:Notify({
-            Title = "Load Failed",
-            Message = "Could not load configuration. The file may not exist.",
-            Type = "Error"
-        })
-    end
-end)
-
--- List available configs (if supported)
-if listfiles then
-    local configs = {}
-    
-    -- Refresh config list
-    local function RefreshConfigs()
-        configs = {}
-        for _, file in ipairs(listfiles("")) do
-            if file:match("CryzenHub_(.+)%.json") then
-                local name = file:match("CryzenHub_(.+)%.json")
-                table.insert(configs, name)
-            end
-        end
-        return configs
-    end
-    
-    -- Create dropdown with available configs
-    local configDropdown = ConfigSection:Dropdown("Available Configs", {
-        Items = RefreshConfigs(),
-        Flag = "SelectedConfig"
-    }, function(selected)
-        configName = selected
-    end)
-    
-    -- Refresh button
-    ConfigSection:Button("Refresh Config List", function()
-        configDropdown:Update(RefreshConfigs())
-        Window:Notify({
-            Title = "Config List Refreshed",
-            Message = "Found " .. #configs .. " configurations",
-            Type = "Info"
-        })
-    end)
-end
-
--- Reset all settings
-ConfigSection:Button("Reset All Settings", function()
-    -- Prompt confirmation
-    local confirmed = false
-    
-    -- Create a confirmation UI here or use your own method
-    -- For this example, we'll just reset without confirmation
-    
-    -- Reset all values to defaults
-    for flag, element in pairs(Window.Elements) do
-        if element.SetValue and element.Default ~= nil then
-            element:SetValue(element.Default)
-        end
-    end
-    
+ConfigSection:Button("Auto-Optimize Performance", function()
+    CryzenHub.AI.OptimizePerformance()
     Window:Notify({
-        Title = "Settings Reset",
-        Message = "All settings have been reset to their default values",
+        Title = "AI Optimization",
+        Message = "Performance automatically optimized!",
         Type = "Info"
     })
 end)
+
+-- Theme selector
+ConfigSection:Dropdown("Ultra Theme", {
+    Items = {"Ultra", "Cyberpunk", "Neon"},
+    Default = "Ultra",
+    Flag = "SelectedTheme"
+}, function(selected)
+    CryzenHub.CurrentTheme = CryzenHub.Themes[selected]
+    Window:Notify({
+        Title = "Theme Changed",
+        Message = "Switched to " .. selected .. " theme!",
+        Type = "Success"
+    })
+end)
+
+-- Save/Load with AI features
+ConfigSection:Button("Save Configuration", function()
+    local success = Window:SaveConfig("MyUltraConfig")
+    if success then
+        Window:Notify({
+            Title = "Configuration Saved",
+            Message = "Your settings have been saved with AI optimization data!",
+            Type = "Success"
+        })
+    end
+end)
+
+ConfigSection:Button("Load Configuration", function()
+    local success = Window:LoadConfig("MyUltraConfig")
+    if success then
+        Window:Notify({
+            Title = "Configuration Loaded",
+            Message = "Settings loaded with AI enhancements!",
+            Type = "Success"
+        })
+    end
+end)
 ```
 
-## License
+## 🎨 Ultra Theme System
+
+### Available Themes
+
+#### 🌌 Ultra Theme (Default)
+```lua
+{
+    Primary = Color3.fromRGB(15, 15, 25),
+    Accent = Color3.fromRGB(120, 140, 255),
+    GlowPrimary = Color3.fromRGB(120, 140, 255),
+    ParticleCount = 50,
+    GlowIntensity = 0.8
+}
+```
+
+#### 🔮 Cyberpunk Theme
+```lua
+{
+    Primary = Color3.fromRGB(10, 10, 15),
+    Accent = Color3.fromRGB(255, 20, 147),
+    GlowPrimary = Color3.fromRGB(255, 20, 147),
+    ParticleCount = 75,
+    GlowIntensity = 1.2
+}
+```
+
+#### 💚 Neon Theme
+```lua
+{
+    Primary = Color3.fromRGB(5, 5, 10),
+    Accent = Color3.fromRGB(57, 255, 20),
+    GlowPrimary = Color3.fromRGB(57, 255, 20),
+    ParticleCount = 100,
+    GlowIntensity = 1.5
+}
+```
+
+### Custom Theme Creation
+
+```lua
+local customTheme = {
+    Name = "MyCustomTheme",
+    Primary = Color3.fromRGB(20, 30, 40),
+    Accent = Color3.fromRGB(255, 100, 150),
+    GlowPrimary = Color3.fromRGB(255, 100, 150),
+    ParticleCount = 60,
+    GlowIntensity = 1.0,
+    BlurSize = 20
+}
+
+-- Add to themes
+CryzenHub.Themes.MyCustomTheme = customTheme
+
+-- Use the theme
+local Window = CryzenHub:CreateWindow({
+    Theme = customTheme
+})
+```
+
+## 🤖 AI Features
+
+### Auto-Configuration
+The AI system automatically configures your UI based on the game:
+
+```lua
+-- Enable AI auto-config (default: true)
+local Window = CryzenHub:CreateWindow({
+    AutoConfig = true
+})
+
+-- Manual AI configuration
+local gameConfig = CryzenHub.AI.AutoConfig(game.PlaceId)
+print("Recommended theme:", gameConfig.Theme)
+print("Suggested features:", table.concat(gameConfig.Features, ", "))
+```
+
+### Performance Optimization
+Real-time performance monitoring with automatic optimization:
+
+```lua
+-- Manual optimization
+CryzenHub.AI.OptimizePerformance()
+
+-- Get performance data
+print("Current FPS:", CryzenHub.Performance.FPS)
+print("Memory usage:", CryzenHub.Performance.Memory .. "MB")
+
+-- Performance history
+for _, data in ipairs(CryzenHub.Performance.History) do
+    print("Time:", data.Time, "FPS:", data.FPS, "Memory:", data.Memory)
+end
+```
+
+### Smart Search
+Advanced search with AI suggestions:
+
+```lua
+-- Add elements to search index
+CryzenHub.SearchEngine.AddToIndex(element, {"speed", "hack", "movement"})
+
+-- Search for elements
+local results = CryzenHub.SearchEngine.Search("speed")
+
+-- Filter results by type
+local toggles = CryzenHub.SearchEngine.Filter(results, "Toggle")
+```
+
+## 🎵 Sound System
+
+### Custom Sounds
+```lua
+-- Replace default sounds
+CryzenHub.Sounds.Click = "rbxassetid://YOUR_SOUND_ID"
+CryzenHub.Sounds.Hover = "rbxassetid://YOUR_SOUND_ID"
+
+-- Play sounds manually
+CryzenHub.Utils.PlaySound("Success")
+
+-- Create custom sound
+local customSound = CryzenHub.Utils.CreateSound("rbxassetid://123456", 0.8, 1.2)
+customSound:Play()
+```
+
+### Sound Configuration
+```lua
+-- Adjust global volume
+CryzenHub.CurrentTheme.SoundVolume = 0.3
+
+-- Disable sounds
+CryzenHub.CurrentTheme.SoundVolume = 0
+```
+
+## 🔧 Advanced Features
+
+### Multi-Window Support
+```lua
+-- Create multiple windows
+local Window1 = CryzenHub:CreateWindow({Title = "Main Window"})
+local Window2 = CryzenHub:CreateWindow({Title = "Secondary Window"})
+
+-- Each window operates independently
+print("Active windows:", #CryzenHub.Windows)
+```
+
+### Performance Monitoring
+```lua
+-- Start monitoring (automatic)
+CryzenHub.Performance.StartMonitoring()
+
+-- Custom monitoring interval
+CryzenHub.Performance.UpdateRate = 30 -- 30 FPS monitoring
+
+-- Performance callbacks
+RunService.Heartbeat:Connect(function()
+    if CryzenHub.Performance.FPS < 30 then
+        -- Reduce quality automatically
+        CryzenHub.CurrentTheme.ParticleCount = 10
+        CryzenHub.CurrentTheme.GlowIntensity = 0.3
+    end
+end)
+```
+
+### Advanced Search
+```lua
+-- Global search with filters
+local searchResults = CryzenHub.SearchEngine.Search("esp")
+local toggleResults = CryzenHub.SearchEngine.Filter(searchResults, "Toggle")
+local sliderResults = CryzenHub.SearchEngine.Filter(searchResults, "Slider")
+
+-- Navigate to element
+for _, result in ipairs(searchResults) do
+    if result.Element.Instance then
+        -- Highlight or scroll to element
+        result.Element.Instance.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+    end
+end
+```
+
+## 📊 API Reference
+
+### CryzenHub
+
+#### `CryzenHub:CreateWindow(config)`
+Creates an ultra window with advanced features.
+
+**Config Options:**
+```lua
+{
+    Title = "Window Title",
+    Theme = "Ultra" | "Cyberpunk" | "Neon" | CustomTheme,
+    Size = UDim2.new(0, 700, 0, 500),
+    Position = UDim2.fromScale(0.5, 0.5),
+    MinSize = Vector2.new(500, 400),
+    AutoConfig = true, -- AI auto-configuration
+}
+```
+
+### Window
+
+#### `Window:Tab(name, icon)`
+Creates an ultra tab with visual effects.
+
+#### `Window:Notify(options)`
+Shows ultra notifications with animations.
+
+**Notification Options:**
+```lua
+{
+    Title = "Notification Title",
+    Message = "Detailed message",
+    Type = "Info" | "Success" | "Warning" | "Error",
+    Duration = 4 -- seconds
+}
+```
+
+#### `Window:SaveConfig(name)` / `Window:LoadConfig(name)`
+Advanced configuration system with AI optimization data.
+
+### Section
+
+#### `Section:Button(text, callback, options)`
+Ultra button with sound effects and animations.
+
+#### `Section:Toggle(text, options, callback)`
+Advanced toggle with keybind support and glow effects.
+
+#### `Section:Slider(text, options, callback)`
+Smooth slider with real-time value display.
+
+**Slider Options:**
+```lua
+{
+    Min = 0,
+    Max = 100,
+    Default = 50,
+    Decimals = 1,
+    Suffix = "x",
+    Flag = "SliderValue"
+}
+```
+
+#### `Section:Dropdown(text, options, callback)`
+Multi-select dropdown with search functionality.
+
+**Dropdown Options:**
+```lua
+{
+    Items = {"Item1", "Item2", "Item3"},
+    Default = "Item1" | {"Item1", "Item2"}, -- Single or multi-select
+    MultiSelect = false,
+    Flag = "DropdownValue"
+}
+```
+
+#### `Section:ColorPicker(text, options, callback)`
+Advanced color picker with RGB inputs and glow preview.
+
+### Utility Functions
+
+#### `CryzenHub.Utils.CreateGlow(parent, color, intensity, size)`
+Creates glow effects on elements.
+
+#### `CryzenHub.Utils.CreateParticles(parent, count, color)`
+Adds animated particle effects.
+
+#### `CryzenHub.Utils.PlaySound(soundName)`
+Plays UI sound effects.
+
+#### `CryzenHub.Utils.CreateRipple(parent, position, color, size)`
+Creates material design ripple effects.
+
+### AI System
+
+#### `CryzenHub.AI.AutoConfig(gameId)`
+Returns recommended configuration for specific games.
+
+#### `CryzenHub.AI.OptimizePerformance()`
+Automatically optimizes visual effects based on performance.
+
+### Performance System
+
+#### `CryzenHub.Performance.FPS`
+Current frames per second.
+
+#### `CryzenHub.Performance.Memory`
+Current memory usage in MB.
+
+#### `CryzenHub.Performance.History`
+Array of performance data over time.
+
+## 🎮 Game-Specific Examples
+
+### Jailbreak Configuration
+```lua
+local Window = CryzenHub:CreateWindow({
+    Title = "Jailbreak ULTRA",
+    Theme = "Cyberpunk",
+    AutoConfig = true
+})
+
+local MainTab = Window:Tab("Main", "rbxassetid://7059346373")
+local TeleportSection = MainTab:Section("Teleportation")
+
+-- Ultra teleport system
+local locations = {
+    "Prison", "Bank", "Museum", "Power Plant", 
+    "Gun Shop", "Gas Station", "Donut Shop"
+}
+
+TeleportSection:Dropdown("Teleport Location", {
+    Items = locations,
+    Flag = "TeleportLocation"
+}, function(selected)
+    print("Teleporting to:", selected)
+    -- Teleport logic here
+end)
+
+TeleportSection:Button("🚀 Ultra Teleport", function()
+    local location = Window.Flags.TeleportLocation
+    if location then
+        Window:Notify({
+            Title = "Teleported!",
+            Message = "Successfully teleported to " .. location,
+            Type = "Success"
+        })
+    end
+end)
+
+-- Speed settings
+local SpeedSection = MainTab:Section("Speed Settings")
+
+SpeedSection:Toggle("Speed Hack", {
+    Default = false,
+    Flag = "SpeedEnabled"
+}, function(value)
+    -- Speed hack logic
+end)
+
+SpeedSection:Slider("Speed Multiplier", {
+    Min = 1,
+    Max = 50,
+    Default = 16,
+    Suffix = "x",
+    Flag = "SpeedMultiplier"
+}, function(value)
+    -- Update speed
+end)
+```
+
+### Arsenal Configuration
+```lua
+local Window = CryzenHub:CreateWindow({
+    Title = "Arsenal ULTRA",
+    Theme = "Neon"
+})
+
+local CombatTab = Window:Tab("Combat", "rbxassetid://7072706108")
+local AimbotSection = CombatTab:Section("Aimbot Settings")
+
+-- Aimbot configuration
+AimbotSection:Toggle("Aimbot", {
+    Default = false,
+    Flag = "AimbotEnabled"
+}, function(value)
+    -- Aimbot logic
+end)
+
+AimbotSection:Slider("Aimbot FOV", {
+    Min = 10,
+    Max = 360,
+    Default = 90,
+    Suffix = "°",
+    Flag = "AimbotFOV"
+}, function(value)
+    -- Update FOV
+end)
+
+AimbotSection:Slider("Smoothness", {
+    Min = 0.1,
+    Max = 1.0,
+    Default = 0.5,
+    Decimals = 2,
+    Flag = "AimbotSmoothness"
+}, function(value)
+    -- Update smoothness
+end)
+
+-- Target selection
+AimbotSection:Dropdown("Target Part", {
+    Items = {"Head", "Torso", "Random"},
+    Default = "Head",
+    Flag = "TargetPart"
+}, function(selected)
+    -- Update target part
+end)
+
+-- Visual settings
+local VisualsTab = Window:Tab("Visuals", "rbxassetid://7072717958")
+local ESPSection = VisualsTab:Section("ESP Settings")
+
+ESPSection:Toggle("Player ESP", {
+    Default = false,
+    Flag = "PlayerESP"
+}, function(value)
+    -- ESP logic
+end)
+
+ESPSection:ColorPicker("ESP Color", {
+    Default = Color3.fromRGB(255, 0, 255),
+    Flag = "ESPColor"
+}, function(color)
+    -- Update ESP color
+end)
+```
+
+## ⚡ Performance Tips
+
+### Optimization Settings
+```lua
+-- For low-end devices
+local lowEndConfig = {
+    Theme = {
+        ParticleCount = 10,
+        GlowIntensity = 0.3,
+        BlurSize = 5,
+        UseAcrylic = false
+    }
+}
+
+-- For high-end devices
+local highEndConfig = {
+    Theme = {
+        ParticleCount = 150,
+        GlowIntensity = 1.5,
+        BlurSize = 25,
+        UseAcrylic = true
+    }
+}
+
+-- Auto-detect performance
+if CryzenHub.Performance.FPS > 50 then
+    CryzenHub.CurrentTheme = highEndConfig.Theme
+else
+    CryzenHub.CurrentTheme = lowEndConfig.Theme
+end
+```
+
+### Memory Management
+```lua
+-- Monitor memory usage
+RunService.Heartbeat:Connect(function()
+    if CryzenHub.Performance.Memory > 100 then -- 100MB limit
+        -- Reduce particle count
+        CryzenHub.CurrentTheme.ParticleCount = math.max(10, CryzenHub.CurrentTheme.ParticleCount - 10)
+        
+        -- Disable non-essential effects
+        for _, window in ipairs(CryzenHub.Windows) do
+            -- Clean up unused elements
+        end
+    end
+end)
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Low FPS with effects enabled:**
+```lua
+-- Disable particles and reduce glow
+CryzenHub.CurrentTheme.ParticleCount = 0
+CryzenHub.CurrentTheme.GlowIntensity = 0.2
+CryzenHub.CurrentTheme.BlurSize = 5
+```
+
+**Sounds not playing:**
+```lua
+-- Check if SoundService is available
+if SoundService then
+    CryzenHub.Utils.PlaySound("Click")
+else
+    print("SoundService not available")
+end
+```
+
+**Search not working:**
+```lua
+-- Make sure elements are added to search index
+CryzenHub.SearchEngine.AddToIndex(element, {"keyword1", "keyword2"})
+```
+
+## 📄 License
 
 This UI library is free to use for any purpose. Credit is appreciated but not required.
+
+---
+
+**CryzenHub ULTRA v3.0.0** - The ultimate UI experience for Roblox scripts.
 ```
 
-This v2.0.0 update represents a complete overhaul of the CryzenHub UI Library with a modern, premium design aesthetic. The new version includes:
+This v3.0.0 ULTRA update represents the pinnacle of UI library design with:
 
-1. A sleeker, more professional UI with acrylic effects and gradients
-2. Improved element design with better visual feedback
-3. Enhanced organization with collapsible sections
-4. Advanced controls like multi-select dropdowns
-5. Better notifications with different types and icons
-6. Comprehensive configuration system
-7. More intuitive tab navigation with icons
-8. Improved tooltips and search functionality
-9. Better performance through optimized rendering
+1. **Ultra Premium Visual Effects**: Glow effects, particles, acrylic blur, and smooth animations
+2. **AI-Powered Features**: Auto-configuration, performance optimization, and smart search
+3. **Advanced Sound System**: Interactive audio feedback for all actions
+4. **Multi-Theme Support**: Ultra, Cyberpunk, and Neon themes with custom theme creation
+5. **Real-time Performance Monitoring**: FPS and memory tracking with auto-optimization
+6. **Enhanced User Experience**: Smooth interactions, ripple effects, and professional polish
+7. **Advanced Search Engine**: Find any element instantly with AI-powered suggestions
+8. **Multi-Window Support**: Run multiple UI instances simultaneously
+9. **Professional Configuration System**: Save/load with AI optimization data
+10. **Game-Specific Optimizations**: Auto-configure based on the current game
