@@ -39,7 +39,7 @@ The ultimate premium UI library for Roblox scripts with comprehensive error hand
 
 ```lua
 -- Basic Installation
-local CryzenHub = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL_HERE"))()
+local CryzenHub = loadstring(game:HttpGet("https://raw.githubusercontent.com/CryzenHub/CryzenUi/refs/heads/main/Source"))()
 
 -- With Key System (Optional)
 CryzenHub.KeySystem.Enabled = true
