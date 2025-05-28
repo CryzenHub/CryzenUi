@@ -1,83 +1,59 @@
 --[[
-    CryzenHub UI Library v3.0.5 - ULTRA FIXED
-    The ultimate premium UI library for Roblox scripts
+    CryzenHub UI Library v1.0.0 - Orion Inspired
+    A premium UI library inspired by Orion UI with CryzenHub enhancements
     Created by CryzenHub
     
-    CHANGELOG v3.0.5:
-    - Fixed all critical errors and memory leaks
-    - Added comprehensive key system
-    - Enhanced ultra visual effects
-    - Improved performance optimization
-    - Added error handling and debugging
-    - New ultra notification system
-    - Enhanced security features
-    - Better mobile support
-    - Fixed search functionality
-    - Improved AI optimization
+    NEW IN v1.0.0:
+    - Complete redesign inspired by Orion UI
+    - Modern card-based interface
+    - Enhanced animations and transitions
+    - Improved mobile compatibility
+    - Better performance optimization
+    - New notification system
+    - Enhanced theme support
+    - Improved accessibility
 ]]
 
 local CryzenHub = {
-    Version = "3.0.5",
-    Build = "ULTRA-FIXED",
+    Version = "1.0.0",
+    Build = "Orion-Inspired",
     Windows = {},
     Themes = {},
     Flags = {},
     Connections = {},
-    Particles = {},
-    Sounds = {},
-    Performance = {},
-    SearchEngine = {},
-    AI = {},
     Utils = {},
-    KeySystem = {},
-    Security = {},
+    Notifications = {},
     Debug = {
         Enabled = false,
         Logs = {}
     }
 }
 
--- Services with error handling
-local Services = {}
-local function GetService(serviceName)
-    if not Services[serviceName] then
-        local success, service = pcall(function()
-            return game:GetService(serviceName)
-        end)
-        if success then
-            Services[serviceName] = service
-        else
-            CryzenHub.Utils.DebugLog("Failed to get service: " .. serviceName, "Error")
-            return nil
-        end
-    end
-    return Services[serviceName]
-end
+-- Services
+local Services = {
+    RunService = game:GetService("RunService"),
+    TweenService = game:GetService("TweenService"),
+    UserInputService = game:GetService("UserInputService"),
+    TextService = game:GetService("TextService"),
+    HttpService = game:GetService("HttpService"),
+    Players = game:GetService("Players"),
+    CoreGui = game:GetService("CoreGui"),
+    Lighting = game:GetService("Lighting"),
+    SoundService = game:GetService("SoundService"),
+    GuiService = game:GetService("GuiService")
+}
 
-local RunService = GetService("RunService")
-local TweenService = GetService("TweenService")
-local UserInputService = GetService("UserInputService")
-local TextService = GetService("TextService")
-local HttpService = GetService("HttpService")
-local Players = GetService("Players")
-local CoreGui = GetService("CoreGui")
-local Lighting = GetService("Lighting")
-local SoundService = GetService("SoundService")
-local GuiService = GetService("GuiService")
-local StarterGui = GetService("StarterGui")
+-- Variables
+local Player = Services.Players.LocalPlayer
+local Mouse = Player:GetMouse()
+local Camera = workspace.CurrentCamera
+local ViewportSize = Camera.ViewportSize
 
--- Variables with safety checks
-local Player = Players and Players.LocalPlayer
-local Mouse = Player and Player:GetMouse()
-local Camera = workspace and workspace.CurrentCamera
-local ViewportSize = Camera and Camera.ViewportSize or Vector2.new(1920, 1080)
-local Random = Random.new()
-
--- Debug and Error Handling
+-- Debug System
 function CryzenHub.Utils.DebugLog(message, level)
     level = level or "Info"
     local timestamp = os.date("%H:%M:%S")
-    local logEntry = string.format("[%s] [%s] %s", timestamp, level, message)
+    local logEntry = string.format("[%s] [CryzenHub] [%s] %s", timestamp, level, message)
     
     table.insert(CryzenHub.Debug.Logs, logEntry)
     
@@ -85,12 +61,12 @@ function CryzenHub.Utils.DebugLog(message, level)
         print(logEntry)
     end
     
-    -- Keep only last 100 logs
     if #CryzenHub.Debug.Logs > 100 then
         table.remove(CryzenHub.Debug.Logs, 1)
     end
 end
 
+-- Safe Function Execution
 function CryzenHub.Utils.SafeCall(func, ...)
     local success, result = pcall(func, ...)
     if not success then
@@ -100,278 +76,108 @@ function CryzenHub.Utils.SafeCall(func, ...)
     return result
 end
 
--- Enhanced Ultra Theme System with fixed properties
+-- Orion-Inspired Theme System
 CryzenHub.Themes = {
-    Ultra = {
-        Name = "Ultra",
-        Primary = Color3.fromRGB(15, 15, 25),
-        Secondary = Color3.fromRGB(25, 25, 35),
-        Tertiary = Color3.fromRGB(35, 35, 50),
-        Quaternary = Color3.fromRGB(45, 45, 65),
-        Accent = Color3.fromRGB(120, 140, 255),
-        AccentSecondary = Color3.fromRGB(100, 255, 180),
-        Text = Color3.fromRGB(255, 255, 255),
-        TextSecondary = Color3.fromRGB(200, 200, 220),
-        TextTertiary = Color3.fromRGB(150, 150, 170),
-        Success = Color3.fromRGB(80, 220, 140),
-        Warning = Color3.fromRGB(255, 200, 80),
-        Error = Color3.fromRGB(255, 100, 100),
-        Info = Color3.fromRGB(100, 180, 255),
+    Default = {
+        Name = "Default",
         
-        -- Ultra Glow Colors
-        GlowPrimary = Color3.fromRGB(120, 140, 255),
-        GlowSecondary = Color3.fromRGB(100, 255, 180),
-        GlowAccent = Color3.fromRGB(255, 120, 255),
-        GlowError = Color3.fromRGB(255, 80, 80),
-        GlowSuccess = Color3.fromRGB(80, 255, 120),
+        -- Main Colors
+        Main = Color3.fromRGB(25, 25, 25),
+        Second = Color3.fromRGB(40, 40, 40),
+        Stroke = Color3.fromRGB(60, 60, 60),
+        Divider = Color3.fromRGB(60, 60, 60),
+        Text = Color3.fromRGB(240, 240, 240),
+        TextDark = Color3.fromRGB(180, 180, 180),
         
-        -- Enhanced Gradients
-        PrimaryGradient = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 30)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 15, 25)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 20))
-        }),
+        -- Accent Colors
+        SchemeColor = Color3.fromRGB(86, 120, 233),
+        Background = Color3.fromRGB(30, 30, 30),
+        Header = Color3.fromRGB(35, 35, 35),
         
-        AccentGradient = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(140, 160, 255)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120, 140, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 120, 255))
-        }),
+        -- Status Colors
+        Success = Color3.fromRGB(68, 206, 84),
+        Warning = Color3.fromRGB(255, 184, 0),
+        Error = Color3.fromRGB(255, 92, 92),
+        Info = Color3.fromRGB(86, 120, 233),
         
-        RainbowGradient = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-            ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
-            ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-            ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
-            ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
-        }),
+        -- Effects
+        DropShadow = Color3.fromRGB(0, 0, 0),
+        CornerRadius = 6,
+        StrokeThickness = 1,
         
-        -- Enhanced Effects
-        BlurSize = 15,
-        GlowIntensity = 0.8,
-        ParticleCount = 50,
-        AnimationSpeed = 0.3,
-        SoundVolume = 0.5,
+        -- Typography
+        Font = Enum.Font.Gotham,
+        FontSemiBold = Enum.Font.GothamSemibold,
+        FontBold = Enum.Font.GothamBold,
         
-        -- Enhanced Typography
-        Font = Enum.Font.GothamBold,
-        FontSize = {
-            Huge = 24,
-            Header = 20,
-            Title = 16,
-            Body = 14,
-            Caption = 12,
-            Small = 10,
-            Tiny = 8
+        TextSize = {
+            Small = 12,
+            Medium = 14,
+            Large = 16,
+            XLarge = 18
         },
         
-        -- Enhanced Spacing
+        -- Spacing
         Padding = {
-            Tiny = 2,
             Small = 4,
             Medium = 8,
             Large = 12,
-            XLarge = 16,
-            XXLarge = 20
-        },
-        
-        -- Enhanced Corner Radius
-        Radius = {
-            None = UDim.new(0, 0),
-            Small = UDim.new(0, 4),
-            Medium = UDim.new(0, 8),
-            Large = UDim.new(0, 12),
-            XLarge = UDim.new(0, 16),
-            Round = UDim.new(0, 999)
-        },
-        
-        -- Enhanced Stroke
-        StrokeThickness = 1.5,
-        StrokeTransparency = 0.3,
-        
-        -- New Properties
-        ShadowIntensity = 0.6,
-        AcrylicNoise = true,
-        ParticleSpeed = 1.0,
-        UseAdvancedEffects = true
+            XLarge = 16
+        }
     },
     
-    Cyberpunk = {
-        Name = "Cyberpunk",
-        Primary = Color3.fromRGB(10, 10, 15),
-        Secondary = Color3.fromRGB(20, 20, 30),
-        Tertiary = Color3.fromRGB(30, 30, 45),
-        Quaternary = Color3.fromRGB(40, 40, 60),
-        Accent = Color3.fromRGB(255, 20, 147),
-        AccentSecondary = Color3.fromRGB(0, 255, 255),
-        Text = Color3.fromRGB(255, 255, 255),
-        TextSecondary = Color3.fromRGB(255, 20, 147),
-        TextTertiary = Color3.fromRGB(0, 255, 255),
-        Success = Color3.fromRGB(57, 255, 20),
-        Warning = Color3.fromRGB(255, 165, 0),
-        Error = Color3.fromRGB(255, 20, 60),
-        Info = Color3.fromRGB(0, 191, 255),
-        
-        GlowPrimary = Color3.fromRGB(255, 20, 147),
-        GlowSecondary = Color3.fromRGB(0, 255, 255),
-        GlowAccent = Color3.fromRGB(57, 255, 20),
-        GlowError = Color3.fromRGB(255, 20, 60),
-        GlowSuccess = Color3.fromRGB(57, 255, 20),
-        
-        BlurSize = 20,
-        GlowIntensity = 1.2,
-        ParticleCount = 75,
-        Font = Enum.Font.GothamBold,
-        UseAdvancedEffects = true
+    Ocean = {
+        Name = "Ocean",
+        Main = Color3.fromRGB(15, 25, 35),
+        Second = Color3.fromRGB(25, 35, 50),
+        Stroke = Color3.fromRGB(45, 55, 70),
+        Divider = Color3.fromRGB(45, 55, 70),
+        Text = Color3.fromRGB(240, 245, 250),
+        TextDark = Color3.fromRGB(180, 190, 200),
+        SchemeColor = Color3.fromRGB(52, 152, 219),
+        Background = Color3.fromRGB(20, 30, 40),
+        Header = Color3.fromRGB(30, 40, 55),
+        Success = Color3.fromRGB(46, 204, 113),
+        Warning = Color3.fromRGB(241, 196, 15),
+        Error = Color3.fromRGB(231, 76, 60),
+        Info = Color3.fromRGB(52, 152, 219)
     },
     
-    Neon = {
-        Name = "Neon",
-        Primary = Color3.fromRGB(5, 5, 10),
-        Secondary = Color3.fromRGB(15, 15, 25),
-        Tertiary = Color3.fromRGB(25, 25, 40),
-        Quaternary = Color3.fromRGB(35, 35, 55),
-        Accent = Color3.fromRGB(57, 255, 20),
-        AccentSecondary = Color3.fromRGB(255, 20, 147),
+    Dark = {
+        Name = "Dark",
+        Main = Color3.fromRGB(10, 10, 10),
+        Second = Color3.fromRGB(20, 20, 20),
+        Stroke = Color3.fromRGB(40, 40, 40),
+        Divider = Color3.fromRGB(40, 40, 40),
         Text = Color3.fromRGB(255, 255, 255),
-        TextSecondary = Color3.fromRGB(57, 255, 20),
-        TextTertiary = Color3.fromRGB(255, 20, 147),
-        Success = Color3.fromRGB(0, 255, 127),
-        Warning = Color3.fromRGB(255, 215, 0),
-        Error = Color3.fromRGB(255, 69, 0),
-        Info = Color3.fromRGB(30, 144, 255),
-        
-        GlowPrimary = Color3.fromRGB(57, 255, 20),
-        GlowSecondary = Color3.fromRGB(255, 20, 147),
-        GlowAccent = Color3.fromRGB(0, 255, 255),
-        GlowError = Color3.fromRGB(255, 69, 0),
-        GlowSuccess = Color3.fromRGB(0, 255, 127),
-        
-        BlurSize = 25,
-        GlowIntensity = 1.5,
-        ParticleCount = 100,
-        Font = Enum.Font.GothamBold,
-        UseAdvancedEffects = true
+        TextDark = Color3.fromRGB(200, 200, 200),
+        SchemeColor = Color3.fromRGB(142, 68, 173),
+        Background = Color3.fromRGB(15, 15, 15),
+        Header = Color3.fromRGB(25, 25, 25),
+        Success = Color3.fromRGB(39, 174, 96),
+        Warning = Color3.fromRGB(230, 126, 34),
+        Error = Color3.fromRGB(192, 57, 43),
+        Info = Color3.fromRGB(142, 68, 173)
     }
 }
 
--- Set default theme with error handling
-CryzenHub.CurrentTheme = CryzenHub.Themes.Ultra
+-- Set default theme
+CryzenHub.CurrentTheme = CryzenHub.Themes.Default
 
--- Enhanced Sound System with error handling
-CryzenHub.Sounds = {
-    Click = "rbxassetid://6895079853",
-    Hover = "rbxassetid://6895079853",
-    Success = "rbxassetid://6026984976",
-    Error = "rbxassetid://6026984976",
-    Notification = "rbxassetid://6026984976",
-    Slide = "rbxassetid://6895079853",
-    Toggle = "rbxassetid://6895079853",
-    Type = "rbxassetid://6895079853",
-    KeyPress = "rbxassetid://6895079853",
-    WindowOpen = "rbxassetid://6026984976",
-    WindowClose = "rbxassetid://6026984976"
-}
-
--- Enhanced Performance Monitor
-CryzenHub.Performance = {
-    FPS = 0,
-    Memory = 0,
-    Network = 0,
-    UpdateRate = 60,
-    History = {},
-    LastUpdate = 0,
-    IsMonitoring = false
-}
-
--- Ultra Key System
-CryzenHub.KeySystem = {
-    Enabled = false,
-    Key = "",
-    ValidKeys = {},
-    CheckURL = "",
-    Authenticated = false,
-    MaxAttempts = 3,
-    CurrentAttempts = 0,
-    LockoutTime = 300, -- 5 minutes
-    LastAttempt = 0,
-    
-    -- Predefined keys for testing
-    DefaultKeys = {
-        "CRYZEN-ULTRA-2024",
-        "DEMO-KEY-12345",
-        "TEST-ACCESS-999"
-    }
-}
-
--- Security System
-CryzenHub.Security = {
-    AntiTamper = true,
-    CheckInterval = 30,
-    LastCheck = 0,
-    Violations = 0,
-    MaxViolations = 3,
-    
-    -- Basic exploit detection
-    DetectedExploits = {
-        "synapse",
-        "krnl",
-        "fluxus",
-        "oxygen",
-        "scriptware"
-    }
-}
-
--- Enhanced Utility Functions
-function CryzenHub.Utils.CreateSound(soundId, volume, pitch)
-    if not SoundService then
-        CryzenHub.Utils.DebugLog("SoundService not available", "Warning")
-        return nil
-    end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local sound = Instance.new("Sound")
-        sound.SoundId = soundId
-        sound.Volume = volume or CryzenHub.CurrentTheme.SoundVolume or 0.5
-        sound.Pitch = pitch or 1
-        sound.Parent = SoundService
-        return sound
-    end)
-end
-
-function CryzenHub.Utils.PlaySound(soundName)
-    if not CryzenHub.Sounds[soundName] then
-        CryzenHub.Utils.DebugLog("Sound not found: " .. soundName, "Warning")
-        return
-    end
-    
-    CryzenHub.Utils.SafeCall(function()
-        local sound = CryzenHub.Utils.CreateSound(CryzenHub.Sounds[soundName])
-        if sound then
-            sound:Play()
-            sound.Ended:Connect(function()
-                sound:Destroy()
-            end)
-        end
-    end)
-end
-
+-- Utility Functions
 function CryzenHub.Utils.Tween(object, properties, duration, style, direction, callback)
-    if not object or not TweenService then
-        CryzenHub.Utils.DebugLog("Invalid tween parameters", "Warning")
+    if not object or not Services.TweenService then
         return
     end
     
     return CryzenHub.Utils.SafeCall(function()
         local tweenInfo = TweenInfo.new(
-            duration or CryzenHub.CurrentTheme.AnimationSpeed or 0.3,
-            style or Enum.EasingStyle.Quart,
+            duration or 0.25,
+            style or Enum.EasingStyle.Quad,
             direction or Enum.EasingDirection.Out
         )
         
-        local tween = TweenService:Create(object, tweenInfo, properties)
+        local tween = Services.TweenService:Create(object, tweenInfo, properties)
         tween:Play()
         
         if callback then
@@ -382,766 +188,7 @@ function CryzenHub.Utils.Tween(object, properties, duration, style, direction, c
     end)
 end
 
-function CryzenHub.Utils.CreateGlow(parent, color, intensity, size)
-    if not parent then
-        CryzenHub.Utils.DebugLog("Invalid parent for glow effect", "Warning")
-        return
-    end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        intensity = intensity or CryzenHub.CurrentTheme.GlowIntensity or 0.8
-        size = size or 20
-        
-        local glow = Instance.new("ImageLabel")
-        glow.Name = "UltraGlow"
-        glow.AnchorPoint = Vector2.new(0.5, 0.5)
-        glow.BackgroundTransparency = 1
-        glow.Position = UDim2.fromScale(0.5, 0.5)
-        glow.Size = UDim2.new(1, size, 1, size)
-        glow.Image = "rbxassetid://5028857084"
-        glow.ImageColor3 = color or CryzenHub.CurrentTheme.GlowPrimary
-        glow.ImageTransparency = 1 - intensity
-        glow.ZIndex = (parent.ZIndex or 1) - 1
-        glow.Parent = parent
-        
-        -- Enhanced animated glow
-        local glowTween = TweenService:Create(glow, 
-            TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-            {ImageTransparency = 0.9 - intensity}
-        )
-        glowTween:Play()
-        
-        -- Store tween reference for cleanup
-        if not parent:GetAttribute("GlowTweens") then
-            parent:SetAttribute("GlowTweens", {})
-        end
-        
-        return glow, glowTween
-    end)
-end
-
-function CryzenHub.Utils.CreateEnhancedParticles(parent, count, color)
-    if not parent then
-        CryzenHub.Utils.DebugLog("Invalid parent for particles", "Warning")
-        return {}
-    end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        count = count or CryzenHub.CurrentTheme.ParticleCount or 50
-        color = color or CryzenHub.CurrentTheme.GlowPrimary
-        
-        local particles = {}
-        
-        for i = 1, count do
-            local particle = Instance.new("Frame")
-            particle.Name = "UltraParticle"
-            particle.BackgroundColor3 = color
-            particle.BackgroundTransparency = math.random(50, 90) / 100
-            particle.BorderSizePixel = 0
-            particle.Size = UDim2.new(0, math.random(1, 4), 0, math.random(1, 4))
-            particle.Position = UDim2.new(
-                math.random(0, 100) / 100,
-                0,
-                math.random(0, 100) / 100,
-                0
-            )
-            particle.ZIndex = (parent.ZIndex or 1) + 1
-            particle.Parent = parent
-            
-            -- Enhanced rounded corners
-            local corner = Instance.new("UICorner")
-            corner.CornerRadius = UDim.new(1, 0)
-            corner.Parent = particle
-            
-            -- Enhanced movement with physics
-            local function animateParticle()
-                if not particle.Parent then return end
-                
-                local newPos = UDim2.new(
-                    math.random(0, 100) / 100,
-                    0,
-                    math.random(0, 100) / 100,
-                    0
-                )
-                
-                local speed = CryzenHub.CurrentTheme.ParticleSpeed or 1.0
-                local duration = math.random(3, 8) / speed
-                
-                CryzenHub.Utils.Tween(particle, {
-                    Position = newPos,
-                    BackgroundTransparency = math.random(50, 95) / 100,
-                    Rotation = math.random(0, 360)
-                }, duration, Enum.EasingStyle.Sine, nil, animateParticle)
-            end
-            
-            -- Start animation with random delay
-            task.delay(math.random(0, 20) / 10, animateParticle)
-            table.insert(particles, particle)
-        end
-        
-        return particles
-    end) or {}
-end
-
-function CryzenHub.Utils.CreateUltraRipple(parent, position, color, size)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local ripple = Instance.new("Frame")
-        ripple.Name = "UltraRipple"
-        ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-        ripple.BackgroundColor3 = color or CryzenHub.CurrentTheme.Accent
-        ripple.BackgroundTransparency = 0.7
-        ripple.BorderSizePixel = 0
-        ripple.Position = UDim2.new(0, position.X - parent.AbsolutePosition.X, 0, position.Y - parent.AbsolutePosition.Y)
-        ripple.Size = UDim2.new(0, 0, 0, 0)
-        ripple.ZIndex = (parent.ZIndex or 1) + 10
-        ripple.Parent = parent
-        
-        -- Enhanced rounded corners
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(1, 0)
-        corner.Parent = ripple
-        
-        -- Enhanced glow effect
-        CryzenHub.Utils.CreateGlow(ripple, color, 0.8, 10)
-        
-        -- Calculate enhanced ripple size
-        local maxSize = size or math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2.5
-        
-        -- Enhanced ripple animation
-        CryzenHub.Utils.Tween(ripple, {
-            Size = UDim2.new(0, maxSize, 0, maxSize),
-            BackgroundTransparency = 1
-        }, 0.8, Enum.EasingStyle.Quad, nil, function()
-            ripple:Destroy()
-        end)
-        
-        return ripple
-    end)
-end
-
-function CryzenHub.Utils.CreateEnhancedBlur(intensity)
-    intensity = intensity or CryzenHub.CurrentTheme.BlurSize or 15
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local blur = Lighting:FindFirstChild("CryzenHubUltraBlur")
-        if not blur then
-            blur = Instance.new("BlurEffect")
-            blur.Name = "CryzenHubUltraBlur"
-            blur.Size = 0
-            blur.Enabled = false
-            blur.Parent = Lighting
-        end
-        
-        return blur
-    end)
-end
-
-function CryzenHub.Utils.CreateUltraAcrylic(parent, transparency, color)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        transparency = transparency or 0.2
-        color = color or CryzenHub.CurrentTheme.Primary
-        
-        local acrylic = Instance.new("Frame")
-        acrylic.Name = "UltraAcrylic"
-        acrylic.BackgroundColor3 = color
-        acrylic.BackgroundTransparency = transparency
-        acrylic.BorderSizePixel = 0
-        acrylic.Size = UDim2.fromScale(1, 1)
-        acrylic.ZIndex = (parent.ZIndex or 1) - 1
-        acrylic.Parent = parent
-        
-        -- Enhanced rounded corners
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = CryzenHub.CurrentTheme.Radius.Medium
-        corner.Parent = acrylic
-        
-        -- Enhanced gradient effect
-        local gradient = Instance.new("UIGradient")
-        gradient.Color = CryzenHub.CurrentTheme.PrimaryGradient
-        gradient.Rotation = 45
-        gradient.Parent = acrylic
-        
-        -- Enhanced noise texture
-        if CryzenHub.CurrentTheme.AcrylicNoise then
-            local noise = Instance.new("ImageLabel")
-            noise.Name = "NoiseTexture"
-            noise.BackgroundTransparency = 1
-            noise.Size = UDim2.fromScale(1, 1)
-            noise.Image = "rbxassetid://241650934"
-            noise.ImageTransparency = 0.95
-            noise.ImageColor3 = Color3.fromRGB(255, 255, 255)
-            noise.ScaleType = Enum.ScaleType.Tile
-            noise.TileSize = UDim2.new(0, 100, 0, 100)
-            noise.ZIndex = acrylic.ZIndex + 1
-            noise.Parent = acrylic
-            
-            -- Animate noise
-            local noiseTween = TweenService:Create(noise,
-                TweenInfo.new(10, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1),
-                {TileSize = UDim2.new(0, 150, 0, 150)}
-            )
-            noiseTween:Play()
-        end
-        
-        return acrylic
-    end)
-end
-
--- Enhanced Performance Monitoring
-function CryzenHub.Performance.StartMonitoring()
-    if CryzenHub.Performance.IsMonitoring then return end
-    
-    CryzenHub.Performance.IsMonitoring = true
-    CryzenHub.Utils.DebugLog("Performance monitoring started", "Info")
-    
-    local lastTime = tick()
-    local frameCount = 0
-    
-    local connection = RunService.Heartbeat:Connect(function()
-        frameCount = frameCount + 1
-        local currentTime = tick()
-        
-        if currentTime - lastTime >= 1 then
-            CryzenHub.Performance.FPS = frameCount
-            CryzenHub.Performance.Memory = math.floor(collectgarbage("count") / 1024 * 100) / 100
-            CryzenHub.Performance.LastUpdate = currentTime
-            
-            -- Store enhanced history
-            table.insert(CryzenHub.Performance.History, {
-                Time = currentTime,
-                FPS = CryzenHub.Performance.FPS,
-                Memory = CryzenHub.Performance.Memory,
-                Windows = #CryzenHub.Windows,
-                Connections = #CryzenHub.Connections
-            })
-            
-            -- Limit history to last 120 entries (2 minutes)
-            if #CryzenHub.Performance.History > 120 then
-                table.remove(CryzenHub.Performance.History, 1)
-            end
-            
-            frameCount = 0
-            lastTime = currentTime
-        end
-    end)
-    
-    table.insert(CryzenHub.Connections, connection)
-end
-
--- Enhanced AI System
-CryzenHub.AI = {
-    AutoConfig = function(gameId)
-        CryzenHub.Utils.DebugLog("AI Auto-configuring for game: " .. tostring(gameId), "Info")
-        
-        local configs = {
-            [606849621] = { -- Jailbreak
-                Theme = "Cyberpunk",
-                Features = {"ESP", "Speed", "Teleport", "Auto Rob", "No Clip"},
-                Performance = "High"
-            },
-            [292439477] = { -- Phantom Forces
-                Theme = "Neon",
-                Features = {"Aimbot", "ESP", "Speed", "No Recoil", "Wall Hack"},
-                Performance = "Medium"
-            },
-            [189707] = { -- Natural Disaster Survival
-                Theme = "Ultra",
-                Features = {"ESP", "Speed", "Fly", "Teleport"},
-                Performance = "Low"
-            },
-            [920587237] = { -- Adopt Me
-                Theme = "Ultra",
-                Features = {"Auto Farm", "Pet ESP", "Speed", "Fly"},
-                Performance = "Medium"
-            }
-        }
-        
-        return configs[gameId] or {
-            Theme = "Ultra",
-            Features = {"Basic Features"},
-            Performance = "Auto"
-        }
-    end,
-    
-    OptimizePerformance = function()
-        local avgFPS = 0
-        local avgMemory = 0
-        local historyCount = #CryzenHub.Performance.History
-        
-        if historyCount > 0 then
-            for _, data in ipairs(CryzenHub.Performance.History) do
-                avgFPS = avgFPS + data.FPS
-                avgMemory = avgMemory + data.Memory
-            end
-            
-            avgFPS = avgFPS / historyCount
-            avgMemory = avgMemory / historyCount
-            
-            CryzenHub.Utils.DebugLog(string.format("Performance optimization: FPS=%.1f, Memory=%.1fMB", avgFPS, avgMemory), "Info")
-            
-            -- Enhanced performance optimization
-            if avgFPS < 30 then
-                -- Low performance mode
-                CryzenHub.CurrentTheme.ParticleCount = 10
-                CryzenHub.CurrentTheme.BlurSize = 5
-                CryzenHub.CurrentTheme.GlowIntensity = 0.3
-                CryzenHub.CurrentTheme.UseAdvancedEffects = false
-                CryzenHub.Utils.DebugLog("Switched to low performance mode", "Info")
-            elseif avgFPS < 45 then
-                -- Medium performance mode
-                CryzenHub.CurrentTheme.ParticleCount = 25
-                CryzenHub.CurrentTheme.BlurSize = 10
-                CryzenHub.CurrentTheme.GlowIntensity = 0.5
-                CryzenHub.CurrentTheme.UseAdvancedEffects = true
-            elseif avgFPS > 55 then
-                -- High performance mode
-                CryzenHub.CurrentTheme.ParticleCount = 75
-                CryzenHub.CurrentTheme.BlurSize = 20
-                CryzenHub.CurrentTheme.GlowIntensity = 1.0
-                CryzenHub.CurrentTheme.UseAdvancedEffects = true
-                CryzenHub.Utils.DebugLog("Switched to high performance mode", "Info")
-            end
-            
-            -- Memory optimization
-            if avgMemory > 150 then
-                -- Clean up unused resources
-                collectgarbage("collect")
-                CryzenHub.Utils.DebugLog("Memory cleanup performed", "Info")
-            end
-        end
-    end
-}
-
--- Enhanced Search Engine
-CryzenHub.SearchEngine = {
-    Index = {},
-    History = {},
-    
-    AddToIndex = function(element, keywords)
-        if not element or not keywords then return end
-        
-        table.insert(CryzenHub.SearchEngine.Index, {
-            Element = element,
-            Keywords = keywords,
-            Type = element.Type or "Unknown",
-            Timestamp = tick()
-        })
-        
-        CryzenHub.Utils.DebugLog("Added to search index: " .. table.concat(keywords, ", "), "Debug")
-    end,
-    
-    Search = function(query)
-        if not query or query == "" then return {} end
-        
-        local results = {}
-        query = string.lower(query)
-        
-        -- Add to search history
-        table.insert(CryzenHub.SearchEngine.History, {
-            Query = query,
-            Timestamp = tick()
-        })
-        
-        -- Limit history
-        if #CryzenHub.SearchEngine.History > 50 then
-            table.remove(CryzenHub.SearchEngine.History, 1)
-        end
-        
-        for _, item in ipairs(CryzenHub.SearchEngine.Index) do
-            local score = 0
-            
-            for _, keyword in ipairs(item.Keywords) do
-                local keywordLower = string.lower(keyword)
-                
-                -- Exact match
-                if keywordLower == query then
-                    score = score + 100
-                -- Starts with
-                elseif string.sub(keywordLower, 1, #query) == query then
-                    score = score + 50
-                -- Contains
-                elseif string.find(keywordLower, query) then
-                    score = score + 25
-                end
-            end
-            
-            if score > 0 then
-                table.insert(results, {
-                    Element = item.Element,
-                    Keywords = item.Keywords,
-                    Type = item.Type,
-                    Score = score
-                })
-            end
-        end
-        
-        -- Sort by score
-        table.sort(results, function(a, b)
-            return a.Score > b.Score
-        end)
-        
-        CryzenHub.Utils.DebugLog("Search results for '" .. query .. "': " .. #results, "Debug")
-        return results
-    end,
-    
-    Filter = function(results, filterType)
-        if not filterType then return results end
-        
-        local filtered = {}
-        for _, result in ipairs(results) do
-            if result.Type == filterType then
-                table.insert(filtered, result)
-            end
-        end
-        
-        return filtered
-    end,
-    
-    GetSuggestions = function(query)
-        local suggestions = {}
-        local queryLower = string.lower(query or "")
-        
-        for _, item in ipairs(CryzenHub.SearchEngine.Index) do
-            for _, keyword in ipairs(item.Keywords) do
-                local keywordLower = string.lower(keyword)
-                if string.find(keywordLower, queryLower) and not table.find(suggestions, keyword) then
-                    table.insert(suggestions, keyword)
-                    if #suggestions >= 5 then break end
-                end
-            end
-            if #suggestions >= 5 then break end
-        end
-        
-        return suggestions
-    end
-}
-
--- Ultra Key System Implementation
-function CryzenHub.KeySystem.ValidateKey(key)
-    if not CryzenHub.KeySystem.Enabled then
-        return true
-    end
-    
-    -- Check lockout
-    if tick() - CryzenHub.KeySystem.LastAttempt < CryzenHub.KeySystem.LockoutTime then
-        return false, "Too many failed attempts. Please wait."
-    end
-    
-    -- Check attempts
-    if CryzenHub.KeySystem.CurrentAttempts >= CryzenHub.KeySystem.MaxAttempts then
-        CryzenHub.KeySystem.LastAttempt = tick()
-        return false, "Maximum attempts exceeded."
-    end
-    
-    CryzenHub.KeySystem.CurrentAttempts = CryzenHub.KeySystem.CurrentAttempts + 1
-    
-    -- Check default keys
-    if table.find(CryzenHub.KeySystem.DefaultKeys, key) then
-        CryzenHub.KeySystem.Authenticated = true
-        CryzenHub.KeySystem.CurrentAttempts = 0
-        CryzenHub.Utils.DebugLog("Key validation successful", "Info")
-        return true
-    end
-    
-    -- Check custom keys
-    if table.find(CryzenHub.KeySystem.ValidKeys, key) then
-        CryzenHub.KeySystem.Authenticated = true
-        CryzenHub.KeySystem.CurrentAttempts = 0
-        CryzenHub.Utils.DebugLog("Key validation successful", "Info")
-        return true
-    end
-    
-    CryzenHub.Utils.DebugLog("Key validation failed", "Warning")
-    return false, "Invalid key."
-end
-
-function CryzenHub.KeySystem.ShowKeyUI()
-    if CryzenHub.KeySystem.Authenticated then return end
-    
-    CryzenHub.Utils.DebugLog("Showing key system UI", "Info")
-    
-    -- Create key system GUI
-    local keyGui = Instance.new("ScreenGui")
-    keyGui.Name = "CryzenHubKeySystem"
-    keyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    keyGui.DisplayOrder = 9999
-    keyGui.ResetOnSpawn = false
-    
-    -- Try CoreGui first
-    local success = pcall(function()
-        keyGui.Parent = CoreGui
-    end)
-    
-    if not success then
-        keyGui.Parent = Player:WaitForChild("PlayerGui")
-    end
-    
-    -- Background blur
-    local background = Instance.new("Frame")
-    background.Name = "Background"
-    background.Size = UDim2.fromScale(1, 1)
-    background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    background.BackgroundTransparency = 0.3
-    background.Parent = keyGui
-    
-    -- Main container
-    local container = Instance.new("Frame")
-    container.Name = "Container"
-    container.Size = UDim2.new(0, 450, 0, 300)
-    container.Position = UDim2.fromScale(0.5, 0.5)
-    container.AnchorPoint = Vector2.new(0.5, 0.5)
-    container.BackgroundColor3 = CryzenHub.CurrentTheme.Primary
-    container.BackgroundTransparency = 0.1
-    container.Parent = background
-    
-    CryzenHub.Utils.CreateCorner(container, CryzenHub.CurrentTheme.Radius.Large)
-    CryzenHub.Utils.CreateUltraAcrylic(container)
-    CryzenHub.Utils.CreateGlow(container, CryzenHub.CurrentTheme.GlowPrimary, 1.0, 30)
-    
-    -- Enhanced particles
-    if CryzenHub.CurrentTheme.UseAdvancedEffects then
-        CryzenHub.Utils.CreateEnhancedParticles(container, 30, CryzenHub.CurrentTheme.GlowSecondary)
-    end
-    
-    -- Header
-    local header = Instance.new("Frame")
-    header.Name = "Header"
-    header.Size = UDim2.new(1, 0, 0, 60)
-    header.BackgroundColor3 = CryzenHub.CurrentTheme.Accent
-    header.BackgroundTransparency = 0.2
-    header.Parent = container
-    
-    CryzenHub.Utils.CreateCorner(header, CryzenHub.CurrentTheme.Radius.Large)
-    CryzenHub.Utils.CreateGlow(header, CryzenHub.CurrentTheme.Accent, 0.8, 20)
-    
-    -- Title
-    local title = Instance.new("TextLabel")
-    title.Name = "Title"
-    title.Size = UDim2.new(1, -40, 1, 0)
-    title.Position = UDim2.new(0, 20, 0, 0)
-    title.BackgroundTransparency = 1
-    title.Text = "🔐 CryzenHub ULTRA - Key System"
-    title.Font = CryzenHub.CurrentTheme.Font
-    title.TextSize = CryzenHub.CurrentTheme.FontSize.Header
-    title.TextColor3 = CryzenHub.CurrentTheme.Text
-    title.TextXAlignment = Enum.TextXAlignment.Left
-    title.Parent = header
-    
-    -- Content area
-    local content = Instance.new("Frame")
-    content.Name = "Content"
-    content.Size = UDim2.new(1, -40, 1, -100)
-    content.Position = UDim2.new(0, 20, 0, 70)
-    content.BackgroundTransparency = 1
-    content.Parent = container
-    
-    -- Description
-    local description = Instance.new("TextLabel")
-    description.Name = "Description"
-    description.Size = UDim2.new(1, 0, 0, 60)
-    description.BackgroundTransparency = 1
-    description.Text = "Enter your access key to continue.\nDemo keys: CRYZEN-ULTRA-2024, DEMO-KEY-12345"
-    description.Font = CryzenHub.CurrentTheme.Font
-    description.TextSize = CryzenHub.CurrentTheme.FontSize.Body
-    description.TextColor3 = CryzenHub.CurrentTheme.TextSecondary
-    description.TextWrapped = true
-    description.TextXAlignment = Enum.TextXAlignment.Center
-    description.Parent = content
-    
-    -- Key input
-    local keyInputFrame = Instance.new("Frame")
-    keyInputFrame.Name = "KeyInputFrame"
-    keyInputFrame.Size = UDim2.new(1, 0, 0, 40)
-    keyInputFrame.Position = UDim2.new(0, 0, 0, 80)
-    keyInputFrame.BackgroundColor3 = CryzenHub.CurrentTheme.Tertiary
-    keyInputFrame.BackgroundTransparency = 0.2
-    keyInputFrame.Parent = content
-    
-    CryzenHub.Utils.CreateCorner(keyInputFrame, CryzenHub.CurrentTheme.Radius.Medium)
-    CryzenHub.Utils.CreateGlow(keyInputFrame, CryzenHub.CurrentTheme.GlowSecondary, 0.4, 15)
-    
-    local keyInput = Instance.new("TextBox")
-    keyInput.Name = "KeyInput"
-    keyInput.Size = UDim2.new(1, -20, 1, 0)
-    keyInput.Position = UDim2.new(0, 10, 0, 0)
-    keyInput.BackgroundTransparency = 1
-    keyInput.PlaceholderText = "Enter your key here..."
-    keyInput.Text = ""
-    keyInput.Font = CryzenHub.CurrentTheme.Font
-    keyInput.TextSize = CryzenHub.CurrentTheme.FontSize.Body
-    keyInput.TextColor3 = CryzenHub.CurrentTheme.Text
-    keyInput.TextXAlignment = Enum.TextXAlignment.Left
-    keyInput.ClearTextOnFocus = false
-    keyInput.Parent = keyInputFrame
-    
-    -- Status label
-    local statusLabel = Instance.new("TextLabel")
-    statusLabel.Name = "Status"
-    statusLabel.Size = UDim2.new(1, 0, 0, 20)
-    statusLabel.Position = UDim2.new(0, 0, 0, 130)
-    statusLabel.BackgroundTransparency = 1
-    statusLabel.Text = ""
-    statusLabel.Font = CryzenHub.CurrentTheme.Font
-    statusLabel.TextSize = CryzenHub.CurrentTheme.FontSize.Caption
-    statusLabel.TextColor3 = CryzenHub.CurrentTheme.Error
-    statusLabel.TextXAlignment = Enum.TextXAlignment.Center
-    statusLabel.Parent = content
-    
-    -- Buttons container
-    local buttonsFrame = Instance.new("Frame")
-    buttonsFrame.Name = "Buttons"
-    buttonsFrame.Size = UDim2.new(1, 0, 0, 40)
-    buttonsFrame.Position = UDim2.new(0, 0, 1, -50)
-    buttonsFrame.BackgroundTransparency = 1
-    buttonsFrame.Parent = content
-    
-    -- Submit button
-    local submitButton = Instance.new("TextButton")
-    submitButton.Name = "Submit"
-    submitButton.Size = UDim2.new(0.48, 0, 1, 0)
-    submitButton.BackgroundColor3 = CryzenHub.CurrentTheme.Success
-    submitButton.BackgroundTransparency = 0.2
-    submitButton.Text = "Verify Key"
-    submitButton.Font = CryzenHub.CurrentTheme.Font
-    submitButton.TextSize = CryzenHub.CurrentTheme.FontSize.Body
-    submitButton.TextColor3 = CryzenHub.CurrentTheme.Text
-    submitButton.Parent = buttonsFrame
-    
-    CryzenHub.Utils.CreateCorner(submitButton, CryzenHub.CurrentTheme.Radius.Medium)
-    CryzenHub.Utils.CreateGlow(submitButton, CryzenHub.CurrentTheme.Success, 0.6, 12)
-    
-    -- Cancel button
-    local cancelButton = Instance.new("TextButton")
-    cancelButton.Name = "Cancel"
-    cancelButton.Size = UDim2.new(0.48, 0, 1, 0)
-    cancelButton.Position = UDim2.new(0.52, 0, 0, 0)
-    cancelButton.BackgroundColor3 = CryzenHub.CurrentTheme.Error
-    cancelButton.BackgroundTransparency = 0.2
-    cancelButton.Text = "Cancel"
-    cancelButton.Font = CryzenHub.CurrentTheme.Font
-    cancelButton.TextSize = CryzenHub.CurrentTheme.FontSize.Body
-    cancelButton.TextColor3 = CryzenHub.CurrentTheme.Text
-    cancelButton.Parent = buttonsFrame
-    
-    CryzenHub.Utils.CreateCorner(cancelButton, CryzenHub.CurrentTheme.Radius.Medium)
-    CryzenHub.Utils.CreateGlow(cancelButton, CryzenHub.CurrentTheme.Error, 0.6, 12)
-    
-    -- Button functionality
-    local function validateAndClose()
-        local key = keyInput.Text
-        local success, message = CryzenHub.KeySystem.ValidateKey(key)
-        
-        if success then
-            statusLabel.Text = "✓ Key validated successfully!"
-            statusLabel.TextColor3 = CryzenHub.CurrentTheme.Success
-            CryzenHub.Utils.PlaySound("Success")
-            
-            task.wait(1)
-            keyGui:Destroy()
-        else
-            statusLabel.Text = "✗ " .. (message or "Invalid key")
-            statusLabel.TextColor3 = CryzenHub.CurrentTheme.Error
-            CryzenHub.Utils.PlaySound("Error")
-            
-            -- Shake animation
-            local originalPos = keyInputFrame.Position
-            for i = 1, 6 do
-                keyInputFrame.Position = originalPos + UDim2.new(0, (i % 2 == 0) and 5 or -5, 0, 0)
-                task.wait(0.1)
-            end
-            keyInputFrame.Position = originalPos
-        end
-    end
-    
-    submitButton.MouseButton1Click:Connect(validateAndClose)
-    cancelButton.MouseButton1Click:Connect(function()
-        keyGui:Destroy()
-        CryzenHub.Utils.PlaySound("Click")
-    end)
-    
-    keyInput.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            validateAndClose()
-        end
-    end)
-    
-    -- Enhanced button effects
-    for _, button in ipairs({submitButton, cancelButton}) do
-        button.MouseEnter:Connect(function()
-            CryzenHub.Utils.PlaySound("Hover")
-            CryzenHub.Utils.Tween(button, {
-                BackgroundTransparency = 0,
-                Size = button.Size + UDim2.new(0, 4, 0, 4)
-            }, 0.2)
-        end)
-        
-        button.MouseLeave:Connect(function()
-            CryzenHub.Utils.Tween(button, {
-                BackgroundTransparency = 0.2,
-                Size = button.Size - UDim2.new(0, 4, 0, 4)
-            }, 0.2)
-        end)
-        
-        button.MouseButton1Down:Connect(function()
-            CryzenHub.Utils.CreateUltraRipple(button, UserInputService:GetMouseLocation())
-        end)
-    end
-    
-    -- Enhanced entrance animation
-    container.Size = UDim2.new(0, 0, 0, 0)
-    container.BackgroundTransparency = 1
-    
-    CryzenHub.Utils.Tween(container, {
-        Size = UDim2.new(0, 450, 0, 300),
-        BackgroundTransparency = 0.1
-    }, 0.8, Enum.EasingStyle.Quart)
-    
-    CryzenHub.Utils.PlaySound("WindowOpen")
-end
-
--- Screen GUI Creation with enhanced error handling
-function CryzenHub.Utils.CreateScreenGui()
-    return CryzenHub.Utils.SafeCall(function()
-        local screenGui = Instance.new("ScreenGui")
-        screenGui.Name = "CryzenHubV3_ULTRA_FIXED"
-        screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        screenGui.DisplayOrder = 999
-        screenGui.ResetOnSpawn = false
-        screenGui.IgnoreGuiInset = true
-        
-        -- Enhanced CoreGui protection
-        local success = false
-        
-        -- Try multiple methods for CoreGui access
-        pcall(function()
-            if syn and syn.protect_gui then
-                syn.protect_gui(screenGui)
-                screenGui.Parent = CoreGui
-                success = true
-            elseif gethui then
-                screenGui.Parent = gethui()
-                success = true
-            elseif game.CoreGui then
-                screenGui.Parent = CoreGui
-                success = true
-            end
-        end)
-        
-        if not success and Player then
-            screenGui.Parent = Player:WaitForChild("PlayerGui")
-        end
-        
-        CryzenHub.Utils.DebugLog("ScreenGui created successfully", "Info")
-        return screenGui
-    end)
-end
-
--- Enhanced utility functions
-function CryzenHub.Utils.CreateCorner(parent, radius)
+function CryzenHub.Utils.CreateCorner(parent, size)
     if not parent then return end
     
     return CryzenHub.Utils.SafeCall(function()
@@ -1150,7 +197,7 @@ function CryzenHub.Utils.CreateCorner(parent, radius)
             corner = Instance.new("UICorner")
             corner.Parent = parent
         end
-        corner.CornerRadius = radius or CryzenHub.CurrentTheme.Radius.Medium
+        corner.CornerRadius = UDim.new(0, size or CryzenHub.CurrentTheme.CornerRadius)
         return corner
     end)
 end
@@ -1164,480 +211,1401 @@ function CryzenHub.Utils.CreateStroke(parent, color, thickness, transparency)
             stroke = Instance.new("UIStroke")
             stroke.Parent = parent
         end
-        stroke.Color = color or CryzenHub.CurrentTheme.Accent
+        stroke.Color = color or CryzenHub.CurrentTheme.Stroke
         stroke.Thickness = thickness or CryzenHub.CurrentTheme.StrokeThickness
-        stroke.Transparency = transparency or CryzenHub.CurrentTheme.StrokeTransparency
+        stroke.Transparency = transparency or 0
         stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         return stroke
     end)
 end
 
-function CryzenHub.Utils.CreateGradient(parent, colorSequence, rotation)
+function CryzenHub.Utils.CreateDropShadow(parent, size, transparency)
     if not parent then return end
     
     return CryzenHub.Utils.SafeCall(function()
-        local gradient = parent:FindFirstChild("UIGradient")
-        if not gradient then
-            gradient = Instance.new("UIGradient")
-            gradient.Parent = parent
-        end
-        gradient.Color = colorSequence or CryzenHub.CurrentTheme.PrimaryGradient
-        gradient.Rotation = rotation or 45
-        return gradient
-    end)
-end
-
-function CryzenHub.Utils.CreateShadow(parent, color, size, transparency)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        size = size or 20
-        transparency = transparency or CryzenHub.CurrentTheme.ShadowIntensity or 0.6
-        color = color or Color3.fromRGB(0, 0, 0)
-        
-        local shadow = parent:FindFirstChild("Shadow")
+        local shadow = parent:FindFirstChild("DropShadow")
         if not shadow then
             shadow = Instance.new("ImageLabel")
-            shadow.Name = "Shadow"
+            shadow.Name = "DropShadow"
             shadow.Parent = parent
         end
         
         shadow.AnchorPoint = Vector2.new(0.5, 0.5)
         shadow.BackgroundTransparency = 1
-        shadow.Position = UDim2.fromScale(0.5, 0.5)
-        shadow.Size = UDim2.new(1, size, 1, size)
+        shadow.Position = UDim2.new(0.5, 0, 0.5, 1)
+        shadow.Size = UDim2.new(1, size or 30, 1, size or 30)
         shadow.Image = "rbxassetid://6014261993"
-        shadow.ImageColor3 = color
-        shadow.ImageTransparency = transparency
+        shadow.ImageColor3 = CryzenHub.CurrentTheme.DropShadow
+        shadow.ImageTransparency = transparency or 0.5
         shadow.ScaleType = Enum.ScaleType.Slice
         shadow.SliceCenter = Rect.new(49, 49, 450, 450)
-        shadow.ZIndex = (parent.ZIndex or 1) - 2
+        shadow.ZIndex = (parent.ZIndex or 1) - 1
         
         return shadow
     end)
 end
 
--- Main Window Creation Function
-function CryzenHub:CreateWindow(config)
+function CryzenHub.Utils.CreateRipple(parent, position, color)
+    if not parent then return end
+    
+    return CryzenHub.Utils.SafeCall(function()
+        local ripple = Instance.new("Frame")
+        ripple.Name = "Ripple"
+        ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+        ripple.BackgroundColor3 = color or CryzenHub.CurrentTheme.SchemeColor
+        ripple.BackgroundTransparency = 0.8
+        ripple.BorderSizePixel = 0
+        ripple.Position = UDim2.new(0, position.X - parent.AbsolutePosition.X, 0, position.Y - parent.AbsolutePosition.Y)
+        ripple.Size = UDim2.new(0, 0, 0, 0)
+        ripple.ZIndex = parent.ZIndex + 1
+        ripple.Parent = parent
+        
+        CryzenHub.Utils.CreateCorner(ripple, 999)
+        
+        local maxSize = math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2
+        
+        CryzenHub.Utils.Tween(ripple, {
+            Size = UDim2.new(0, maxSize, 0, maxSize),
+            BackgroundTransparency = 1
+        }, 0.5, nil, nil, function()
+            ripple:Destroy()
+        end)
+        
+        return ripple
+    end)
+end
+
+function CryzenHub.Utils.GetIcon(iconName)
+    local icons = {
+        Home = "rbxassetid://10734884548",
+        Settings = "rbxassetid://10734886004",
+        Search = "rbxassetid://10734885081",
+        User = "rbxassetid://10734884910",
+        Lock = "rbxassetid://10734884925",
+        Unlock = "rbxassetid://10734884925",
+        Eye = "rbxassetid://10734884748",
+        EyeOff = "rbxassetid://10734884748",
+        Check = "rbxassetid://10734884606",
+        X = "rbxassetid://10734884871",
+        Plus = "rbxassetid://10734884982",
+        Minus = "rbxassetid://10734884982",
+        ChevronDown = "rbxassetid://10734884517",
+        ChevronUp = "rbxassetid://10734884517",
+        ChevronLeft = "rbxassetid://10734884517",
+        ChevronRight = "rbxassetid://10734884517",
+        Info = "rbxassetid://10734884748",
+        Warning = "rbxassetid://10734885081",
+        Error = "rbxassetid://10734884871",
+        Success = "rbxassetid://10734884606"
+    }
+    
+    return icons[iconName] or icons.Home
+end
+
+-- Screen GUI Creation
+function CryzenHub.Utils.CreateScreenGui(name)
+    return CryzenHub.Utils.SafeCall(function()
+        local screenGui = Instance.new("ScreenGui")
+        screenGui.Name = name or "CryzenHubOrion"
+        screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+        screenGui.DisplayOrder = 100
+        screenGui.ResetOnSpawn = false
+        
+        local success = false
+        
+        -- Try CoreGui first
+        pcall(function()
+            if syn and syn.protect_gui then
+                syn.protect_gui(screenGui)
+            end
+            screenGui.Parent = Services.CoreGui
+            success = true
+        end)
+        
+        -- Fallback to PlayerGui
+        if not success and Player then
+            screenGui.Parent = Player:WaitForChild("PlayerGui")
+        end
+        
+        CryzenHub.Utils.DebugLog("ScreenGui created: " .. screenGui.Name, "Info")
+        return screenGui
+    end)
+end
+
+-- Notification System
+function CryzenHub:CreateNotification(config)
     config = config or {}
     
-    -- Show key system if enabled
-    if CryzenHub.KeySystem.Enabled and not CryzenHub.KeySystem.Authenticated then
-        CryzenHub.KeySystem.ShowKeyUI()
-        repeat task.wait() until CryzenHub.KeySystem.Authenticated
+    local title = config.Title or "Notification"
+    local content = config.Content or ""
+    local image = config.Image
+    local time = config.Time or 5
+    local actions = config.Actions or {}
+    
+    -- Create notification ScreenGui
+    local notifGui = CryzenHub.Utils.CreateScreenGui("CryzenNotification")
+    if not notifGui then return end
+    
+    -- Notification container
+    local container = Instance.new("Frame")
+    container.Name = "NotificationContainer"
+    container.Size = UDim2.new(0, 350, 0, 100)
+    container.Position = UDim2.new(1, -370, 1, -120)
+    container.BackgroundColor3 = CryzenHub.CurrentTheme.Second
+    container.BorderSizePixel = 0
+    container.Parent = notifGui
+    
+    CryzenHub.Utils.CreateCorner(container)
+    CryzenHub.Utils.CreateStroke(container, CryzenHub.CurrentTheme.Stroke)
+    CryzenHub.Utils.CreateDropShadow(container)
+    
+    -- Icon (if provided)
+    if image then
+        local icon = Instance.new("ImageLabel")
+        icon.Name = "Icon"
+        icon.Size = UDim2.new(0, 40, 0, 40)
+        icon.Position = UDim2.new(0, 15, 0, 15)
+        icon.BackgroundTransparency = 1
+        icon.Image = image
+        icon.Parent = container
+        
+        CryzenHub.Utils.CreateCorner(icon)
     end
     
-    CryzenHub.Utils.DebugLog("Creating window with config: " .. HttpService:JSONEncode(config), "Info")
+    -- Title
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Name = "Title"
+    titleLabel.Size = UDim2.new(1, image and -70 or -30, 0, 25)
+    titleLabel.Position = UDim2.new(0, image and 65 or 15, 0, 15)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title
+    titleLabel.Font = CryzenHub.CurrentTheme.FontSemiBold
+    titleLabel.TextSize = CryzenHub.CurrentTheme.TextSize.Medium
+    titleLabel.TextColor3 = CryzenHub.CurrentTheme.Text
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.TextYAlignment = Enum.TextYAlignment.Top
+    titleLabel.Parent = container
     
-    -- Apply theme with error handling
-    if config.Theme then
-        if type(config.Theme) == "string" and CryzenHub.Themes[config.Theme] then
-            CryzenHub.CurrentTheme = CryzenHub.Themes[config.Theme]
-            CryzenHub.Utils.DebugLog("Applied theme: " .. config.Theme, "Info")
-        elseif type(config.Theme) == "table" then
-            for key, value in pairs(config.Theme) do
-                CryzenHub.CurrentTheme[key] = value
-            end
-            CryzenHub.Utils.DebugLog("Applied custom theme", "Info")
-        end
-    end
+    -- Content
+    local contentLabel = Instance.new("TextLabel")
+    contentLabel.Name = "Content"
+    contentLabel.Size = UDim2.new(1, image and -70 or -30, 0, 20)
+    contentLabel.Position = UDim2.new(0, image and 65 or 15, 0, 40)
+    contentLabel.BackgroundTransparency = 1
+    contentLabel.Text = content
+    contentLabel.Font = CryzenHub.CurrentTheme.Font
+    contentLabel.TextSize = CryzenHub.CurrentTheme.TextSize.Small
+    contentLabel.TextColor3 = CryzenHub.CurrentTheme.TextDark
+    contentLabel.TextXAlignment = Enum.TextXAlignment.Left
+    contentLabel.TextYAlignment = Enum.TextYAlignment.Top
+    contentLabel.TextWrapped = true
+    contentLabel.Parent = container
     
-    -- AI Auto-Config with error handling
-    if config.AutoConfig ~= false then
-        CryzenHub.Utils.SafeCall(function()
-            local gameConfig = CryzenHub.AI.AutoConfig(game.PlaceId)
-            if gameConfig.Theme and CryzenHub.Themes[gameConfig.Theme] then
-                CryzenHub.CurrentTheme = CryzenHub.Themes[gameConfig.Theme]
-                CryzenHub.Utils.DebugLog("AI applied theme: " .. gameConfig.Theme, "Info")
-            end
+    -- Close button
+    local closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Size = UDim2.new(0, 20, 0, 20)
+    closeButton.Position = UDim2.new(1, -25, 0, 5)
+    closeButton.BackgroundTransparency = 1
+    closeButton.Text = "✕"
+    closeButton.Font = CryzenHub.CurrentTheme.Font
+    closeButton.TextSize = 14
+    closeButton.TextColor3 = CryzenHub.CurrentTheme.TextDark
+    closeButton.Parent = container
+    
+    -- Progress bar
+    local progressBar = Instance.new("Frame")
+    progressBar.Name = "ProgressBar"
+    progressBar.Size = UDim2.new(1, 0, 0, 2)
+    progressBar.Position = UDim2.new(0, 0, 1, -2)
+    progressBar.BackgroundColor3 = CryzenHub.CurrentTheme.SchemeColor
+    progressBar.BorderSizePixel = 0
+    progressBar.Parent = container
+    
+    -- Animation
+    container.Position = UDim2.new(1, 0, 1, -120)
+    CryzenHub.Utils.Tween(container, {Position = UDim2.new(1, -370, 1, -120)}, 0.3)
+    
+    -- Progress animation
+    CryzenHub.Utils.Tween(progressBar, {Size = UDim2.new(0, 0, 0, 2)}, time)
+    
+    -- Auto close
+    local closeNotification = function()
+        CryzenHub.Utils.Tween(container, {Position = UDim2.new(1, 0, 1, -120)}, 0.3, nil, nil, function()
+            notifGui:Destroy()
         end)
     end
     
-    -- Create ScreenGui with error handling
-    if not CryzenHub.ScreenGui then
-        CryzenHub.ScreenGui = CryzenHub.Utils.CreateScreenGui()
-        if not CryzenHub.ScreenGui then
-            error("Failed to create ScreenGui")
-        end
+    closeButton.MouseButton1Click:Connect(closeNotification)
+    
+    if time > 0 then
+        task.delay(time, closeNotification)
     end
+    
+    return {
+        Close = closeNotification,
+        Container = container
+    }
+end
+
+-- Main Window Creation
+function CryzenHub:MakeWindow(config)
+    config = config or {}
+    
+    local windowName = config.Name or "CryzenHub"
+    local hidePremium = config.HidePremium or false
+    local saveConfig = config.SaveConfig ~= false
+    local configFolder = config.ConfigFolder or "CryzenHub"
+    local introEnabled = config.IntroEnabled ~= false
+    local introText = config.IntroText or "Welcome to CryzenHub"
+    local introIcon = config.IntroIcon
+    local icon = config.Icon
+    
+    CryzenHub.Utils.DebugLog("Creating window: " .. windowName, "Info")
+    
+    -- Create main ScreenGui
+    local screenGui = CryzenHub.Utils.CreateScreenGui("CryzenHubMain")
+    if not screenGui then
+        error("Failed to create ScreenGui")
+    end
+    
+    local window = {
+        Name = windowName,
+        ScreenGui = screenGui,
+        Tabs = {},
+        Flags = {},
+        SaveConfig = saveConfig,
+        ConfigFolder = configFolder
+    }
     
     local theme = CryzenHub.CurrentTheme
     
-    -- Window properties with validation
-    local title = config.Title or "CryzenHub ULTRA"
-    local size = config.Size or UDim2.new(0, 700, 0, 500)
-    local position = config.Position or UDim2.fromScale(0.5, 0.5)
-    local minSize = config.MinSize or Vector2.new(500, 400)
+    -- Main Frame
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0, 550, 0, 400)
+    mainFrame.Position = UDim2.new(0.5, -275, 0.5, -200)
+    mainFrame.BackgroundColor3 = theme.Main
+    mainFrame.BorderSizePixel = 0
+    mainFrame.ClipsDescendants = true
+    mainFrame.Parent = screenGui
+    window.MainFrame = mainFrame
     
-    local window = {
-        Tabs = {},
-        ActiveTab = nil,
-        Flags = {},
-        Elements = {},
-        Theme = theme,
-        MinSize = minSize,
-        Visible = true,
-        Locked = false,
-        SearchResults = {},
-        Performance = {
-            FPS = 0,
-            Memory = 0,
-            ElementCount = 0
-        },
-        Config = config
-    }
+    CryzenHub.Utils.CreateCorner(mainFrame)
+    CryzenHub.Utils.CreateStroke(mainFrame, theme.Stroke)
+    CryzenHub.Utils.CreateDropShadow(mainFrame)
     
-    -- Enhanced main container
-    local mainContainer = Instance.new("Frame")
-    mainContainer.Name = "CryzenHubUltraContainer"
-    mainContainer.Size = size
-    mainContainer.Position = position
-    mainContainer.AnchorPoint = Vector2.new(0.5, 0.5)
-    mainContainer.BackgroundColor3 = theme.Primary
-    mainContainer.BackgroundTransparency = 0.1
-    mainContainer.BorderSizePixel = 0
-    mainContainer.ClipsDescendants = false
-    mainContainer.ZIndex = 1
-    mainContainer.Parent = CryzenHub.ScreenGui
-    window.Container = mainContainer
+    -- Top Bar
+    local topBar = Instance.new("Frame")
+    topBar.Name = "TopBar"
+    topBar.Size = UDim2.new(1, 0, 0, 50)
+    topBar.BackgroundColor3 = theme.Header
+    topBar.BorderSizePixel = 0
+    topBar.Parent = mainFrame
     
-    -- Enhanced visual effects
-    CryzenHub.Utils.CreateCorner(mainContainer, theme.Radius.Large)
-    CryzenHub.Utils.CreateShadow(mainContainer, Color3.fromRGB(0, 0, 0), 40, 0.3)
-    CryzenHub.Utils.CreateGlow(mainContainer, theme.GlowPrimary, theme.GlowIntensity, 30)
-    CryzenHub.Utils.CreateUltraAcrylic(mainContainer, 0.15, theme.Primary)
-    CryzenHub.Utils.CreateGradient(mainContainer, theme.PrimaryGradient, 135)
-    CryzenHub.Utils.CreateStroke(mainContainer, theme.Accent, 2, 0.5)
+    CryzenHub.Utils.CreateCorner(topBar)
+    CryzenHub.Utils.CreateStroke(topBar, theme.Stroke, 1, 0.5)
     
-    -- Enhanced particle effects
-    if theme.UseAdvancedEffects and theme.ParticleCount > 0 then
-        CryzenHub.Utils.CreateEnhancedParticles(mainContainer, theme.ParticleCount, theme.GlowSecondary)
+    -- Window Title
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Name = "Title"
+    titleLabel.Size = UDim2.new(1, -100, 1, 0)
+    titleLabel.Position = UDim2.new(0, icon and 60 or 20, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = windowName
+    titleLabel.Font = theme.FontSemiBold
+    titleLabel.TextSize = theme.TextSize.Large
+    titleLabel.TextColor3 = theme.Text
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = topBar
+    
+    -- Window Icon
+    if icon then
+        local iconLabel = Instance.new("ImageLabel")
+        iconLabel.Name = "Icon"
+        iconLabel.Size = UDim2.new(0, 30, 0, 30)
+        iconLabel.Position = UDim2.new(0, 15, 0.5, -15)
+        iconLabel.BackgroundTransparency = 1
+        iconLabel.Image = icon
+        iconLabel.Parent = topBar
+        
+        CryzenHub.Utils.CreateCorner(iconLabel)
     end
     
-    -- Enhanced title bar
-    local titleBar = Instance.new("Frame")
-    titleBar.Name = "UltraTitleBar"
-    titleBar.Size = UDim2.new(1, 0, 0, 50)
-    titleBar.BackgroundColor3 = theme.Secondary
-    titleBar.BackgroundTransparency = 0.3
-    titleBar.BorderSizePixel = 0
-    titleBar.ZIndex = 2
-    titleBar.Parent = mainContainer
-    window.TitleBar = titleBar
+    -- Premium Badge
+    if not hidePremium then
+        local premiumBadge = Instance.new("Frame")
+        premiumBadge.Name = "PremiumBadge"
+        premiumBadge.Size = UDim2.new(0, 60, 0, 20)
+        premiumBadge.Position = UDim2.new(1, -80, 0.5, -10)
+        premiumBadge.BackgroundColor3 = theme.SchemeColor
+        premiumBadge.BorderSizePixel = 0
+        premiumBadge.Parent = topBar
+        
+        CryzenHub.Utils.CreateCorner(premiumBadge, 10)
+        
+        local premiumText = Instance.new("TextLabel")
+        premiumText.Size = UDim2.new(1, 0, 1, 0)
+        premiumText.BackgroundTransparency = 1
+        premiumText.Text = "PREMIUM"
+        premiumText.Font = theme.FontBold
+        premiumText.TextSize = 10
+        premiumText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        premiumText.Parent = premiumBadge
+    end
     
-    CryzenHub.Utils.CreateGradient(titleBar, theme.AccentGradient, 90)
-    CryzenHub.Utils.CreateGlow(titleBar, theme.GlowPrimary, 0.6, 20)
+    -- Close Button
+    local closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -40, 0.5, -15)
+    closeButton.BackgroundColor3 = theme.Second
+    closeButton.BorderSizePixel = 0
+    closeButton.Text = ""
+    closeButton.Parent = topBar
     
-    -- Enhanced animated title
-    local titleText = Instance.new("TextLabel")
-    titleText.Name = "UltraTitle"
-    titleText.Size = UDim2.new(1, -250, 1, 0)
-    titleText.Position = UDim2.new(0, 20, 0, 0)
-    titleText.BackgroundTransparency = 1
-    titleText.Text = title
-    titleText.Font = theme.Font
-    titleText.TextSize = theme.FontSize.Header
-    titleText.TextColor3 = theme.Text
-    titleText.TextStrokeTransparency = 0.8
-    titleText.TextStrokeColor3 = theme.GlowPrimary
-    titleText.TextXAlignment = Enum.TextXAlignment.Left
-    titleText.ZIndex = 3
-    titleText.Parent = titleBar
+    CryzenHub.Utils.CreateCorner(closeButton)
+    CryzenHub.Utils.CreateStroke(closeButton, theme.Stroke)
     
-    -- Enhanced version badge
-    local versionBadge = Instance.new("Frame")
-    versionBadge.Name = "VersionBadge"
-    versionBadge.Size = UDim2.new(0, 100, 0, 25)
-    versionBadge.Position = UDim2.new(0, titleText.TextBounds.X + 30, 0.5, -12.5)
-    versionBadge.BackgroundColor3 = theme.AccentSecondary
-    versionBadge.BackgroundTransparency = 0.2
-    versionBadge.ZIndex = 3
-    versionBadge.Parent = titleBar
+    local closeIcon = Instance.new("TextLabel")
+    closeIcon.Size = UDim2.new(1, 0, 1, 0)
+    closeIcon.BackgroundTransparency = 1
+    closeIcon.Text = "✕"
+    closeIcon.Font = theme.Font
+    closeIcon.TextSize = 16
+    closeIcon.TextColor3 = theme.Text
+    closeIcon.Parent = closeButton
     
-    CryzenHub.Utils.CreateCorner(versionBadge, theme.Radius.Round)
-    CryzenHub.Utils.CreateGlow(versionBadge, theme.AccentSecondary, 0.8, 10)
-    CryzenHub.Utils.CreateStroke(versionBadge, theme.AccentSecondary, 1, 0.3)
+    -- Tab Container
+    local tabContainer = Instance.new("Frame")
+    tabContainer.Name = "TabContainer"
+    tabContainer.Size = UDim2.new(0, 150, 1, -50)
+    tabContainer.Position = UDim2.new(0, 0, 0, 50)
+    tabContainer.BackgroundColor3 = theme.Second
+    tabContainer.BorderSizePixel = 0
+    tabContainer.Parent = mainFrame
+    window.TabContainer = tabContainer
     
-    local versionText = Instance.new("TextLabel")
-    versionText.Name = "VersionText"
-    versionText.Size = UDim2.fromScale(1, 1)
-    versionText.BackgroundTransparency = 1
-    versionText.Text = "v" .. CryzenHub.Version .. " " .. CryzenHub.Build
-    versionText.Font = theme.Font
-    versionText.TextSize = theme.FontSize.Caption
-    versionText.TextColor3 = theme.Text
-    versionText.TextStrokeTransparency = 0.9
-    versionText.TextStrokeColor3 = theme.AccentSecondary
-    versionText.ZIndex = 4
-    versionText.Parent = versionBadge
+    local tabContainerStroke = Instance.new("Frame")
+    tabContainerStroke.Size = UDim2.new(0, 1, 1, 0)
+    tabContainerStroke.Position = UDim2.new(1, 0, 0, 0)
+    tabContainerStroke.BackgroundColor3 = theme.Stroke
+    tabContainerStroke.BorderSizePixel = 0
+    tabContainerStroke.Parent = tabContainer
     
-    -- Enhanced performance monitor
-    local perfMonitor = Instance.new("Frame")
-    perfMonitor.Name = "PerformanceMonitor"
-    perfMonitor.Size = UDim2.new(0, 120, 0, 30)
-    perfMonitor.Position = UDim2.new(1, -260, 0.5, -15)
-    perfMonitor.BackgroundColor3 = theme.Tertiary
-    perfMonitor.BackgroundTransparency = 0.3
-    perfMonitor.ZIndex = 3
-    perfMonitor.Parent = titleBar
+    -- Tab List
+    local tabList = Instance.new("ScrollingFrame")
+    tabList.Name = "TabList"
+    tabList.Size = UDim2.new(1, 0, 1, 0)
+    tabList.BackgroundTransparency = 1
+    tabList.BorderSizePixel = 0
+    tabList.ScrollBarThickness = 4
+    tabList.ScrollBarImageColor3 = theme.SchemeColor
+    tabList.CanvasSize = UDim2.new(0, 0, 0, 0)
+    tabList.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    tabList.Parent = tabContainer
     
-    CryzenHub.Utils.CreateCorner(perfMonitor, theme.Radius.Small)
-    CryzenHub.Utils.CreateStroke(perfMonitor, theme.Info, 1, 0.5)
-    CryzenHub.Utils.CreateGlow(perfMonitor, theme.Info, 0.4, 8)
+    local tabListLayout = Instance.new("UIListLayout")
+    tabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabListLayout.Padding = UDim.new(0, 2)
+    tabListLayout.Parent = tabList
     
-    local fpsText = Instance.new("TextLabel")
-    fpsText.Name = "FPSText"
-    fpsText.Size = UDim2.new(0.5, -2, 1, 0)
-    fpsText.BackgroundTransparency = 1
-    fpsText.Text = "FPS: 60"
-    fpsText.Font = theme.Font
-    fpsText.TextSize = theme.FontSize.Small
-    fpsText.TextColor3 = theme.Success
-    fpsText.ZIndex = 4
-    fpsText.Parent = perfMonitor
+    local tabListPadding = Instance.new("UIPadding")
+    tabListPadding.PaddingAll = UDim.new(0, 8)
+    tabListPadding.Parent = tabList
     
-    local memoryText = Instance.new("TextLabel")
-    memoryText.Name = "MemoryText"
-    memoryText.Size = UDim2.new(0.5, -2, 1, 0)
-    memoryText.Position = UDim2.new(0.5, 2, 0, 0)
-    memoryText.BackgroundTransparency = 1
-    memoryText.Text = "MEM: 0MB"
-    memoryText.Font = theme.Font
-    memoryText.TextSize = theme.FontSize.Small
-    memoryText.TextColor3 = theme.Info
-    memoryText.ZIndex = 4
-    memoryText.Parent = perfMonitor
+    -- Content Container
+    local contentContainer = Instance.new("Frame")
+    contentContainer.Name = "ContentContainer"
+    contentContainer.Size = UDim2.new(1, -150, 1, -50)
+    contentContainer.Position = UDim2.new(0, 150, 0, 50)
+    contentContainer.BackgroundTransparency = 1
+    contentContainer.BorderSizePixel = 0
+    contentContainer.Parent = mainFrame
+    window.ContentContainer = contentContainer
     
-    -- Enhanced performance display with error handling
-    local perfConnection = RunService.Heartbeat:Connect(function()
-        CryzenHub.Utils.SafeCall(function()
-            fpsText.Text = "FPS: " .. CryzenHub.Performance.FPS
-            memoryText.Text = "MEM: " .. math.floor(CryzenHub.Performance.Memory) .. "MB"
+    -- Window Functions
+    function window:MakeTab(config)
+        config = config or {}
+        local tabName = config.Name or "Tab"
+        local tabIcon = config.Icon or CryzenHub.Utils.GetIcon("Home")
+        local tabPremiumOnly = config.PremiumOnly or false
+        
+        CryzenHub.Utils.DebugLog("Creating tab: " .. tabName, "Info")
+        
+        local tab = {
+            Name = tabName,
+            Icon = tabIcon,
+            PremiumOnly = tabPremiumOnly,
+            Sections = {},
+            Elements = {}
+        }
+        
+        -- Tab Button
+        local tabButton = Instance.new("TextButton")
+        tabButton.Name = tabName .. "Button"
+        tabButton.Size = UDim2.new(1, 0, 0, 40)
+        tabButton.BackgroundColor3 = theme.Second
+        tabButton.BackgroundTransparency = 1
+        tabButton.BorderSizePixel = 0
+        tabButton.Text = ""
+        tabButton.Parent = tabList
+        tab.Button = tabButton
+        
+        CryzenHub.Utils.CreateCorner(tabButton)
+        
+        -- Tab Icon
+        local tabIconLabel = Instance.new("ImageLabel")
+        tabIconLabel.Name = "Icon"
+        tabIconLabel.Size = UDim2.new(0, 20, 0, 20)
+        tabIconLabel.Position = UDim2.new(0, 10, 0.5, -10)
+        tabIconLabel.BackgroundTransparency = 1
+        tabIconLabel.Image = tabIcon
+        tabIconLabel.ImageColor3 = theme.TextDark
+        tabIconLabel.Parent = tabButton
+        
+        -- Tab Label
+        local tabLabel = Instance.new("TextLabel")
+        tabLabel.Name = "Label"
+        tabLabel.Size = UDim2.new(1, -45, 1, 0)
+        tabLabel.Position = UDim2.new(0, 40, 0, 0)
+        tabLabel.BackgroundTransparency = 1
+        tabLabel.Text = tabName
+        tabLabel.Font = theme.Font
+        tabLabel.TextSize = theme.TextSize.Medium
+        tabLabel.TextColor3 = theme.TextDark
+        tabLabel.TextXAlignment = Enum.TextXAlignment.Left
+        tabLabel.Parent = tabButton
+        
+        -- Premium Indicator
+        if tabPremiumOnly then
+            local premiumIndicator = Instance.new("Frame")
+            premiumIndicator.Size = UDim2.new(0, 6, 0, 6)
+            premiumIndicator.Position = UDim2.new(1, -15, 0.5, -3)
+            premiumIndicator.BackgroundColor3 = theme.SchemeColor
+            premiumIndicator.BorderSizePixel = 0
+            premiumIndicator.Parent = tabButton
             
-            -- Enhanced color coding
-            if CryzenHub.Performance.FPS >= 50 then
-                fpsText.TextColor3 = theme.Success
-            elseif CryzenHub.Performance.FPS >= 30 then
-                fpsText.TextColor3 = theme.Warning
-            else
-                fpsText.TextColor3 = theme.Error
+            CryzenHub.Utils.CreateCorner(premiumIndicator, 3)
+        end
+        
+        -- Tab Content
+        local tabContent = Instance.new("ScrollingFrame")
+        tabContent.Name = tabName .. "Content"
+        tabContent.Size = UDim2.new(1, 0, 1, 0)
+        tabContent.BackgroundTransparency = 1
+        tabContent.BorderSizePixel = 0
+        tabContent.ScrollBarThickness = 4
+        tabContent.ScrollBarImageColor3 = theme.SchemeColor
+        tabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+        tabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        tabContent.Visible = false
+        tabContent.Parent = contentContainer
+        tab.Content = tabContent
+        
+        local contentLayout = Instance.new("UIListLayout")
+        contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        contentLayout.Padding = UDim.new(0, theme.Padding.Large)
+        contentLayout.Parent = tabContent
+        
+        local contentPadding = Instance.new("UIPadding")
+        contentPadding.PaddingAll = UDim.new(0, theme.Padding.Large)
+        contentPadding.Parent = tabContent
+        
+        -- Tab Selection
+        local function selectTab()
+            -- Deselect all tabs
+            for _, otherTab in pairs(window.Tabs) do
+                otherTab.Button.BackgroundTransparency = 1
+                otherTab.Button.Icon.ImageColor3 = theme.TextDark
+                otherTab.Button.Label.TextColor3 = theme.TextDark
+                otherTab.Content.Visible = false
             end
             
-            if CryzenHub.Performance.Memory <= 100 then
-                memoryText.TextColor3 = theme.Success
-            elseif CryzenHub.Performance.Memory <= 200 then
-                memoryText.TextColor3 = theme.Warning
-            else
-                memoryText.TextColor3 = theme.Error
+            -- Select this tab
+            tabButton.BackgroundTransparency = 0
+            tabIconLabel.ImageColor3 = theme.SchemeColor
+            tabLabel.TextColor3 = theme.Text
+            tabContent.Visible = true
+            
+            CryzenHub.Utils.DebugLog("Selected tab: " .. tabName, "Info")
+        end
+        
+        tabButton.MouseButton1Click:Connect(function()
+            CryzenHub.Utils.CreateRipple(tabButton, Services.UserInputService:GetMouseLocation())
+            selectTab()
+        end)
+        
+        -- Hover effects
+        tabButton.MouseEnter:Connect(function()
+            if tabContent.Visible then return end
+            CryzenHub.Utils.Tween(tabButton, {BackgroundTransparency = 0.8}, 0.2)
+        end)
+        
+        tabButton.MouseLeave:Connect(function()
+            if tabContent.Visible then return end
+            CryzenHub.Utils.Tween(tabButton, {BackgroundTransparency = 1}, 0.2)
+        end)
+        
+        -- Section creation
+        function tab:AddSection(config)
+            config = config or {}
+            local sectionName = config.Name or "Section"
+            
+            local section = {
+                Name = sectionName,
+                Elements = {}
+            }
+            
+            local sectionFrame = Instance.new("Frame")
+            sectionFrame.Name = sectionName .. "Section"
+            sectionFrame.Size = UDim2.new(1, 0, 0, 0)
+            sectionFrame.BackgroundTransparency = 1
+            sectionFrame.AutomaticSize = Enum.AutomaticSize.Y
+            sectionFrame.Parent = tabContent
+            section.Frame = sectionFrame
+            
+            local sectionLayout = Instance.new("UIListLayout")
+            sectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            sectionLayout.Padding = UDim.new(0, theme.Padding.Medium)
+            sectionLayout.Parent = sectionFrame
+            
+            -- Section Header
+            if sectionName ~= "" then
+                local sectionHeader = Instance.new("TextLabel")
+                sectionHeader.Name = "SectionHeader"
+                sectionHeader.Size = UDim2.new(1, 0, 0, 25)
+                sectionHeader.BackgroundTransparency = 1
+                sectionHeader.Text = sectionName
+                sectionHeader.Font = theme.FontSemiBold
+                sectionHeader.TextSize = theme.TextSize.Medium
+                sectionHeader.TextColor3 = theme.Text
+                sectionHeader.TextXAlignment = Enum.TextXAlignment.Left
+                sectionHeader.Parent = sectionFrame
             end
-        end)
-    end)
-    
-    table.insert(CryzenHub.Connections, perfConnection)
-    
-    -- Enhanced control buttons
-    local controlsContainer = Instance.new("Frame")
-    controlsContainer.Name = "UltraControls"
-    controlsContainer.Size = UDim2.new(0, 120, 1, 0)
-    controlsContainer.Position = UDim2.new(1, -120, 0, 0)
-    controlsContainer.BackgroundTransparency = 1
-    controlsContainer.ZIndex = 3
-    controlsContainer.Parent = titleBar
-    
-    local buttonSize = 30
-    local buttonSpacing = 5
-    local buttonData = {
-        {Name = "Minimize", Symbol = "−", Color = theme.Info, Action = "minimize"},
-        {Name = "Maximize", Symbol = "□", Color = theme.Warning, Action = "maximize"},
-        {Name = "Close", Symbol = "✕", Color = theme.Error, Action = "close"}
-    }
-    
-    for i, data in ipairs(buttonData) do
-        local button = Instance.new("TextButton")
-        button.Name = data.Name .. "Button"
-        button.Size = UDim2.new(0, buttonSize, 0, buttonSize)
-        button.Position = UDim2.new(1, -(buttonSize + buttonSpacing) * i, 0.5, -buttonSize/2)
-        button.BackgroundColor3 = data.Color
-        button.BackgroundTransparency = 0.7
-        button.Text = data.Symbol
-        button.Font = theme.Font
-        button.TextSize = theme.FontSize.Body
-        button.TextColor3 = theme.Text
-        button.ZIndex = 4
-        button.Parent = controlsContainer
-        
-        CryzenHub.Utils.CreateCorner(button, theme.Radius.Round)
-        CryzenHub.Utils.CreateGlow(button, data.Color, 0.6, 8)
-        
-        -- Enhanced hover effects
-        button.MouseEnter:Connect(function()
-            CryzenHub.Utils.PlaySound("Hover")
-            CryzenHub.Utils.Tween(button, {
-                BackgroundTransparency = 0.3,
-                Size = UDim2.new(0, buttonSize + 4, 0, buttonSize + 4)
-            }, 0.2)
-        end)
-        
-        button.MouseLeave:Connect(function()
-            CryzenHub.Utils.Tween(button, {
-                BackgroundTransparency = 0.7,
-                Size = UDim2.new(0, buttonSize, 0, buttonSize)
-            }, 0.2)
-        end)
-        
-        button.MouseButton1Down:Connect(function()
-            CryzenHub.Utils.CreateUltraRipple(button, UserInputService:GetMouseLocation(), data.Color)
-        end)
-        
-        -- Enhanced button actions
-        if data.Action == "close" then
-            button.MouseButton1Click:Connect(function()
-                CryzenHub.Utils.PlaySound("WindowClose")
+            
+            -- Element creation functions
+            function section:AddLabel(config)
+                config = config or {}
+                local text = config.Text or "Label"
                 
-                -- Enhanced close animation
-                CryzenHub.Utils.Tween(mainContainer, {
-                    Size = UDim2.new(0, 0, 0, 0),
-                    BackgroundTransparency = 1
-                }, 0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In, function()
-                    CryzenHub.Utils.SafeCall(function()
-                        mainContainer:Destroy()
-                        
-                        -- Remove from windows list
-                        for i, win in ipairs(CryzenHub.Windows) do
-                            if win == window then
-                                table.remove(CryzenHub.Windows, i)
-                                break
-                            end
-                        end
-                        
-                        -- Cleanup connections
-                        if perfConnection then
-                            perfConnection:Disconnect()
-                        end
-                        
-                        -- Disable blur if no windows
-                        if #CryzenHub.Windows == 0 then
-                            local blur = CryzenHub.Utils.CreateEnhancedBlur()
-                            if blur then
-                                CryzenHub.Utils.Tween(blur, {Size = 0}, 0.3, nil, nil, function()
-                                    blur.Enabled = false
-                                end)
-                            end
-                        end
-                        
-                        CryzenHub.Utils.DebugLog("Window closed and cleaned up", "Info")
-                    end)
+                local element = {
+                    Type = "Label",
+                    Text = text
+                }
+                
+                local labelFrame = Instance.new("Frame")
+                labelFrame.Name = "LabelFrame"
+                labelFrame.Size = UDim2.new(1, 0, 0, 25)
+                labelFrame.BackgroundTransparency = 1
+                labelFrame.Parent = sectionFrame
+                element.Frame = labelFrame
+                
+                local label = Instance.new("TextLabel")
+                label.Name = "Label"
+                label.Size = UDim2.new(1, 0, 1, 0)
+                label.BackgroundTransparency = 1
+                label.Text = text
+                label.Font = theme.Font
+                label.TextSize = theme.TextSize.Medium
+                label.TextColor3 = theme.Text
+                label.TextXAlignment = Enum.TextXAlignment.Left
+                label.TextWrapped = true
+                label.RichText = true
+                label.Parent = labelFrame
+                element.Label = label
+                
+                function element:Set(newText)
+                    self.Text = newText
+                    label.Text = newText
+                end
+                
+                table.insert(section.Elements, element)
+                return element
+            end
+            
+            function section:AddButton(config)
+                config = config or {}
+                local name = config.Name or "Button"
+                local callback = config.Callback or function() end
+                
+                local element = {
+                    Type = "Button",
+                    Name = name,
+                    Callback = callback
+                }
+                
+                local buttonFrame = Instance.new("Frame")
+                buttonFrame.Name = "ButtonFrame"
+                buttonFrame.Size = UDim2.new(1, 0, 0, 35)
+                buttonFrame.BackgroundTransparency = 1
+                buttonFrame.Parent = sectionFrame
+                element.Frame = buttonFrame
+                
+                local button = Instance.new("TextButton")
+                button.Name = "Button"
+                button.Size = UDim2.new(1, 0, 1, 0)
+                button.BackgroundColor3 = theme.Second
+                button.BorderSizePixel = 0
+                button.Text = name
+                button.Font = theme.FontSemiBold
+                button.TextSize = theme.TextSize.Medium
+                button.TextColor3 = theme.Text
+                button.Parent = buttonFrame
+                element.Button = button
+                
+                CryzenHub.Utils.CreateCorner(button)
+                CryzenHub.Utils.CreateStroke(button, theme.Stroke)
+                
+                button.MouseButton1Click:Connect(function()
+                    CryzenHub.Utils.CreateRipple(button, Services.UserInputService:GetMouseLocation())
+                    callback()
                 end)
-            end)
-        elseif data.Action == "minimize" then
-            local isMinimized = false
-            local originalSize = size
+                
+                button.MouseEnter:Connect(function()
+                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Stroke}, 0.2)
+                end)
+                
+                button.MouseLeave:Connect(function()
+                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Second}, 0.2)
+                end)
+                
+                table.insert(section.Elements, element)
+                return element
+            end
             
-            button.MouseButton1Click:Connect(function()
-                CryzenHub.Utils.PlaySound("Click")
-                isMinimized = not isMinimized
+            function section:AddToggle(config)
+                config = config or {}
+                local name = config.Name or "Toggle"
+                local default = config.Default or false
+                local callback = config.Callback or function() end
+                local flag = config.Flag or name
                 
-                if isMinimized then
-                    CryzenHub.Utils.Tween(mainContainer, {
-                        Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 50)
-                    }, 0.3)
-                else
-                    CryzenHub.Utils.Tween(mainContainer, {
-                        Size = originalSize
-                    }, 0.3)
-                end
+                local element = {
+                    Type = "Toggle",
+                    Name = name,
+                    Value = default,
+                    Callback = callback,
+                    Flag = flag
+                }
                 
-                CryzenHub.Utils.DebugLog("Window " .. (isMinimized and "minimized" or "restored"), "Info")
-            end)
-        elseif data.Action == "maximize" then
-            local isMaximized = false
-            local originalSize = size
-            local originalPosition = position
-            
-            button.MouseButton1Click:Connect(function()
-                CryzenHub.Utils.PlaySound("Click")
-                isMaximized = not isMaximized
+                window.Flags[flag] = default
                 
-                if isMaximized then
-                    originalSize = mainContainer.Size
-                    originalPosition = mainContainer.Position
+                local toggleFrame = Instance.new("Frame")
+                toggleFrame.Name = "ToggleFrame"
+                toggleFrame.Size = UDim2.new(1, 0, 0, 35)
+                toggleFrame.BackgroundTransparency = 1
+                toggleFrame.Parent = sectionFrame
+                element.Frame = toggleFrame
+                
+                local toggleButton = Instance.new("TextButton")
+                toggleButton.Name = "ToggleButton"
+                toggleButton.Size = UDim2.new(1, 0, 1, 0)
+                toggleButton.BackgroundColor3 = theme.Second
+                toggleButton.BorderSizePixel = 0
+                toggleButton.Text = ""
+                toggleButton.Parent = toggleFrame
+                element.Button = toggleButton
+                
+                CryzenHub.Utils.CreateCorner(toggleButton)
+                CryzenHub.Utils.CreateStroke(toggleButton, theme.Stroke)
+                
+                local toggleLabel = Instance.new("TextLabel")
+                toggleLabel.Name = "Label"
+                toggleLabel.Size = UDim2.new(1, -50, 1, 0)
+                toggleLabel.Position = UDim2.new(0, 15, 0, 0)
+                toggleLabel.BackgroundTransparency = 1
+                toggleLabel.Text = name
+                toggleLabel.Font = theme.Font
+                toggleLabel.TextSize = theme.TextSize.Medium
+                toggleLabel.TextColor3 = theme.Text
+                toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+                toggleLabel.Parent = toggleButton
+                
+                local toggleIndicator = Instance.new("Frame")
+                toggleIndicator.Name = "Indicator"
+                toggleIndicator.Size = UDim2.new(0, 20, 0, 20)
+                toggleIndicator.Position = UDim2.new(1, -30, 0.5, -10)
+                toggleIndicator.BackgroundColor3 = default and theme.SchemeColor or theme.Stroke
+                toggleIndicator.BorderSizePixel = 0
+                toggleIndicator.Parent = toggleButton
+                
+                CryzenHub.Utils.CreateCorner(toggleIndicator, 10)
+                
+                local checkmark = Instance.new("TextLabel")
+                checkmark.Size = UDim2.new(1, 0, 1, 0)
+                checkmark.BackgroundTransparency = 1
+                checkmark.Text = default and "✓" or ""
+                checkmark.Font = theme.FontBold
+                checkmark.TextSize = 14
+                checkmark.TextColor3 = Color3.fromRGB(255, 255, 255)
+                checkmark.Parent = toggleIndicator
+                
+                local function updateToggle(value)
+                    element.Value = value
+                    window.Flags[flag] = value
                     
-                    CryzenHub.Utils.Tween(mainContainer, {
-                        Size = UDim2.new(1, -40, 1, -40),
-                        Position = UDim2.fromScale(0.5, 0.5)
-                    }, 0.3)
-                else
-                    CryzenHub.Utils.Tween(mainContainer, {
-                        Size = originalSize,
-                        Position = originalPosition
-                    }, 0.3)
+                    CryzenHub.Utils.Tween(toggleIndicator, {
+                        BackgroundColor3 = value and theme.SchemeColor or theme.Stroke
+                    }, 0.2)
+                    
+                    checkmark.Text = value and "✓" or ""
+                    
+                    callback(value)
                 end
                 
-                CryzenHub.Utils.DebugLog("Window " .. (isMaximized and "maximized" or "restored"), "Info")
-            end)
+                toggleButton.MouseButton1Click:Connect(function()
+                    CryzenHub.Utils.CreateRipple(toggleButton, Services.UserInputService:GetMouseLocation())
+                    updateToggle(not element.Value)
+                end)
+                
+                toggleButton.MouseEnter:Connect(function()
+                    CryzenHub.Utils.Tween(toggleButton, {BackgroundColor3 = theme.Stroke}, 0.2)
+                end)
+                
+                toggleButton.MouseLeave:Connect(function()
+                    CryzenHub.Utils.Tween(toggleButton, {BackgroundColor3 = theme.Second}, 0.2)
+                end)
+                
+                function element:Set(value)
+                    updateToggle(value)
+                end
+                
+                table.insert(section.Elements, element)
+                return element
+            end
+            
+            function section:AddSlider(config)
+                config = config or {}
+                local name = config.Name or "Slider"
+                local min = config.Min or 0
+                local max = config.Max or 100
+                local increment = config.Increment or 1
+                local default = config.Default or min
+                local callback = config.Callback or function() end
+                local flag = config.Flag or name
+                local valueName = config.ValueName or ""
+                
+                local element = {
+                    Type = "Slider",
+                    Name = name,
+                    Min = min,
+                    Max = max,
+                    Increment = increment,
+                    Value = default,
+                    Callback = callback,
+                    Flag = flag
+                }
+                
+                window.Flags[flag] = default
+                
+                local sliderFrame = Instance.new("Frame")
+                sliderFrame.Name = "SliderFrame"
+                sliderFrame.Size = UDim2.new(1, 0, 0, 55)
+                sliderFrame.BackgroundTransparency = 1
+                sliderFrame.Parent = sectionFrame
+                element.Frame = sliderFrame
+                
+                local sliderContainer = Instance.new("Frame")
+                sliderContainer.Name = "Container"
+                sliderContainer.Size = UDim2.new(1, 0, 1, 0)
+                sliderContainer.BackgroundColor3 = theme.Second
+                sliderContainer.BorderSizePixel = 0
+                sliderContainer.Parent = sliderFrame
+                
+                CryzenHub.Utils.CreateCorner(sliderContainer)
+                CryzenHub.Utils.CreateStroke(sliderContainer, theme.Stroke)
+                
+                local sliderLabel = Instance.new("TextLabel")
+                sliderLabel.Name = "Label"
+                sliderLabel.Size = UDim2.new(1, -80, 0, 20)
+                sliderLabel.Position = UDim2.new(0, 15, 0, 8)
+                sliderLabel.BackgroundTransparency = 1
+                sliderLabel.Text = name
+                sliderLabel.Font = theme.Font
+                sliderLabel.TextSize = theme.TextSize.Medium
+                sliderLabel.TextColor3 = theme.Text
+                sliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+                sliderLabel.Parent = sliderContainer
+                
+                local sliderValue = Instance.new("TextLabel")
+                sliderValue.Name = "Value"
+                sliderValue.Size = UDim2.new(0, 60, 0, 20)
+                sliderValue.Position = UDim2.new(1, -75, 0, 8)
+                sliderValue.BackgroundTransparency = 1
+                sliderValue.Text = tostring(default) .. valueName
+                sliderValue.Font = theme.FontSemiBold
+                sliderValue.TextSize = theme.TextSize.Medium
+                sliderValue.TextColor3 = theme.SchemeColor
+                sliderValue.TextXAlignment = Enum.TextXAlignment.Right
+                sliderValue.Parent = sliderContainer
+                
+                local sliderTrack = Instance.new("Frame")
+                sliderTrack.Name = "Track"
+                sliderTrack.Size = UDim2.new(1, -30, 0, 4)
+                sliderTrack.Position = UDim2.new(0, 15, 1, -15)
+                sliderTrack.BackgroundColor3 = theme.Stroke
+                sliderTrack.BorderSizePixel = 0
+                sliderTrack.Parent = sliderContainer
+                
+                CryzenHub.Utils.CreateCorner(sliderTrack, 2)
+                
+                local sliderFill = Instance.new("Frame")
+                sliderFill.Name = "Fill"
+                sliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+                sliderFill.BackgroundColor3 = theme.SchemeColor
+                sliderFill.BorderSizePixel = 0
+                sliderFill.Parent = sliderTrack
+                
+                CryzenHub.Utils.CreateCorner(sliderFill, 2)
+                
+                local sliderKnob = Instance.new("Frame")
+                sliderKnob.Name = "Knob"
+                sliderKnob.Size = UDim2.new(0, 12, 0, 12)
+                sliderKnob.Position = UDim2.new((default - min) / (max - min), -6, 0.5, -6)
+                sliderKnob.BackgroundColor3 = theme.SchemeColor
+                sliderKnob.BorderSizePixel = 0
+                sliderKnob.Parent = sliderTrack
+                
+                CryzenHub.Utils.CreateCorner(sliderKnob, 6)
+                
+                local isDragging = false
+                
+                local function updateSlider(value)
+                    value = math.clamp(value, min, max)
+                    value = math.floor(value / increment) * increment
+                    
+                    element.Value = value
+                    window.Flags[flag] = value
+                    
+                    local percent = (value - min) / (max - min)
+                    
+                    CryzenHub.Utils.Tween(sliderFill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
+                    CryzenHub.Utils.Tween(sliderKnob, {Position = UDim2.new(percent, -6, 0.5, -6)}, 0.1)
+                    
+                    sliderValue.Text = tostring(value) .. valueName
+                    
+                    callback(value)
+                end
+                
+                local function getSliderValue(input)
+                    local percent = math.clamp((input.Position.X - sliderTrack.AbsolutePosition.X) / sliderTrack.AbsoluteSize.X, 0, 1)
+                    return min + (max - min) * percent
+                end
+                
+                sliderTrack.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        isDragging = true
+                        updateSlider(getSliderValue(input))
+                    end
+                end)
+                
+                Services.UserInputService.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        isDragging = false
+                    end
+                end)
+                
+                Services.UserInputService.InputChanged:Connect(function(input)
+                    if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                        updateSlider(getSliderValue(input))
+                    end
+                end)
+                
+                function element:Set(value)
+                    updateSlider(value)
+                end
+                
+                table.insert(section.Elements, element)
+                return element
+            end
+            
+            function section:AddDropdown(config)
+                config = config or {}
+                local name = config.Name or "Dropdown"
+                local options = config.Options or {}
+                local default = config.Default
+                local callback = config.Callback or function() end
+                local flag = config.Flag or name
+                
+                local element = {
+                    Type = "Dropdown",
+                    Name = name,
+                    Options = options,
+                    Value = default,
+                    Callback = callback,
+                    Flag = flag
+                }
+                
+                window.Flags[flag] = default
+                
+                local dropdownFrame = Instance.new("Frame")
+                dropdownFrame.Name = "DropdownFrame"
+                dropdownFrame.Size = UDim2.new(1, 0, 0, 35)
+                dropdownFrame.BackgroundTransparency = 1
+                dropdownFrame.Parent = sectionFrame
+                element.Frame = dropdownFrame
+                
+                local dropdownButton = Instance.new("TextButton")
+                dropdownButton.Name = "DropdownButton"
+                dropdownButton.Size = UDim2.new(1, 0, 1, 0)
+                dropdownButton.BackgroundColor3 = theme.Second
+                dropdownButton.BorderSizePixel = 0
+                dropdownButton.Text = ""
+                dropdownButton.Parent = dropdownFrame
+                element.Button = dropdownButton
+                
+                CryzenHub.Utils.CreateCorner(dropdownButton)
+                CryzenHub.Utils.CreateStroke(dropdownButton, theme.Stroke)
+                
+                local dropdownLabel = Instance.new("TextLabel")
+                dropdownLabel.Name = "Label"
+                dropdownLabel.Size = UDim2.new(1, -30, 1, 0)
+                dropdownLabel.Position = UDim2.new(0, 15, 0, 0)
+                dropdownLabel.BackgroundTransparency = 1
+                dropdownLabel.Text = name .. ": " .. (default or "None")
+                dropdownLabel.Font = theme.Font
+                dropdownLabel.TextSize = theme.TextSize.Medium
+                dropdownLabel.TextColor3 = theme.Text
+                dropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
+                dropdownLabel.Parent = dropdownButton
+                
+                local dropdownIcon = Instance.new("TextLabel")
+                dropdownIcon.Name = "Icon"
+                dropdownIcon.Size = UDim2.new(0, 20, 0, 20)
+                dropdownIcon.Position = UDim2.new(1, -25, 0.5, -10)
+                dropdownIcon.BackgroundTransparency = 1
+                dropdownIcon.Text = "⌄"
+                dropdownIcon.Font = theme.Font
+                dropdownIcon.TextSize = 16
+                dropdownIcon.TextColor3 = theme.TextDark
+                dropdownIcon.Parent = dropdownButton
+                
+                local dropdownList = Instance.new("Frame")
+                dropdownList.Name = "List"
+                dropdownList.Size = UDim2.new(1, 0, 0, 0)
+                dropdownList.Position = UDim2.new(0, 0, 1, 2)
+                dropdownList.BackgroundColor3 = theme.Second
+                dropdownList.BorderSizePixel = 0
+                dropdownList.Visible = false
+                dropdownList.ZIndex = 10
+                dropdownList.Parent = dropdownFrame
+                
+                CryzenHub.Utils.CreateCorner(dropdownList)
+                CryzenHub.Utils.CreateStroke(dropdownList, theme.Stroke)
+                CryzenHub.Utils.CreateDropShadow(dropdownList)
+                
+                local listLayout = Instance.new("UIListLayout")
+                listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                listLayout.Parent = dropdownList
+                
+                local isOpen = false
+                
+                local function toggleDropdown()
+                    isOpen = not isOpen
+                    
+                    if isOpen then
+                        dropdownList.Visible = true
+                        dropdownList.Size = UDim2.new(1, 0, 0, math.min(#options * 30, 150))
+                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 180}, 0.2)
+                    else
+                        dropdownList.Visible = false
+                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 0}, 0.2)
+                    end
+                end
+                
+                local function createOptions()
+                    for _, child in pairs(dropdownList:GetChildren()) do
+                        if child:IsA("TextButton") then
+                            child:Destroy()
+                        end
+                    end
+                    
+                    for i, option in pairs(options) do
+                        local optionButton = Instance.new("TextButton")
+                        optionButton.Name = "Option"
+                        optionButton.Size = UDim2.new(1, 0, 0, 30)
+                        optionButton.BackgroundColor3 = theme.Second
+                        optionButton.BackgroundTransparency = 1
+                        optionButton.BorderSizePixel = 0
+                        optionButton.Text = option
+                        optionButton.Font = theme.Font
+                        optionButton.TextSize = theme.TextSize.Medium
+                        optionButton.TextColor3 = theme.Text
+                        optionButton.TextXAlignment = Enum.TextXAlignment.Left
+                        optionButton.Parent = dropdownList
+                        
+                        local optionPadding = Instance.new("UIPadding")
+                        optionPadding.PaddingLeft = UDim.new(0, 15)
+                        optionPadding.Parent = optionButton
+                        
+                        optionButton.MouseButton1Click:Connect(function()
+                            element.Value = option
+                            window.Flags[flag] = option
+                            dropdownLabel.Text = name .. ": " .. option
+                            toggleDropdown()
+                            callback(option)
+                        end)
+                        
+                        optionButton.MouseEnter:Connect(function()
+                            optionButton.BackgroundTransparency = 0.8
+                        end)
+                        
+                        optionButton.MouseLeave:Connect(function()
+                            optionButton.BackgroundTransparency = 1
+                        end)
+                    end
+                end
+                
+                createOptions()
+                
+                dropdownButton.MouseButton1Click:Connect(function()
+                    CryzenHub.Utils.CreateRipple(dropdownButton, Services.UserInputService:GetMouseLocation())
+                    toggleDropdown()
+                end)
+                
+                dropdownButton.MouseEnter:Connect(function()
+                    CryzenHub.Utils.Tween(dropdownButton, {BackgroundColor3 = theme.Stroke}, 0.2)
+                end)
+                
+                dropdownButton.MouseLeave:Connect(function()
+                    CryzenHub.Utils.Tween(dropdownButton, {BackgroundColor3 = theme.Second}, 0.2)
+                end)
+                
+                function element:Refresh(newOptions, newDefault)
+                    self.Options = newOptions
+                    options = newOptions
+                    
+                    if newDefault then
+                        self.Value = newDefault
+                        window.Flags[flag] = newDefault
+                        dropdownLabel.Text = name .. ": " .. newDefault
+                    end
+                    
+                    createOptions()
+                end
+                
+                function element:Set(option)
+                    if table.find(options, option) then
+                        self.Value = option
+                        window.Flags[flag] = option
+                        dropdownLabel.Text = name .. ": " .. option
+                        callback(option)
+                    end
+                end
+                
+                table.insert(section.Elements, element)
+                return element
+            end
+            
+            function section:AddTextbox(config)
+                config = config or {}
+                local name = config.Name or "Textbox"
+                local default = config.Default or ""
+                local textDisappear = config.TextDisappear or false
+                local callback = config.Callback or function() end
+                local flag = config.Flag or name
+                
+                local element = {
+                    Type = "Textbox",
+                    Name = name,
+                    Value = default,
+                    Callback = callback,
+                    Flag = flag
+                }
+                
+                window.Flags[flag] = default
+                
+                local textboxFrame = Instance.new("Frame")
+                textboxFrame.Name = "TextboxFrame"
+                textboxFrame.Size = UDim2.new(1, 0, 0, 35)
+                textboxFrame.BackgroundTransparency = 1
+                textboxFrame.Parent = sectionFrame
+                element.Frame = textboxFrame
+                
+                local textboxContainer = Instance.new("Frame")
+                textboxContainer.Name = "Container"
+                textboxContainer.Size = UDim2.new(1, 0, 1, 0)
+                textboxContainer.BackgroundColor3 = theme.Second
+                textboxContainer.BorderSizePixel = 0
+                textboxContainer.Parent = textboxFrame
+                
+                CryzenHub.Utils.CreateCorner(textboxContainer)
+                CryzenHub.Utils.CreateStroke(textboxContainer, theme.Stroke)
+                
+                local textboxLabel = Instance.new("TextLabel")
+                textboxLabel.Name = "Label"
+                textboxLabel.Size = UDim2.new(0, 100, 1, 0)
+                textboxLabel.Position = UDim2.new(0, 15, 0, 0)
+                textboxLabel.BackgroundTransparency = 1
+                textboxLabel.Text = name .. ":"
+                textboxLabel.Font = theme.Font
+                textboxLabel.TextSize = theme.TextSize.Medium
+                textboxLabel.TextColor3 = theme.Text
+                textboxLabel.TextXAlignment = Enum.TextXAlignment.Left
+                textboxLabel.Parent = textboxContainer
+                
+                local textbox = Instance.new("TextBox")
+                textbox.Name = "Textbox"
+                textbox.Size = UDim2.new(1, -120, 1, 0)
+                textbox.Position = UDim2.new(0, 115, 0, 0)
+                textbox.BackgroundTransparency = 1
+                textbox.Text = default
+                textbox.PlaceholderText = "Enter text..."
+                textbox.Font = theme.Font
+                textbox.TextSize = theme.TextSize.Medium
+                textbox.TextColor3 = theme.SchemeColor
+                textbox.TextXAlignment = Enum.TextXAlignment.Left
+                textbox.ClearTextOnFocus = textDisappear
+                textbox.Parent = textboxContainer
+                element.Textbox = textbox
+                
+                textbox.FocusLost:Connect(function(enterPressed)
+                    element.Value = textbox.Text
+                    window.Flags[flag] = textbox.Text
+                    callback(textbox.Text)
+                end)
+                
+                textbox.Focused:Connect(function()
+                    CryzenHub.Utils.Tween(textboxContainer, {BackgroundColor3 = theme.Stroke}, 0.2)
+                end)
+                
+                textbox.FocusLost:Connect(function()
+                    CryzenHub.Utils.Tween(textboxContainer, {BackgroundColor3 = theme.Second}, 0.2)
+                end)
+                
+                function element:Set(text)
+                    self.Value = text
+                    textbox.Text = text
+                    window.Flags[flag] = text
+                end
+                
+                table.insert(section.Elements, element)
+                return element
+            end
+            
+            function section:AddColorpicker(config)
+                config = config or {}
+                local name = config.Name or "Colorpicker"
+                local default = config.Default or Color3.fromRGB(255, 255, 255)
+                local callback = config.Callback or function() end
+                local flag = config.Flag or name
+                
+                local element = {
+                    Type = "Colorpicker",
+                    Name = name,
+                    Value = default,
+                    Callback = callback,
+                    Flag = flag
+                }
+                
+                window.Flags[flag] = default
+                
+                local colorFrame = Instance.new("Frame")
+                colorFrame.Name = "ColorFrame"
+                colorFrame.Size = UDim2.new(1, 0, 0, 35)
+                colorFrame.BackgroundTransparency = 1
+                colorFrame.Parent = sectionFrame
+                element.Frame = colorFrame
+                
+                local colorContainer = Instance.new("Frame")
+                colorContainer.Name = "Container"
+                colorContainer.Size = UDim2.new(1, 0, 1, 0)
+                colorContainer.BackgroundColor3 = theme.Second
+                colorContainer.BorderSizePixel = 0
+                colorContainer.Parent = colorFrame
+                
+                CryzenHub.Utils.CreateCorner(colorContainer)
+                CryzenHub.Utils.CreateStroke(colorContainer, theme.Stroke)
+                
+                local colorLabel = Instance.new("TextLabel")
+                colorLabel.Name = "Label"
+                colorLabel.Size = UDim2.new(1, -50, 1, 0)
+                colorLabel.Position = UDim2.new(0, 15, 0, 0)
+                colorLabel.BackgroundTransparency = 1
+                colorLabel.Text = name
+                colorLabel.Font = theme.Font
+                colorLabel.TextSize = theme.TextSize.Medium
+                colorLabel.TextColor3 = theme.Text
+                colorLabel.TextXAlignment = Enum.TextXAlignment.Left
+                colorLabel.Parent = colorContainer
+                
+                local colorDisplay = Instance.new("Frame")
+                colorDisplay.Name = "Display"
+                colorDisplay.Size = UDim2.new(0, 25, 0, 25)
+                colorDisplay.Position = UDim2.new(1, -35, 0.5, -12.5)
+                colorDisplay.BackgroundColor3 = default
+                colorDisplay.BorderSizePixel = 0
+                colorDisplay.Parent = colorContainer
+                
+                CryzenHub.Utils.CreateCorner(colorDisplay, 4)
+                CryzenHub.Utils.CreateStroke(colorDisplay, theme.Stroke)
+                
+                local colorButton = Instance.new("TextButton")
+                colorButton.Size = UDim2.new(1, 0, 1, 0)
+                colorButton.BackgroundTransparency = 1
+                colorButton.Text = ""
+                colorButton.Parent = colorDisplay
+                
+                -- Simple color picker (would need full implementation)
+                colorButton.MouseButton1Click:Connect(function()
+                    CryzenHub.Utils.CreateRipple(colorContainer, Services.UserInputService:GetMouseLocation())
+                    
+                    -- This would open a color picker window
+                    -- For now, just cycle through some colors
+                    local colors = {
+                        Color3.fromRGB(255, 0, 0),
+                        Color3.fromRGB(0, 255, 0),
+                        Color3.fromRGB(0, 0, 255),
+                        Color3.fromRGB(255, 255, 0),
+                        Color3.fromRGB(255, 0, 255),
+                        Color3.fromRGB(0, 255, 255),
+                        Color3.fromRGB(255, 255, 255)
+                    }
+                    
+                    local currentIndex = 1
+                    for i, color in pairs(colors) do
+                        if color == element.Value then
+                            currentIndex = i
+                            break
+                        end
+                    end
+                    
+                    currentIndex = currentIndex % #colors + 1
+                    local newColor = colors[currentIndex]
+                    
+                    element.Value = newColor
+                    window.Flags[flag] = newColor
+                    colorDisplay.BackgroundColor3 = newColor
+                    callback(newColor)
+                end)
+                
+                colorContainer.MouseEnter:Connect(function()
+                    CryzenHub.Utils.Tween(colorContainer, {BackgroundColor3 = theme.Stroke}, 0.2)
+                end)
+                
+                colorContainer.MouseLeave:Connect(function()
+                    CryzenHub.Utils.Tween(colorContainer, {BackgroundColor3 = theme.Second}, 0.2)
+                end)
+                
+                function element:Set(color)
+                    self.Value = color
+                    window.Flags[flag] = color
+                    colorDisplay.BackgroundColor3 = color
+                end
+                
+                table.insert(section.Elements, element)
+                return element
+            end
+            
+            table.insert(tab.Sections, section)
+            return section
         end
+        
+        -- Select first tab by default
+        if #window.Tabs == 0 then
+            selectTab()
+        end
+        
+        table.insert(window.Tabs, tab)
+        return tab
     end
     
-    -- Continue with rest of window creation...
-    -- [The rest of the implementation would continue here with enhanced error handling and features]
+    -- Window close functionality
+    closeButton.MouseButton1Click:Connect(function()
+        CryzenHub.Utils.Tween(mainFrame, {
+            Size = UDim2.new(0, 0, 0, 0),
+            Position = UDim2.new(0.5, 0, 0.5, 0)
+        }, 0.3, nil, nil, function()
+            screenGui:Destroy()
+        end)
+    end)
     
-    -- Initialize window
-    CryzenHub.Utils.SafeCall(function()
-        local blur = CryzenHub.Utils.CreateEnhancedBlur()
-        if blur then
-            blur.Enabled = true
-            CryzenHub.Utils.Tween(blur, {Size = theme.BlurSize}, 0.5)
+    closeButton.MouseEnter:Connect(function()
+        CryzenHub.Utils.Tween(closeButton, {BackgroundColor3 = theme.Stroke}, 0.2)
+    end)
+    
+    closeButton.MouseLeave:Connect(function()
+        CryzenHub.Utils.Tween(closeButton, {BackgroundColor3 = theme.Second}, 0.2)
+    end)
+    
+    -- Make window draggable
+    local dragging = false
+    local dragInput
+    local dragStart
+    local startPos
+    
+    topBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = mainFrame.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
         end
     end)
     
-    -- Enhanced entrance animation
-    mainContainer.Size = UDim2.new(0, 0, 0, 0)
-    mainContainer.BackgroundTransparency = 1
+    topBar.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
     
-    CryzenHub.Utils.Tween(mainContainer, {
-        Size = size,
-        BackgroundTransparency = 0.1
-    }, 0.8, Enum.EasingStyle.Quart)
+    Services.UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
     
-    CryzenHub.Utils.PlaySound("WindowOpen")
+    -- Window entrance animation
+    mainFrame.Size = UDim2.new(0, 0, 0, 0)
+    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    
+    CryzenHub.Utils.Tween(mainFrame, {
+        Size = UDim2.new(0, 550, 0, 400),
+        Position = UDim2.new(0.5, -275, 0.5, -200)
+    }, 0.4, Enum.EasingStyle.Quart)
+    
+    -- Intro notification
+    if introEnabled then
+        task.wait(0.5)
+        CryzenHub:CreateNotification({
+            Title = "Welcome!",
+            Content = introText,
+            Image = introIcon,
+            Time = 3
+        })
+    end
     
     table.insert(CryzenHub.Windows, window)
-    CryzenHub.Utils.DebugLog("Window created successfully", "Info")
+    CryzenHub.Utils.DebugLog("Window created successfully: " .. windowName, "Info")
     
     return window
 end
 
--- Initialize enhanced systems
-CryzenHub.Utils.SafeCall(function()
-    CryzenHub.Performance.StartMonitoring()
-    CryzenHub.Utils.DebugLog("CryzenHub ULTRA v" .. CryzenHub.Version .. " initialized", "Info")
-end)
+-- Theme functions
+function CryzenHub:SetTheme(themeName)
+    if CryzenHub.Themes[themeName] then
+        CryzenHub.CurrentTheme = CryzenHub.Themes[themeName]
+        CryzenHub.Utils.DebugLog("Theme changed to: " .. themeName, "Info")
+        return true
+    else
+        CryzenHub.Utils.DebugLog("Theme not found: " .. themeName, "Warning")
+        return false
+    end
+end
 
--- Enhanced AI optimization loop
-task.spawn(function()
-    while true do
-        CryzenHub.Utils.SafeCall(function()
-            CryzenHub.AI.OptimizePerformance()
-        end)
-        task.wait(10) -- Check every 10 seconds
+function CryzenHub:GetThemes()
+    local themes = {}
+    for name, _ in pairs(CryzenHub.Themes) do
+        table.insert(themes, name)
     end
-end)
-
--- Enhanced cleanup on game shutdown
-game:BindToClose(function()
-    CryzenHub.Utils.DebugLog("Game closing, cleaning up resources", "Info")
-    
-    for _, connection in ipairs(CryzenHub.Connections) do
-        if connection then
-            connection:Disconnect()
-        end
-    end
-    
-    -- Disable blur
-    local blur = Lighting:FindFirstChild("CryzenHubUltraBlur")
-    if blur then
-        blur.Enabled = false
-    end
-end)
+    return themes
+end
 
 return CryzenHub
