@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <!-- DNS Settings Payload -->
+        <dict>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>A1B2C3D4-E5F6-7890-ABCD-EF1234567890</string>
+            <key>PayloadIdentifier</key>
+            <string>com.khoindvn.whitememecat.dns</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>PayloadDisplayName</key>
+            <string>White Memecat DNS</string>
+            <key>PayloadDescription</key>
+            <string>Custom DNS configuration by Khoindvn with revoke bypass protection</string>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>1.1.1.1</string>
+                    <string>1.0.0.1</string>
+                    <string>8.8.8.8</string>
+                    <string>8.8.4.4</string>
+                </array>
+                <key>ServerURL</key>
+                <string>https://cloudflare-dns.com/dns-query</string>
+                <key>SupplementalMatchDomains</key>
+                <array>
+                    <string>apple.com</string>
+                    <string>icloud.com</string>
+                    <string>itunes.apple.com</string>
+                    <string>apps.apple.com</string>
+                </array>
+            </dict>
+        </dict>
+        
+        <!-- Web Content Filter Payload for Revoke Bypass -->
+        <dict>
+            <key>PayloadType</key>
+            <string>com.apple.webcontent-filter</string>
+            <key>PayloadUUID</key>
+            <string>B2C3D4E5-F6G7-8901-BCDE-F23456789012</string>
+            <key>PayloadIdentifier</key>
+            <string>com.khoindvn.whitememecat.bypass</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>PayloadDisplayName</key>
+            <string>White Memecat Revoke Bypass</string>
+            <key>PayloadDescription</key>
+            <string>Block certificate revocation servers to protect sideloaded apps</string>
+            <key>FilterType</key>
+            <string>Plugin</string>
+            <key>UserDefinedName</key>
+            <string>White Memecat Protection</string>
+            <key>PluginBundleID</key>
+            <string>com.khoindvn.whitememecat.filter</string>
+            <key>FilterBrowsers</key>
+            <true/>
+            <key>FilterSockets</key>
+            <true/>
+            <key>VendorConfig</key>
+            <dict>
+                <key>BlockedDomains</key>
+                <array>
+                    <!-- Apple Certificate Revocation Servers -->
+                    <string>ocsp.apple.com</string>
+                    <string>crl.apple.com</string>
+                    <string>valid.apple.com</string>
+                    <string>certs.apple.com</string>
+                    <string>ocsp2.apple.com</string>
+                    <string>world-gen.g.aaplimg.com</string>
+                    <string>mesu.apple.com</string>
+                    <string>appldnld.apple.com</string>
+                    <!-- Additional Revocation Servers -->
+                    <string>ppq.apple.com</string>
+                    <string>gs.apple.com</string>
+                    <string>gdmf.apple.com</string>
+                    <!-- Ad Blocking Domains -->
+                    <string>googleads.g.doubleclick.net</string>
+                    <string>pagead2.googlesyndication.com</string>
+                    <string>tpc.googlesyndication.com</string>
+                    <string>facebook.com/tr</string>
+                    <string>connect.facebook.net</string>
+                    <string>analytics.google.com</string>
+                    <string>google-analytics.com</string>
+                </array>
+                <key>WhitelistedDomains</key>
+                <array>
+                    <string>khoindvn.io.vn</string>
+                    <string>github.com</string>
+                    <string>raw.githubusercontent.com</string>
+                    <string>api.github.com</string>
+                </array>
+            </dict>
+        </dict>
+        
+        <!-- Global HTTP Proxy for Enhanced Protection -->
+        <dict>
+            <key>PayloadType</key>
+            <string>com.apple.proxy.http.global</string>
+            <key>PayloadUUID</key>
+            <string>C3D4E5F6-G7H8-9012-CDEF-345678901234</string>
+            <key>PayloadIdentifier</key>
+            <string>com.khoindvn.whitememecat.proxy</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>PayloadDisplayName</key>
+            <string>White Memecat Proxy</string>
+            <key>PayloadDescription</key>
+            <string>Enhanced protection proxy settings</string>
+            <key>ProxyType</key>
+            <string>Manual</string>
+            <key>ProxyServer</key>
+            <string>1.1.1.1</string>
+            <key>ProxyServerPort</key>
+            <integer>53</integer>
+            <key>ProxyPACURL</key>
+            <string>data:text/javascript,
+                function FindProxyForURL(url, host) {
+                    // Block Apple certificate servers
+                    if (shExpMatch(host, "*ocsp*.apple.com*") ||
+                        shExpMatch(host, "*crl*.apple.com*") ||
+                        shExpMatch(host, "*valid*.apple.com*") ||
+                        shExpMatch(host, "*certs*.apple.com*") ||
+                        shExpMatch(host, "*mesu*.apple.com*") ||
+                        shExpMatch(host, "*appldnld*.apple.com*") ||
+                        shExpMatch(host, "*ppq*.apple.com*") ||
+                        shExpMatch(host, "*gs*.apple.com*") ||
+                        shExpMatch(host, "*gdmf*.apple.com*")) {
+                        return "PROXY 127.0.0.1:1";  // Block by routing to localhost
+                    }
+                    
+                    // Block ads
+                    if (shExpMatch(host, "*doubleclick.net*") ||
+                        shExpMatch(host, "*googlesyndication.com*") ||
+                        shExpMatch(host, "*google-analytics.com*") ||
+                        shExpMatch(host, "*facebook.com/tr*")) {
+                        return "PROXY 127.0.0.1:1";
+                    }
+                    
+                    // Allow everything else
+                    return "DIRECT";
+                }
+            </string>
+        </dict>
+        
+        <!-- Restrictions Payload for Additional Protection -->
+        <dict>
+            <key>PayloadType</key>
+            <string>com.apple.applicationaccess</string>
+            <key>PayloadUUID</key>
+            <string>D4E5F6G7-H8I9-0123-DEFG-456789012345</string>
+            <key>PayloadIdentifier</key>
+            <string>com.khoindvn.whitememecat.restrictions</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>PayloadDisplayName</key>
+            <string>White Memecat Security</string>
+            <key>PayloadDescription</key>
+            <string>Security restrictions for enhanced app protection</string>
+            <key>allowAppInstallation</key>
+            <true/>
+            <key>allowUIAppInstallation</key>
+            <true/>
+            <key>allowMarketplaceAppInstallation</key>
+            <true/>
+            <key>allowAutomaticAppDownloads</key>
+            <false/>
+            <key>allowSystemAppRemoval</key>
+            <false/>
+            <key>allowAppRemoval</key>
+            <true/>
+        </dict>
+    </array>
+    
+    <!-- Main Profile Information -->
+    <key>PayloadDisplayName</key>
+    <string>🐱 White Memecat by Khoindvn</string>
+    <key>PayloadDescription</key>
+    <string>Complete iOS protection suite with DNS filtering, revoke bypass, and ad blocking by Khoindvn. Visit khoindvn.io.vn for more tools.</string>
+    <key>PayloadIdentifier</key>
+    <string>com.khoindvn.whitememecat.profile</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>E5F6G7H8-I9J0-1234-EFGH-567890123456</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadOrganization</key>
+    <string>Khoindvn</string>
+    <key>PayloadScope</key>
+    <string>User</string>
+    
+    <!-- Profile Metadata -->
+    <key>ConsentText</key>
+    <dict>
+        <key>en</key>
+        <string>🐱 White Memecat Configuration Profile by Khoindvn
+
+This profile provides:
+• DNS filtering with Cloudflare DNS
+• Certificate revocation bypass protection  
+• Ad blocking capabilities
+• Enhanced privacy and security
+• Custom filtering rules
+
+The profile will:
+✅ Block Apple certificate servers to prevent app revocation
+✅ Filter advertisements and trackers
+✅ Use secure DNS-over-HTTPS
+✅ Protect sideloaded applications
+✅ Enhance overall iOS security
+
+Created by Khoindvn - Visit khoindvn.io.vn
+Profile Version: 1.0
+Compatible with iOS 12.0+</string>
+    </dict>
+    
+    <key>TargetDeviceType</key>
+    <integer>0</integer>
+    <key>HasRemovalPasscode</key>
+    <false/>
+    <key>IsEncrypted</key>
+    <false/>
+</dict>
+</plist>
