@@ -1,139 +1,66 @@
 --[[
-    CryzenHub UI Library v1.0.0 - Orion Inspired
-    A premium UI library inspired by Orion UI with CryzenHub enhancements
+    CryzenHub UI Library v2.0.0 - Orion v2 Inspired (Fixed)
+    A premium UI library inspired by Orion UI Library v2 with enhanced features
     Created by CryzenHub
     
-    NEW IN v1.0.0:
-    - Complete redesign inspired by Orion UI
-    - Modern card-based interface
-    - Enhanced animations and transitions
+    NEW IN v2.0.0:
+    - Complete Orion v2 inspired redesign
+    - Fixed all UIPadding and layout errors
+    - Enhanced draggable UI system
     - Improved mobile compatibility
     - Better performance optimization
-    - New notification system
-    - Enhanced theme support
-    - Improved accessibility
+    - New modern notification system
+    - Enhanced theme support with gradients
+    - Smooth animations and transitions
+    - Advanced error handling
 ]]
 
-local CryzenHub = {
-    Version = "1.0.0",
-    Build = "Orion-Inspired",
-    Windows = {},
-    Themes = {},
-    Flags = {},
-    Connections = {},
-    Utils = {},
-    Notifications = {},
-    Debug = {
-        Enabled = false,
-        Logs = {}
-    }
-}
+local OrionLib = {}
+OrionLib.Version = "2.0.0"
+OrionLib.Build = "Orion-v2-Inspired"
+OrionLib.Windows = {}
+OrionLib.Connections = {}
+OrionLib.Flags = {}
+OrionLib.Themes = {}
 
 -- Services
-local Services = {
-    RunService = game:GetService("RunService"),
-    TweenService = game:GetService("TweenService"),
-    UserInputService = game:GetService("UserInputService"),
-    TextService = game:GetService("TextService"),
-    HttpService = game:GetService("HttpService"),
-    Players = game:GetService("Players"),
-    CoreGui = game:GetService("CoreGui"),
-    Lighting = game:GetService("Lighting"),
-    SoundService = game:GetService("SoundService"),
-    GuiService = game:GetService("GuiService")
-}
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local TextService = game:GetService("TextService")
+local HttpService = game:GetService("HttpService")
 
 -- Variables
-local Player = Services.Players.LocalPlayer
+local Player = Players.LocalPlayer
 local Mouse = Player:GetMouse()
-local Camera = workspace.CurrentCamera
-local ViewportSize = Camera.ViewportSize
 
--- Debug System
-function CryzenHub.Utils.DebugLog(message, level)
-    level = level or "Info"
-    local timestamp = os.date("%H:%M:%S")
-    local logEntry = string.format("[%s] [CryzenHub] [%s] %s", timestamp, level, message)
-    
-    table.insert(CryzenHub.Debug.Logs, logEntry)
-    
-    if CryzenHub.Debug.Enabled then
-        print(logEntry)
-    end
-    
-    if #CryzenHub.Debug.Logs > 100 then
-        table.remove(CryzenHub.Debug.Logs, 1)
-    end
-end
-
--- Safe Function Execution
-function CryzenHub.Utils.SafeCall(func, ...)
-    local success, result = pcall(func, ...)
-    if not success then
-        CryzenHub.Utils.DebugLog("Error in function call: " .. tostring(result), "Error")
-        return nil
-    end
-    return result
-end
-
--- Orion-Inspired Theme System
-CryzenHub.Themes = {
+-- Orion v2 Inspired Themes
+OrionLib.Themes = {
     Default = {
-        Name = "Default",
-        
-        -- Main Colors
         Main = Color3.fromRGB(25, 25, 25),
         Second = Color3.fromRGB(40, 40, 40),
         Stroke = Color3.fromRGB(60, 60, 60),
         Divider = Color3.fromRGB(60, 60, 60),
         Text = Color3.fromRGB(240, 240, 240),
-        TextDark = Color3.fromRGB(180, 180, 180),
-        
-        -- Accent Colors
+        TextDark = Color3.fromRGB(150, 150, 150),
         SchemeColor = Color3.fromRGB(86, 120, 233),
         Background = Color3.fromRGB(30, 30, 30),
         Header = Color3.fromRGB(35, 35, 35),
-        
-        -- Status Colors
         Success = Color3.fromRGB(68, 206, 84),
         Warning = Color3.fromRGB(255, 184, 0),
         Error = Color3.fromRGB(255, 92, 92),
-        Info = Color3.fromRGB(86, 120, 233),
-        
-        -- Effects
-        DropShadow = Color3.fromRGB(0, 0, 0),
-        CornerRadius = 6,
-        StrokeThickness = 1,
-        
-        -- Typography
-        Font = Enum.Font.Gotham,
-        FontSemiBold = Enum.Font.GothamSemibold,
-        FontBold = Enum.Font.GothamBold,
-        
-        TextSize = {
-            Small = 12,
-            Medium = 14,
-            Large = 16,
-            XLarge = 18
-        },
-        
-        -- Spacing
-        Padding = {
-            Small = 4,
-            Medium = 8,
-            Large = 12,
-            XLarge = 16
-        }
+        Info = Color3.fromRGB(86, 120, 233)
     },
     
     Ocean = {
-        Name = "Ocean",
         Main = Color3.fromRGB(15, 25, 35),
         Second = Color3.fromRGB(25, 35, 50),
         Stroke = Color3.fromRGB(45, 55, 70),
         Divider = Color3.fromRGB(45, 55, 70),
         Text = Color3.fromRGB(240, 245, 250),
-        TextDark = Color3.fromRGB(180, 190, 200),
+        TextDark = Color3.fromRGB(160, 170, 180),
         SchemeColor = Color3.fromRGB(52, 152, 219),
         Background = Color3.fromRGB(20, 30, 40),
         Header = Color3.fromRGB(30, 40, 55),
@@ -143,1316 +70,1400 @@ CryzenHub.Themes = {
         Info = Color3.fromRGB(52, 152, 219)
     },
     
-    Dark = {
-        Name = "Dark",
-        Main = Color3.fromRGB(10, 10, 10),
-        Second = Color3.fromRGB(20, 20, 20),
-        Stroke = Color3.fromRGB(40, 40, 40),
-        Divider = Color3.fromRGB(40, 40, 40),
-        Text = Color3.fromRGB(255, 255, 255),
-        TextDark = Color3.fromRGB(200, 200, 200),
+    Purple = {
+        Main = Color3.fromRGB(30, 20, 40),
+        Second = Color3.fromRGB(45, 35, 55),
+        Stroke = Color3.fromRGB(65, 55, 75),
+        Divider = Color3.fromRGB(65, 55, 75),
+        Text = Color3.fromRGB(245, 240, 250),
+        TextDark = Color3.fromRGB(170, 160, 180),
         SchemeColor = Color3.fromRGB(142, 68, 173),
-        Background = Color3.fromRGB(15, 15, 15),
-        Header = Color3.fromRGB(25, 25, 25),
-        Success = Color3.fromRGB(39, 174, 96),
-        Warning = Color3.fromRGB(230, 126, 34),
-        Error = Color3.fromRGB(192, 57, 43),
+        Background = Color3.fromRGB(35, 25, 45),
+        Header = Color3.fromRGB(50, 40, 60),
+        Success = Color3.fromRGB(68, 206, 84),
+        Warning = Color3.fromRGB(255, 184, 0),
+        Error = Color3.fromRGB(255, 92, 92),
         Info = Color3.fromRGB(142, 68, 173)
     }
 }
 
--- Set default theme
-CryzenHub.CurrentTheme = CryzenHub.Themes.Default
+OrionLib.CurrentTheme = OrionLib.Themes.Default
 
 -- Utility Functions
-function CryzenHub.Utils.Tween(object, properties, duration, style, direction, callback)
-    if not object or not Services.TweenService then
-        return
+local function SafeCall(func, ...)
+    local success, result = pcall(func, ...)
+    if not success then
+        warn("[OrionLib] Error:", result)
+        return nil
+    end
+    return result
+end
+
+local function CreateTween(object, properties, duration, style, direction)
+    if not object then return end
+    
+    local tweenInfo = TweenInfo.new(
+        duration or 0.2,
+        style or Enum.EasingStyle.Quart,
+        direction or Enum.EasingDirection.Out
+    )
+    
+    local tween = TweenService:Create(object, tweenInfo, properties)
+    tween:Play()
+    return tween
+end
+
+local function CreateCorner(parent, radius)
+    if not parent then return end
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius or 8)
+    corner.Parent = parent
+    return corner
+end
+
+local function CreateStroke(parent, color, thickness, transparency)
+    if not parent then return end
+    
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = color or OrionLib.CurrentTheme.Stroke
+    stroke.Thickness = thickness or 1
+    stroke.Transparency = transparency or 0
+    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    stroke.Parent = parent
+    return stroke
+end
+
+local function CreateGradient(parent, colors, rotation)
+    if not parent then return end
+    
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = colors or ColorSequence.new{
+        ColorSequenceKeypoint.new(0, OrionLib.CurrentTheme.Second),
+        ColorSequenceKeypoint.new(1, OrionLib.CurrentTheme.Main)
+    }
+    gradient.Rotation = rotation or 90
+    gradient.Parent = parent
+    return gradient
+end
+
+local function CreateShadow(parent)
+    if not parent then return end
+    
+    local shadow = Instance.new("ImageLabel")
+    shadow.Name = "Shadow"
+    shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    shadow.BackgroundTransparency = 1
+    shadow.Position = UDim2.new(0.5, 0, 0.5, 1)
+    shadow.Size = UDim2.new(1, 20, 1, 20)
+    shadow.Image = "rbxassetid://6014261993"
+    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.ImageTransparency = 0.7
+    shadow.ScaleType = Enum.ScaleType.Slice
+    shadow.SliceCenter = Rect.new(49, 49, 450, 450)
+    shadow.ZIndex = parent.ZIndex - 1
+    shadow.Parent = parent.Parent
+    return shadow
+end
+
+local function CreateRipple(parent, position, color)
+    if not parent then return end
+    
+    local ripple = Instance.new("Frame")
+    ripple.Name = "Ripple"
+    ripple.AnchorPoint = Vector2.new(0.5, 0.5)
+    ripple.BackgroundColor3 = color or OrionLib.CurrentTheme.SchemeColor
+    ripple.BackgroundTransparency = 0.8
+    ripple.BorderSizePixel = 0
+    ripple.Position = UDim2.new(0, position.X - parent.AbsolutePosition.X, 0, position.Y - parent.AbsolutePosition.Y)
+    ripple.Size = UDim2.new(0, 0, 0, 0)
+    ripple.ZIndex = parent.ZIndex + 1
+    ripple.Parent = parent
+    
+    CreateCorner(ripple, 999)
+    
+    local maxSize = math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2
+    
+    CreateTween(ripple, {
+        Size = UDim2.new(0, maxSize, 0, maxSize),
+        BackgroundTransparency = 1
+    }, 0.6, nil, nil)
+    
+    game:GetService("Debris"):AddItem(ripple, 0.6)
+end
+
+local function MakeDraggable(frame, dragHandle)
+    dragHandle = dragHandle or frame
+    
+    local dragging = false
+    local dragInput, mousePos, framePos
+    
+    dragHandle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            mousePos = input.Position
+            framePos = frame.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+    
+    dragHandle.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - mousePos
+            CreateTween(frame, {
+                Position = UDim2.new(
+                    framePos.X.Scale,
+                    framePos.X.Offset + delta.X,
+                    framePos.Y.Scale,
+                    framePos.Y.Offset + delta.Y
+                )
+            }, 0.1)
+        end
+    end)
+end
+
+local function CreateScreenGui(name)
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = name or "OrionLibGUI"
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screenGui.DisplayOrder = 100
+    screenGui.ResetOnSpawn = false
+    
+    -- Try CoreGui first, fallback to PlayerGui
+    local success = pcall(function()
+        screenGui.Parent = CoreGui
+    end)
+    
+    if not success then
+        screenGui.Parent = Player:WaitForChild("PlayerGui")
     end
     
-    return CryzenHub.Utils.SafeCall(function()
-        local tweenInfo = TweenInfo.new(
-            duration or 0.25,
-            style or Enum.EasingStyle.Quad,
-            direction or Enum.EasingDirection.Out
-        )
-        
-        local tween = Services.TweenService:Create(object, tweenInfo, properties)
-        tween:Play()
-        
-        if callback then
-            tween.Completed:Connect(callback)
-        end
-        
-        return tween
-    end)
-end
-
-function CryzenHub.Utils.CreateCorner(parent, size)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local corner = parent:FindFirstChild("UICorner")
-        if not corner then
-            corner = Instance.new("UICorner")
-            corner.Parent = parent
-        end
-        corner.CornerRadius = UDim.new(0, size or CryzenHub.CurrentTheme.CornerRadius)
-        return corner
-    end)
-end
-
-function CryzenHub.Utils.CreateStroke(parent, color, thickness, transparency)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local stroke = parent:FindFirstChild("UIStroke")
-        if not stroke then
-            stroke = Instance.new("UIStroke")
-            stroke.Parent = parent
-        end
-        stroke.Color = color or CryzenHub.CurrentTheme.Stroke
-        stroke.Thickness = thickness or CryzenHub.CurrentTheme.StrokeThickness
-        stroke.Transparency = transparency or 0
-        stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        return stroke
-    end)
-end
-
-function CryzenHub.Utils.CreateDropShadow(parent, size, transparency)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local shadow = parent:FindFirstChild("DropShadow")
-        if not shadow then
-            shadow = Instance.new("ImageLabel")
-            shadow.Name = "DropShadow"
-            shadow.Parent = parent
-        end
-        
-        shadow.AnchorPoint = Vector2.new(0.5, 0.5)
-        shadow.BackgroundTransparency = 1
-        shadow.Position = UDim2.new(0.5, 0, 0.5, 1)
-        shadow.Size = UDim2.new(1, size or 30, 1, size or 30)
-        shadow.Image = "rbxassetid://6014261993"
-        shadow.ImageColor3 = CryzenHub.CurrentTheme.DropShadow
-        shadow.ImageTransparency = transparency or 0.5
-        shadow.ScaleType = Enum.ScaleType.Slice
-        shadow.SliceCenter = Rect.new(49, 49, 450, 450)
-        shadow.ZIndex = (parent.ZIndex or 1) - 1
-        
-        return shadow
-    end)
-end
-
-function CryzenHub.Utils.CreateRipple(parent, position, color)
-    if not parent then return end
-    
-    return CryzenHub.Utils.SafeCall(function()
-        local ripple = Instance.new("Frame")
-        ripple.Name = "Ripple"
-        ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-        ripple.BackgroundColor3 = color or CryzenHub.CurrentTheme.SchemeColor
-        ripple.BackgroundTransparency = 0.8
-        ripple.BorderSizePixel = 0
-        ripple.Position = UDim2.new(0, position.X - parent.AbsolutePosition.X, 0, position.Y - parent.AbsolutePosition.Y)
-        ripple.Size = UDim2.new(0, 0, 0, 0)
-        ripple.ZIndex = parent.ZIndex + 1
-        ripple.Parent = parent
-        
-        CryzenHub.Utils.CreateCorner(ripple, 999)
-        
-        local maxSize = math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2
-        
-        CryzenHub.Utils.Tween(ripple, {
-            Size = UDim2.new(0, maxSize, 0, maxSize),
-            BackgroundTransparency = 1
-        }, 0.5, nil, nil, function()
-            ripple:Destroy()
-        end)
-        
-        return ripple
-    end)
-end
-
-function CryzenHub.Utils.GetIcon(iconName)
-    local icons = {
-        Home = "rbxassetid://10734884548",
-        Settings = "rbxassetid://10734886004",
-        Search = "rbxassetid://10734885081",
-        User = "rbxassetid://10734884910",
-        Lock = "rbxassetid://10734884925",
-        Unlock = "rbxassetid://10734884925",
-        Eye = "rbxassetid://10734884748",
-        EyeOff = "rbxassetid://10734884748",
-        Check = "rbxassetid://10734884606",
-        X = "rbxassetid://10734884871",
-        Plus = "rbxassetid://10734884982",
-        Minus = "rbxassetid://10734884982",
-        ChevronDown = "rbxassetid://10734884517",
-        ChevronUp = "rbxassetid://10734884517",
-        ChevronLeft = "rbxassetid://10734884517",
-        ChevronRight = "rbxassetid://10734884517",
-        Info = "rbxassetid://10734884748",
-        Warning = "rbxassetid://10734885081",
-        Error = "rbxassetid://10734884871",
-        Success = "rbxassetid://10734884606"
-    }
-    
-    return icons[iconName] or icons.Home
-end
-
--- Screen GUI Creation
-function CryzenHub.Utils.CreateScreenGui(name)
-    return CryzenHub.Utils.SafeCall(function()
-        local screenGui = Instance.new("ScreenGui")
-        screenGui.Name = name or "CryzenHubOrion"
-        screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        screenGui.DisplayOrder = 100
-        screenGui.ResetOnSpawn = false
-        
-        local success = false
-        
-        -- Try CoreGui first
-        pcall(function()
-            if syn and syn.protect_gui then
-                syn.protect_gui(screenGui)
-            end
-            screenGui.Parent = Services.CoreGui
-            success = true
-        end)
-        
-        -- Fallback to PlayerGui
-        if not success and Player then
-            screenGui.Parent = Player:WaitForChild("PlayerGui")
-        end
-        
-        CryzenHub.Utils.DebugLog("ScreenGui created: " .. screenGui.Name, "Info")
-        return screenGui
-    end)
+    return screenGui
 end
 
 -- Notification System
-function CryzenHub:CreateNotification(config)
+function OrionLib:MakeNotification(config)
     config = config or {}
     
-    local title = config.Title or "Notification"
-    local content = config.Content or ""
-    local image = config.Image
-    local time = config.Time or 5
-    local actions = config.Actions or {}
+    local Name = config.Name or "Notification"
+    local Content = config.Content or ""
+    local Image = config.Image
+    local Time = config.Time or 5
     
-    -- Create notification ScreenGui
-    local notifGui = CryzenHub.Utils.CreateScreenGui("CryzenNotification")
-    if not notifGui then return end
+    -- Create notification GUI
+    local NotificationGui = CreateScreenGui("OrionNotification")
     
-    -- Notification container
-    local container = Instance.new("Frame")
-    container.Name = "NotificationContainer"
-    container.Size = UDim2.new(0, 350, 0, 100)
-    container.Position = UDim2.new(1, -370, 1, -120)
-    container.BackgroundColor3 = CryzenHub.CurrentTheme.Second
-    container.BorderSizePixel = 0
-    container.Parent = notifGui
+    -- Main notification frame
+    local NotificationFrame = Instance.new("Frame")
+    NotificationFrame.Name = "NotificationFrame"
+    NotificationFrame.Size = UDim2.new(0, 300, 0, 80)
+    NotificationFrame.Position = UDim2.new(1, -320, 1, -100)
+    NotificationFrame.BackgroundColor3 = OrionLib.CurrentTheme.Main
+    NotificationFrame.BorderSizePixel = 0
+    NotificationFrame.Parent = NotificationGui
     
-    CryzenHub.Utils.CreateCorner(container)
-    CryzenHub.Utils.CreateStroke(container, CryzenHub.CurrentTheme.Stroke)
-    CryzenHub.Utils.CreateDropShadow(container)
+    CreateCorner(NotificationFrame, 10)
+    CreateStroke(NotificationFrame, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+    CreateShadow(NotificationFrame)
+    CreateGradient(NotificationFrame)
     
     -- Icon (if provided)
-    if image then
-        local icon = Instance.new("ImageLabel")
-        icon.Name = "Icon"
-        icon.Size = UDim2.new(0, 40, 0, 40)
-        icon.Position = UDim2.new(0, 15, 0, 15)
-        icon.BackgroundTransparency = 1
-        icon.Image = image
-        icon.Parent = container
+    if Image then
+        local Icon = Instance.new("ImageLabel")
+        Icon.Name = "Icon"
+        Icon.Size = UDim2.new(0, 50, 0, 50)
+        Icon.Position = UDim2.new(0, 15, 0.5, -25)
+        Icon.BackgroundTransparency = 1
+        Icon.Image = Image
+        Icon.Parent = NotificationFrame
         
-        CryzenHub.Utils.CreateCorner(icon)
+        CreateCorner(Icon, 8)
     end
     
     -- Title
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Name = "Title"
-    titleLabel.Size = UDim2.new(1, image and -70 or -30, 0, 25)
-    titleLabel.Position = UDim2.new(0, image and 65 or 15, 0, 15)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Text = title
-    titleLabel.Font = CryzenHub.CurrentTheme.FontSemiBold
-    titleLabel.TextSize = CryzenHub.CurrentTheme.TextSize.Medium
-    titleLabel.TextColor3 = CryzenHub.CurrentTheme.Text
-    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    titleLabel.TextYAlignment = Enum.TextYAlignment.Top
-    titleLabel.Parent = container
+    local Title = Instance.new("TextLabel")
+    Title.Name = "Title"
+    Title.Size = UDim2.new(1, Image and -80 or -30, 0, 25)
+    Title.Position = UDim2.new(0, Image and 75 or 15, 0, 10)
+    Title.BackgroundTransparency = 1
+    Title.Text = Name
+    Title.Font = Enum.Font.GothamSemibold
+    Title.TextSize = 14
+    Title.TextColor3 = OrionLib.CurrentTheme.Text
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.TextYAlignment = Enum.TextYAlignment.Top
+    Title.Parent = NotificationFrame
     
     -- Content
-    local contentLabel = Instance.new("TextLabel")
-    contentLabel.Name = "Content"
-    contentLabel.Size = UDim2.new(1, image and -70 or -30, 0, 20)
-    contentLabel.Position = UDim2.new(0, image and 65 or 15, 0, 40)
-    contentLabel.BackgroundTransparency = 1
-    contentLabel.Text = content
-    contentLabel.Font = CryzenHub.CurrentTheme.Font
-    contentLabel.TextSize = CryzenHub.CurrentTheme.TextSize.Small
-    contentLabel.TextColor3 = CryzenHub.CurrentTheme.TextDark
-    contentLabel.TextXAlignment = Enum.TextXAlignment.Left
-    contentLabel.TextYAlignment = Enum.TextYAlignment.Top
-    contentLabel.TextWrapped = true
-    contentLabel.Parent = container
+    local ContentLabel = Instance.new("TextLabel")
+    ContentLabel.Name = "Content"
+    ContentLabel.Size = UDim2.new(1, Image and -80 or -30, 0, 20)
+    ContentLabel.Position = UDim2.new(0, Image and 75 or 15, 0, 35)
+    ContentLabel.BackgroundTransparency = 1
+    ContentLabel.Text = Content
+    ContentLabel.Font = Enum.Font.Gotham
+    ContentLabel.TextSize = 12
+    ContentLabel.TextColor3 = OrionLib.CurrentTheme.TextDark
+    ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+    ContentLabel.TextWrapped = true
+    ContentLabel.Parent = NotificationFrame
     
     -- Close button
-    local closeButton = Instance.new("TextButton")
-    closeButton.Name = "CloseButton"
-    closeButton.Size = UDim2.new(0, 20, 0, 20)
-    closeButton.Position = UDim2.new(1, -25, 0, 5)
-    closeButton.BackgroundTransparency = 1
-    closeButton.Text = "✕"
-    closeButton.Font = CryzenHub.CurrentTheme.Font
-    closeButton.TextSize = 14
-    closeButton.TextColor3 = CryzenHub.CurrentTheme.TextDark
-    closeButton.Parent = container
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Name = "CloseButton"
+    CloseButton.Size = UDim2.new(0, 20, 0, 20)
+    CloseButton.Position = UDim2.new(1, -25, 0, 5)
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.Text = "Ã"
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.TextSize = 16
+    CloseButton.TextColor3 = OrionLib.CurrentTheme.TextDark
+    CloseButton.Parent = NotificationFrame
     
     -- Progress bar
-    local progressBar = Instance.new("Frame")
-    progressBar.Name = "ProgressBar"
-    progressBar.Size = UDim2.new(1, 0, 0, 2)
-    progressBar.Position = UDim2.new(0, 0, 1, -2)
-    progressBar.BackgroundColor3 = CryzenHub.CurrentTheme.SchemeColor
-    progressBar.BorderSizePixel = 0
-    progressBar.Parent = container
+    local ProgressBar = Instance.new("Frame")
+    ProgressBar.Name = "ProgressBar"
+    ProgressBar.Size = UDim2.new(1, 0, 0, 2)
+    ProgressBar.Position = UDim2.new(0, 0, 1, -2)
+    ProgressBar.BackgroundColor3 = OrionLib.CurrentTheme.SchemeColor
+    ProgressBar.BorderSizePixel = 0
+    ProgressBar.Parent = NotificationFrame
     
-    -- Animation
-    container.Position = UDim2.new(1, 0, 1, -120)
-    CryzenHub.Utils.Tween(container, {Position = UDim2.new(1, -370, 1, -120)}, 0.3)
+    -- Animations
+    NotificationFrame.Position = UDim2.new(1, 0, 1, -100)
+    CreateTween(NotificationFrame, {Position = UDim2.new(1, -320, 1, -100)}, 0.4)
     
     -- Progress animation
-    CryzenHub.Utils.Tween(progressBar, {Size = UDim2.new(0, 0, 0, 2)}, time)
+    if Time > 0 then
+        CreateTween(ProgressBar, {Size = UDim2.new(0, 0, 0, 2)}, Time)
+    end
+    
+    -- Close function
+    local function CloseNotification()
+        CreateTween(NotificationFrame, {
+            Position = UDim2.new(1, 0, 1, -100),
+            BackgroundTransparency = 1
+        }, 0.3, nil, nil)
+        
+        game:GetService("Debris"):AddItem(NotificationGui, 0.3)
+    end
+    
+    CloseButton.MouseButton1Click:Connect(CloseNotification)
     
     -- Auto close
-    local closeNotification = function()
-        CryzenHub.Utils.Tween(container, {Position = UDim2.new(1, 0, 1, -120)}, 0.3, nil, nil, function()
-            notifGui:Destroy()
+    if Time > 0 then
+        game:GetService("Debris"):AddItem(NotificationGui, Time)
+        task.delay(Time - 0.3, function()
+            if NotificationGui and NotificationGui.Parent then
+                CloseNotification()
+            end
         end)
     end
     
-    closeButton.MouseButton1Click:Connect(closeNotification)
-    
-    if time > 0 then
-        task.delay(time, closeNotification)
-    end
-    
     return {
-        Close = closeNotification,
-        Container = container
+        Close = CloseNotification,
+        Frame = NotificationFrame
     }
 end
 
 -- Main Window Creation
-function CryzenHub:MakeWindow(config)
+function OrionLib:MakeWindow(config)
     config = config or {}
     
-    local windowName = config.Name or "CryzenHub"
-    local hidePremium = config.HidePremium or false
-    local saveConfig = config.SaveConfig ~= false
-    local configFolder = config.ConfigFolder or "CryzenHub"
-    local introEnabled = config.IntroEnabled ~= false
-    local introText = config.IntroText or "Welcome to CryzenHub"
-    local introIcon = config.IntroIcon
-    local icon = config.Icon
+    local Name = config.Name or "OrionLib"
+    local HidePremium = config.HidePremium or false
+    local SaveConfig = config.SaveConfig ~= false
+    local ConfigFolder = config.ConfigFolder or "OrionConfig"
+    local IntroEnabled = config.IntroEnabled ~= false
+    local IntroText = config.IntroText or "Welcome to OrionLib!"
+    local IntroIcon = config.IntroIcon
+    local Icon = config.Icon
     
-    CryzenHub.Utils.DebugLog("Creating window: " .. windowName, "Info")
+    -- Create main GUI
+    local OrionLibGui = CreateScreenGui("OrionLib")
     
-    -- Create main ScreenGui
-    local screenGui = CryzenHub.Utils.CreateScreenGui("CryzenHubMain")
-    if not screenGui then
-        error("Failed to create ScreenGui")
+    local Window = {}
+    Window.Name = Name
+    Window.Tabs = {}
+    Window.Flags = {}
+    Window.SaveConfig = SaveConfig
+    Window.ConfigFolder = ConfigFolder
+    
+    -- Main frame
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Size = UDim2.new(0, 580, 0, 460)
+    MainFrame.Position = UDim2.new(0.5, -290, 0.5, -230)
+    MainFrame.BackgroundColor3 = OrionLib.CurrentTheme.Main
+    MainFrame.BorderSizePixel = 0
+    MainFrame.ClipsDescendants = true
+    MainFrame.Parent = OrionLibGui
+    Window.MainFrame = MainFrame
+    
+    CreateCorner(MainFrame, 12)
+    CreateStroke(MainFrame, OrionLib.CurrentTheme.Stroke, 1, 0.3)
+    CreateShadow(MainFrame)
+    CreateGradient(MainFrame)
+    
+    -- Top bar
+    local TopBar = Instance.new("Frame")
+    TopBar.Name = "TopBar"
+    TopBar.Size = UDim2.new(1, 0, 0, 50)
+    TopBar.BackgroundColor3 = OrionLib.CurrentTheme.Header
+    TopBar.BorderSizePixel = 0
+    TopBar.Parent = MainFrame
+    
+    CreateCorner(TopBar, 12)
+    CreateGradient(TopBar, ColorSequence.new{
+        ColorSequenceKeypoint.new(0, OrionLib.CurrentTheme.Header),
+        ColorSequenceKeypoint.new(1, OrionLib.CurrentTheme.Second)
+    })
+    
+    -- Window title
+    local WindowTitle = Instance.new("TextLabel")
+    WindowTitle.Name = "WindowTitle"
+    WindowTitle.Size = UDim2.new(1, Icon and -90 or -50, 1, 0)
+    WindowTitle.Position = UDim2.new(0, Icon and 60 or 20, 0, 0)
+    WindowTitle.BackgroundTransparency = 1
+    WindowTitle.Text = Name
+    WindowTitle.Font = Enum.Font.GothamBold
+    WindowTitle.TextSize = 16
+    WindowTitle.TextColor3 = OrionLib.CurrentTheme.Text
+    WindowTitle.TextXAlignment = Enum.TextXAlignment.Left
+    WindowTitle.Parent = TopBar
+    
+    -- Window icon
+    if Icon then
+        local WindowIcon = Instance.new("ImageLabel")
+        WindowIcon.Name = "WindowIcon"
+        WindowIcon.Size = UDim2.new(0, 30, 0, 30)
+        WindowIcon.Position = UDim2.new(0, 15, 0.5, -15)
+        WindowIcon.BackgroundTransparency = 1
+        WindowIcon.Image = Icon
+        WindowIcon.Parent = TopBar
+        
+        CreateCorner(WindowIcon, 6)
     end
     
-    local window = {
-        Name = windowName,
-        ScreenGui = screenGui,
-        Tabs = {},
-        Flags = {},
-        SaveConfig = saveConfig,
-        ConfigFolder = configFolder
-    }
-    
-    local theme = CryzenHub.CurrentTheme
-    
-    -- Main Frame
-    local mainFrame = Instance.new("Frame")
-    mainFrame.Name = "MainFrame"
-    mainFrame.Size = UDim2.new(0, 550, 0, 400)
-    mainFrame.Position = UDim2.new(0.5, -275, 0.5, -200)
-    mainFrame.BackgroundColor3 = theme.Main
-    mainFrame.BorderSizePixel = 0
-    mainFrame.ClipsDescendants = true
-    mainFrame.Parent = screenGui
-    window.MainFrame = mainFrame
-    
-    CryzenHub.Utils.CreateCorner(mainFrame)
-    CryzenHub.Utils.CreateStroke(mainFrame, theme.Stroke)
-    CryzenHub.Utils.CreateDropShadow(mainFrame)
-    
-    -- Top Bar
-    local topBar = Instance.new("Frame")
-    topBar.Name = "TopBar"
-    topBar.Size = UDim2.new(1, 0, 0, 50)
-    topBar.BackgroundColor3 = theme.Header
-    topBar.BorderSizePixel = 0
-    topBar.Parent = mainFrame
-    
-    CryzenHub.Utils.CreateCorner(topBar)
-    CryzenHub.Utils.CreateStroke(topBar, theme.Stroke, 1, 0.5)
-    
-    -- Window Title
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Name = "Title"
-    titleLabel.Size = UDim2.new(1, -100, 1, 0)
-    titleLabel.Position = UDim2.new(0, icon and 60 or 20, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Text = windowName
-    titleLabel.Font = theme.FontSemiBold
-    titleLabel.TextSize = theme.TextSize.Large
-    titleLabel.TextColor3 = theme.Text
-    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    titleLabel.Parent = topBar
-    
-    -- Window Icon
-    if icon then
-        local iconLabel = Instance.new("ImageLabel")
-        iconLabel.Name = "Icon"
-        iconLabel.Size = UDim2.new(0, 30, 0, 30)
-        iconLabel.Position = UDim2.new(0, 15, 0.5, -15)
-        iconLabel.BackgroundTransparency = 1
-        iconLabel.Image = icon
-        iconLabel.Parent = topBar
+    -- Premium badge
+    if not HidePremium then
+        local PremiumBadge = Instance.new("Frame")
+        PremiumBadge.Name = "PremiumBadge"
+        PremiumBadge.Size = UDim2.new(0, 60, 0, 20)
+        PremiumBadge.Position = UDim2.new(1, -90, 0.5, -10)
+        PremiumBadge.BackgroundColor3 = OrionLib.CurrentTheme.SchemeColor
+        PremiumBadge.BorderSizePixel = 0
+        PremiumBadge.Parent = TopBar
         
-        CryzenHub.Utils.CreateCorner(iconLabel)
+        CreateCorner(PremiumBadge, 10)
+        
+        local PremiumText = Instance.new("TextLabel")
+        PremiumText.Size = UDim2.new(1, 0, 1, 0)
+        PremiumText.BackgroundTransparency = 1
+        PremiumText.Text = "PREMIUM"
+        PremiumText.Font = Enum.Font.GothamBold
+        PremiumText.TextSize = 9
+        PremiumText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        PremiumText.Parent = PremiumBadge
     end
     
-    -- Premium Badge
-    if not hidePremium then
-        local premiumBadge = Instance.new("Frame")
-        premiumBadge.Name = "PremiumBadge"
-        premiumBadge.Size = UDim2.new(0, 60, 0, 20)
-        premiumBadge.Position = UDim2.new(1, -80, 0.5, -10)
-        premiumBadge.BackgroundColor3 = theme.SchemeColor
-        premiumBadge.BorderSizePixel = 0
-        premiumBadge.Parent = topBar
+    -- Close button
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Name = "CloseButton"
+    CloseButton.Size = UDim2.new(0, 30, 0, 30)
+    CloseButton.Position = UDim2.new(1, -40, 0.5, -15)
+    CloseButton.BackgroundColor3 = OrionLib.CurrentTheme.Second
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Text = ""
+    CloseButton.Parent = TopBar
+    
+    CreateCorner(CloseButton, 8)
+    CreateStroke(CloseButton, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+    
+    local CloseIcon = Instance.new("TextLabel")
+    CloseIcon.Size = UDim2.new(1, 0, 1, 0)
+    CloseIcon.BackgroundTransparency = 1
+    CloseIcon.Text = "Ã"
+    CloseIcon.Font = Enum.Font.GothamBold
+    CloseIcon.TextSize = 16
+    CloseIcon.TextColor3 = OrionLib.CurrentTheme.Text
+    CloseIcon.Parent = CloseButton
+    
+    -- Tab container
+    local TabContainer = Instance.new("Frame")
+    TabContainer.Name = "TabContainer"
+    TabContainer.Size = UDim2.new(0, 160, 1, -50)
+    TabContainer.Position = UDim2.new(0, 0, 0, 50)
+    TabContainer.BackgroundColor3 = OrionLib.CurrentTheme.Second
+    TabContainer.BorderSizePixel = 0
+    TabContainer.Parent = MainFrame
+    Window.TabContainer = TabContainer
+    
+    CreateGradient(TabContainer, ColorSequence.new{
+        ColorSequenceKeypoint.new(0, OrionLib.CurrentTheme.Second),
+        ColorSequenceKeypoint.new(1, OrionLib.CurrentTheme.Main)
+    }, 45)
+    
+    -- Tab divider
+    local TabDivider = Instance.new("Frame")
+    TabDivider.Size = UDim2.new(0, 1, 1, 0)
+    TabDivider.Position = UDim2.new(1, 0, 0, 0)
+    TabDivider.BackgroundColor3 = OrionLib.CurrentTheme.Divider
+    TabDivider.BorderSizePixel = 0
+    TabDivider.Parent = TabContainer
+    
+    -- Tab list with proper scrolling
+    local TabList = Instance.new("ScrollingFrame")
+    TabList.Name = "TabList"
+    TabList.Size = UDim2.new(1, -10, 1, -20)
+    TabList.Position = UDim2.new(0, 5, 0, 10)
+    TabList.BackgroundTransparency = 1
+    TabList.BorderSizePixel = 0
+    TabList.ScrollBarThickness = 4
+    TabList.ScrollBarImageColor3 = OrionLib.CurrentTheme.SchemeColor
+    TabList.CanvasSize = UDim2.new(0, 0, 0, 0)
+    TabList.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    TabList.Parent = TabContainer
+    
+    -- Fixed UIListLayout for tabs
+    local TabListLayout = Instance.new("UIListLayout")
+    TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TabListLayout.Padding = UDim.new(0, 5)
+    TabListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    TabListLayout.Parent = TabList
+    
+    -- Fixed UIPadding for tab list
+    local TabListPadding = Instance.new("UIPadding")
+    TabListPadding.PaddingTop = UDim.new(0, 10)
+    TabListPadding.PaddingBottom = UDim.new(0, 10)
+    TabListPadding.PaddingLeft = UDim.new(0, 5)
+    TabListPadding.PaddingRight = UDim.new(0, 5)
+    TabListPadding.Parent = TabList
+    
+    -- Content container
+    local ContentContainer = Instance.new("Frame")
+    ContentContainer.Name = "ContentContainer"
+    ContentContainer.Size = UDim2.new(1, -160, 1, -50)
+    ContentContainer.Position = UDim2.new(0, 160, 0, 50)
+    ContentContainer.BackgroundTransparency = 1
+    ContentContainer.BorderSizePixel = 0
+    ContentContainer.Parent = MainFrame
+    Window.ContentContainer = ContentContainer
+    
+    -- Make window draggable
+    MakeDraggable(MainFrame, TopBar)
+    
+    -- Close button functionality
+    CloseButton.MouseButton1Click:Connect(function()
+        CreateRipple(CloseButton, UserInputService:GetMouseLocation())
         
-        CryzenHub.Utils.CreateCorner(premiumBadge, 10)
+        CreateTween(MainFrame, {
+            Size = UDim2.new(0, 0, 0, 0),
+            Position = UDim2.new(0.5, 0, 0.5, 0)
+        }, 0.3, nil, nil)
         
-        local premiumText = Instance.new("TextLabel")
-        premiumText.Size = UDim2.new(1, 0, 1, 0)
-        premiumText.BackgroundTransparency = 1
-        premiumText.Text = "PREMIUM"
-        premiumText.Font = theme.FontBold
-        premiumText.TextSize = 10
-        premiumText.TextColor3 = Color3.fromRGB(255, 255, 255)
-        premiumText.Parent = premiumBadge
-    end
+        task.delay(0.3, function()
+            OrionLibGui:Destroy()
+        end)
+    end)
     
-    -- Close Button
-    local closeButton = Instance.new("TextButton")
-    closeButton.Name = "CloseButton"
-    closeButton.Size = UDim2.new(0, 30, 0, 30)
-    closeButton.Position = UDim2.new(1, -40, 0.5, -15)
-    closeButton.BackgroundColor3 = theme.Second
-    closeButton.BorderSizePixel = 0
-    closeButton.Text = ""
-    closeButton.Parent = topBar
+    -- Close button hover effect
+    CloseButton.MouseEnter:Connect(function()
+        CreateTween(CloseButton, {BackgroundColor3 = OrionLib.CurrentTheme.Error}, 0.2)
+    end)
     
-    CryzenHub.Utils.CreateCorner(closeButton)
-    CryzenHub.Utils.CreateStroke(closeButton, theme.Stroke)
+    CloseButton.MouseLeave:Connect(function()
+        CreateTween(CloseButton, {BackgroundColor3 = OrionLib.CurrentTheme.Second}, 0.2)
+    end)
     
-    local closeIcon = Instance.new("TextLabel")
-    closeIcon.Size = UDim2.new(1, 0, 1, 0)
-    closeIcon.BackgroundTransparency = 1
-    closeIcon.Text = "✕"
-    closeIcon.Font = theme.Font
-    closeIcon.TextSize = 16
-    closeIcon.TextColor3 = theme.Text
-    closeIcon.Parent = closeButton
-    
-    -- Tab Container
-    local tabContainer = Instance.new("Frame")
-    tabContainer.Name = "TabContainer"
-    tabContainer.Size = UDim2.new(0, 150, 1, -50)
-    tabContainer.Position = UDim2.new(0, 0, 0, 50)
-    tabContainer.BackgroundColor3 = theme.Second
-    tabContainer.BorderSizePixel = 0
-    tabContainer.Parent = mainFrame
-    window.TabContainer = tabContainer
-    
-    local tabContainerStroke = Instance.new("Frame")
-    tabContainerStroke.Size = UDim2.new(0, 1, 1, 0)
-    tabContainerStroke.Position = UDim2.new(1, 0, 0, 0)
-    tabContainerStroke.BackgroundColor3 = theme.Stroke
-    tabContainerStroke.BorderSizePixel = 0
-    tabContainerStroke.Parent = tabContainer
-    
-    -- Tab List
-    local tabList = Instance.new("ScrollingFrame")
-    tabList.Name = "TabList"
-    tabList.Size = UDim2.new(1, 0, 1, 0)
-    tabList.BackgroundTransparency = 1
-    tabList.BorderSizePixel = 0
-    tabList.ScrollBarThickness = 4
-    tabList.ScrollBarImageColor3 = theme.SchemeColor
-    tabList.CanvasSize = UDim2.new(0, 0, 0, 0)
-    tabList.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    tabList.Parent = tabContainer
-    
-    local tabListLayout = Instance.new("UIListLayout")
-    tabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    tabListLayout.Padding = UDim.new(0, 2)
-    tabListLayout.Parent = tabList
-    
-    local tabListPadding = Instance.new("UIPadding")
-    tabListPadding.PaddingAll = UDim.new(0, 8)
-    tabListPadding.Parent = tabList
-    
-    -- Content Container
-    local contentContainer = Instance.new("Frame")
-    contentContainer.Name = "ContentContainer"
-    contentContainer.Size = UDim2.new(1, -150, 1, -50)
-    contentContainer.Position = UDim2.new(0, 150, 0, 50)
-    contentContainer.BackgroundTransparency = 1
-    contentContainer.BorderSizePixel = 0
-    contentContainer.Parent = mainFrame
-    window.ContentContainer = contentContainer
-    
-    -- Window Functions
-    function window:MakeTab(config)
+    -- Tab creation function
+    function Window:MakeTab(config)
         config = config or {}
-        local tabName = config.Name or "Tab"
-        local tabIcon = config.Icon or CryzenHub.Utils.GetIcon("Home")
-        local tabPremiumOnly = config.PremiumOnly or false
         
-        CryzenHub.Utils.DebugLog("Creating tab: " .. tabName, "Info")
+        local Name = config.Name or "Tab"
+        local Icon = config.Icon
+        local PremiumOnly = config.PremiumOnly or false
         
-        local tab = {
-            Name = tabName,
-            Icon = tabIcon,
-            PremiumOnly = tabPremiumOnly,
-            Sections = {},
-            Elements = {}
-        }
+        local Tab = {}
+        Tab.Name = Name
+        Tab.Icon = Icon
+        Tab.PremiumOnly = PremiumOnly
         
-        -- Tab Button
-        local tabButton = Instance.new("TextButton")
-        tabButton.Name = tabName .. "Button"
-        tabButton.Size = UDim2.new(1, 0, 0, 40)
-        tabButton.BackgroundColor3 = theme.Second
-        tabButton.BackgroundTransparency = 1
-        tabButton.BorderSizePixel = 0
-        tabButton.Text = ""
-        tabButton.Parent = tabList
-        tab.Button = tabButton
+        -- Tab button
+        local TabButton = Instance.new("TextButton")
+        TabButton.Name = Name .. "Button"
+        TabButton.Size = UDim2.new(1, -10, 0, 40)
+        TabButton.BackgroundColor3 = OrionLib.CurrentTheme.Second
+        TabButton.BackgroundTransparency = 1
+        TabButton.BorderSizePixel = 0
+        TabButton.Text = ""
+        TabButton.Parent = TabList
+        Tab.Button = TabButton
         
-        CryzenHub.Utils.CreateCorner(tabButton)
+        CreateCorner(TabButton, 8)
         
-        -- Tab Icon
-        local tabIconLabel = Instance.new("ImageLabel")
-        tabIconLabel.Name = "Icon"
-        tabIconLabel.Size = UDim2.new(0, 20, 0, 20)
-        tabIconLabel.Position = UDim2.new(0, 10, 0.5, -10)
-        tabIconLabel.BackgroundTransparency = 1
-        tabIconLabel.Image = tabIcon
-        tabIconLabel.ImageColor3 = theme.TextDark
-        tabIconLabel.Parent = tabButton
+        -- Tab button gradient (for active state)
+        local TabGradient = CreateGradient(TabButton, ColorSequence.new{
+            ColorSequenceKeypoint.new(0, OrionLib.CurrentTheme.SchemeColor),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(
+                math.max(0, OrionLib.CurrentTheme.SchemeColor.R * 255 - 30),
+                math.max(0, OrionLib.CurrentTheme.SchemeColor.G * 255 - 30),
+                math.max(0, OrionLib.CurrentTheme.SchemeColor.B * 255 - 30)
+            ))
+        })
+        TabGradient.Enabled = false
         
-        -- Tab Label
-        local tabLabel = Instance.new("TextLabel")
-        tabLabel.Name = "Label"
-        tabLabel.Size = UDim2.new(1, -45, 1, 0)
-        tabLabel.Position = UDim2.new(0, 40, 0, 0)
-        tabLabel.BackgroundTransparency = 1
-        tabLabel.Text = tabName
-        tabLabel.Font = theme.Font
-        tabLabel.TextSize = theme.TextSize.Medium
-        tabLabel.TextColor3 = theme.TextDark
-        tabLabel.TextXAlignment = Enum.TextXAlignment.Left
-        tabLabel.Parent = tabButton
-        
-        -- Premium Indicator
-        if tabPremiumOnly then
-            local premiumIndicator = Instance.new("Frame")
-            premiumIndicator.Size = UDim2.new(0, 6, 0, 6)
-            premiumIndicator.Position = UDim2.new(1, -15, 0.5, -3)
-            premiumIndicator.BackgroundColor3 = theme.SchemeColor
-            premiumIndicator.BorderSizePixel = 0
-            premiumIndicator.Parent = tabButton
-            
-            CryzenHub.Utils.CreateCorner(premiumIndicator, 3)
+        -- Tab icon
+        if Icon then
+            local TabIcon = Instance.new("ImageLabel")
+            TabIcon.Name = "TabIcon"
+            TabIcon.Size = UDim2.new(0, 20, 0, 20)
+            TabIcon.Position = UDim2.new(0, 10, 0.5, -10)
+            TabIcon.BackgroundTransparency = 1
+            TabIcon.Image = Icon
+            TabIcon.ImageColor3 = OrionLib.CurrentTheme.TextDark
+            TabIcon.Parent = TabButton
+            Tab.Icon = TabIcon
         end
         
-        -- Tab Content
-        local tabContent = Instance.new("ScrollingFrame")
-        tabContent.Name = tabName .. "Content"
-        tabContent.Size = UDim2.new(1, 0, 1, 0)
-        tabContent.BackgroundTransparency = 1
-        tabContent.BorderSizePixel = 0
-        tabContent.ScrollBarThickness = 4
-        tabContent.ScrollBarImageColor3 = theme.SchemeColor
-        tabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-        tabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
-        tabContent.Visible = false
-        tabContent.Parent = contentContainer
-        tab.Content = tabContent
+        -- Tab label
+        local TabLabel = Instance.new("TextLabel")
+        TabLabel.Name = "TabLabel"
+        TabLabel.Size = UDim2.new(1, Icon and -40 or -20, 1, 0)
+        TabLabel.Position = UDim2.new(0, Icon and 35 or 10, 0, 0)
+        TabLabel.BackgroundTransparency = 1
+        TabLabel.Text = Name
+        TabLabel.Font = Enum.Font.GothamSemibold
+        TabLabel.TextSize = 13
+        TabLabel.TextColor3 = OrionLib.CurrentTheme.TextDark
+        TabLabel.TextXAlignment = Enum.TextXAlignment.Left
+        TabLabel.Parent = TabButton
+        Tab.Label = TabLabel
         
-        local contentLayout = Instance.new("UIListLayout")
-        contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        contentLayout.Padding = UDim.new(0, theme.Padding.Large)
-        contentLayout.Parent = tabContent
+        -- Premium indicator
+        if PremiumOnly then
+            local PremiumIndicator = Instance.new("Frame")
+            PremiumIndicator.Size = UDim2.new(0, 6, 0, 6)
+            PremiumIndicator.Position = UDim2.new(1, -12, 0.5, -3)
+            PremiumIndicator.BackgroundColor3 = OrionLib.CurrentTheme.SchemeColor
+            PremiumIndicator.BorderSizePixel = 0
+            PremiumIndicator.Parent = TabButton
+            
+            CreateCorner(PremiumIndicator, 3)
+        end
         
-        local contentPadding = Instance.new("UIPadding")
-        contentPadding.PaddingAll = UDim.new(0, theme.Padding.Large)
-        contentPadding.Parent = tabContent
+        -- Tab content
+        local TabContent = Instance.new("ScrollingFrame")
+        TabContent.Name = Name .. "Content"
+        TabContent.Size = UDim2.new(1, -20, 1, -20)
+        TabContent.Position = UDim2.new(0, 10, 0, 10)
+        TabContent.BackgroundTransparency = 1
+        TabContent.BorderSizePixel = 0
+        TabContent.ScrollBarThickness = 6
+        TabContent.ScrollBarImageColor3 = OrionLib.CurrentTheme.SchemeColor
+        TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+        TabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        TabContent.Visible = false
+        TabContent.Parent = ContentContainer
+        Tab.Content = TabContent
         
-        -- Tab Selection
-        local function selectTab()
+        -- Fixed UIListLayout for content
+        local ContentLayout = Instance.new("UIListLayout")
+        ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        ContentLayout.Padding = UDim.new(0, 15)
+        ContentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        ContentLayout.Parent = TabContent
+        
+        -- Fixed UIPadding for content
+        local ContentPadding = Instance.new("UIPadding")
+        ContentPadding.PaddingTop = UDim.new(0, 15)
+        ContentPadding.PaddingBottom = UDim.new(0, 15)
+        ContentPadding.PaddingLeft = UDim.new(0, 10)
+        ContentPadding.PaddingRight = UDim.new(0, 10)
+        ContentPadding.Parent = TabContent
+        
+        -- Tab selection function
+        local function SelectTab()
             -- Deselect all tabs
-            for _, otherTab in pairs(window.Tabs) do
-                otherTab.Button.BackgroundTransparency = 1
-                otherTab.Button.Icon.ImageColor3 = theme.TextDark
-                otherTab.Button.Label.TextColor3 = theme.TextDark
-                otherTab.Content.Visible = false
+            for _, OtherTab in pairs(Window.Tabs) do
+                OtherTab.Button.BackgroundTransparency = 1
+                OtherTab.Button:FindFirstChild("UIGradient").Enabled = false
+                OtherTab.Label.TextColor3 = OrionLib.CurrentTheme.TextDark
+                if OtherTab.Icon then
+                    OtherTab.Icon.ImageColor3 = OrionLib.CurrentTheme.TextDark
+                end
+                OtherTab.Content.Visible = false
             end
             
             -- Select this tab
-            tabButton.BackgroundTransparency = 0
-            tabIconLabel.ImageColor3 = theme.SchemeColor
-            tabLabel.TextColor3 = theme.Text
-            tabContent.Visible = true
-            
-            CryzenHub.Utils.DebugLog("Selected tab: " .. tabName, "Info")
+            TabButton.BackgroundTransparency = 0
+            TabGradient.Enabled = true
+            TabLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            if Tab.Icon then
+                Tab.Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+            end
+            TabContent.Visible = true
         end
         
-        tabButton.MouseButton1Click:Connect(function()
-            CryzenHub.Utils.CreateRipple(tabButton, Services.UserInputService:GetMouseLocation())
-            selectTab()
+        -- Tab button events
+        TabButton.MouseButton1Click:Connect(function()
+            CreateRipple(TabButton, UserInputService:GetMouseLocation())
+            SelectTab()
         end)
         
-        -- Hover effects
-        tabButton.MouseEnter:Connect(function()
-            if tabContent.Visible then return end
-            CryzenHub.Utils.Tween(tabButton, {BackgroundTransparency = 0.8}, 0.2)
+        TabButton.MouseEnter:Connect(function()
+            if not TabContent.Visible then
+                CreateTween(TabButton, {BackgroundTransparency = 0.8}, 0.2)
+            end
         end)
         
-        tabButton.MouseLeave:Connect(function()
-            if tabContent.Visible then return end
-            CryzenHub.Utils.Tween(tabButton, {BackgroundTransparency = 1}, 0.2)
+        TabButton.MouseLeave:Connect(function()
+            if not TabContent.Visible then
+                CreateTween(TabButton, {BackgroundTransparency = 1}, 0.2)
+            end
         end)
         
-        -- Section creation
-        function tab:AddSection(config)
+        -- Section creation function
+        function Tab:AddSection(config)
             config = config or {}
-            local sectionName = config.Name or "Section"
+            local Name = config.Name or "Section"
             
-            local section = {
-                Name = sectionName,
-                Elements = {}
-            }
+            local Section = {}
+            Section.Name = Name
             
-            local sectionFrame = Instance.new("Frame")
-            sectionFrame.Name = sectionName .. "Section"
-            sectionFrame.Size = UDim2.new(1, 0, 0, 0)
-            sectionFrame.BackgroundTransparency = 1
-            sectionFrame.AutomaticSize = Enum.AutomaticSize.Y
-            sectionFrame.Parent = tabContent
-            section.Frame = sectionFrame
+            -- Section frame
+            local SectionFrame = Instance.new("Frame")
+            SectionFrame.Name = Name .. "Section"
+            SectionFrame.Size = UDim2.new(1, 0, 0, 0)
+            SectionFrame.BackgroundTransparency = 1
+            SectionFrame.AutomaticSize = Enum.AutomaticSize.Y
+            SectionFrame.Parent = TabContent
+            Section.Frame = SectionFrame
             
-            local sectionLayout = Instance.new("UIListLayout")
-            sectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            sectionLayout.Padding = UDim.new(0, theme.Padding.Medium)
-            sectionLayout.Parent = sectionFrame
+            -- Fixed UIListLayout for section
+            local SectionLayout = Instance.new("UIListLayout")
+            SectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            SectionLayout.Padding = UDim.new(0, 8)
+            SectionLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+            SectionLayout.Parent = SectionFrame
             
-            -- Section Header
-            if sectionName ~= "" then
-                local sectionHeader = Instance.new("TextLabel")
-                sectionHeader.Name = "SectionHeader"
-                sectionHeader.Size = UDim2.new(1, 0, 0, 25)
-                sectionHeader.BackgroundTransparency = 1
-                sectionHeader.Text = sectionName
-                sectionHeader.Font = theme.FontSemiBold
-                sectionHeader.TextSize = theme.TextSize.Medium
-                sectionHeader.TextColor3 = theme.Text
-                sectionHeader.TextXAlignment = Enum.TextXAlignment.Left
-                sectionHeader.Parent = sectionFrame
+            -- Section header
+            if Name ~= "" then
+                local SectionHeader = Instance.new("TextLabel")
+                SectionHeader.Name = "SectionHeader"
+                SectionHeader.Size = UDim2.new(1, 0, 0, 30)
+                SectionHeader.BackgroundTransparency = 1
+                SectionHeader.Text = Name
+                SectionHeader.Font = Enum.Font.GothamBold
+                SectionHeader.TextSize = 15
+                SectionHeader.TextColor3 = OrionLib.CurrentTheme.Text
+                SectionHeader.TextXAlignment = Enum.TextXAlignment.Left
+                SectionHeader.Parent = SectionFrame
             end
             
             -- Element creation functions
-            function section:AddLabel(config)
-                config = config or {}
-                local text = config.Text or "Label"
+            function Section:AddLabel(text)
+                local Label = {}
+                Label.Type = "Label"
+                Label.Text = text or "Label"
                 
-                local element = {
-                    Type = "Label",
-                    Text = text
-                }
+                local LabelFrame = Instance.new("Frame")
+                LabelFrame.Name = "LabelFrame"
+                LabelFrame.Size = UDim2.new(1, 0, 0, 30)
+                LabelFrame.BackgroundTransparency = 1
+                LabelFrame.Parent = SectionFrame
+                Label.Frame = LabelFrame
                 
-                local labelFrame = Instance.new("Frame")
-                labelFrame.Name = "LabelFrame"
-                labelFrame.Size = UDim2.new(1, 0, 0, 25)
-                labelFrame.BackgroundTransparency = 1
-                labelFrame.Parent = sectionFrame
-                element.Frame = labelFrame
+                local LabelText = Instance.new("TextLabel")
+                LabelText.Name = "LabelText"
+                LabelText.Size = UDim2.new(1, -10, 1, 0)
+                LabelText.Position = UDim2.new(0, 5, 0, 0)
+                LabelText.BackgroundTransparency = 1
+                LabelText.Text = Label.Text
+                LabelText.Font = Enum.Font.Gotham
+                LabelText.TextSize = 14
+                LabelText.TextColor3 = OrionLib.CurrentTheme.Text
+                LabelText.TextXAlignment = Enum.TextXAlignment.Left
+                LabelText.TextWrapped = true
+                LabelText.RichText = true
+                LabelText.Parent = LabelFrame
+                Label.TextLabel = LabelText
                 
-                local label = Instance.new("TextLabel")
-                label.Name = "Label"
-                label.Size = UDim2.new(1, 0, 1, 0)
-                label.BackgroundTransparency = 1
-                label.Text = text
-                label.Font = theme.Font
-                label.TextSize = theme.TextSize.Medium
-                label.TextColor3 = theme.Text
-                label.TextXAlignment = Enum.TextXAlignment.Left
-                label.TextWrapped = true
-                label.RichText = true
-                label.Parent = labelFrame
-                element.Label = label
-                
-                function element:Set(newText)
+                function Label:Set(newText)
                     self.Text = newText
-                    label.Text = newText
+                    LabelText.Text = newText
                 end
                 
-                table.insert(section.Elements, element)
-                return element
+                return Label
             end
             
-            function section:AddButton(config)
+            function Section:AddButton(config)
                 config = config or {}
-                local name = config.Name or "Button"
-                local callback = config.Callback or function() end
+                local Name = config.Name or "Button"
+                local Callback = config.Callback or function() end
                 
-                local element = {
-                    Type = "Button",
-                    Name = name,
-                    Callback = callback
-                }
+                local Button = {}
+                Button.Type = "Button"
+                Button.Name = Name
+                Button.Callback = Callback
                 
-                local buttonFrame = Instance.new("Frame")
-                buttonFrame.Name = "ButtonFrame"
-                buttonFrame.Size = UDim2.new(1, 0, 0, 35)
-                buttonFrame.BackgroundTransparency = 1
-                buttonFrame.Parent = sectionFrame
-                element.Frame = buttonFrame
+                local ButtonFrame = Instance.new("Frame")
+                ButtonFrame.Name = "ButtonFrame"
+                ButtonFrame.Size = UDim2.new(1, 0, 0, 40)
+                ButtonFrame.BackgroundTransparency = 1
+                ButtonFrame.Parent = SectionFrame
+                Button.Frame = ButtonFrame
                 
-                local button = Instance.new("TextButton")
-                button.Name = "Button"
-                button.Size = UDim2.new(1, 0, 1, 0)
-                button.BackgroundColor3 = theme.Second
-                button.BorderSizePixel = 0
-                button.Text = name
-                button.Font = theme.FontSemiBold
-                button.TextSize = theme.TextSize.Medium
-                button.TextColor3 = theme.Text
-                button.Parent = buttonFrame
-                element.Button = button
+                local ButtonElement = Instance.new("TextButton")
+                ButtonElement.Name = "ButtonElement"
+                ButtonElement.Size = UDim2.new(1, 0, 1, 0)
+                ButtonElement.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                ButtonElement.BorderSizePixel = 0
+                ButtonElement.Text = Name
+                ButtonElement.Font = Enum.Font.GothamSemibold
+                ButtonElement.TextSize = 14
+                ButtonElement.TextColor3 = OrionLib.CurrentTheme.Text
+                ButtonElement.Parent = ButtonFrame
+                Button.Element = ButtonElement
                 
-                CryzenHub.Utils.CreateCorner(button)
-                CryzenHub.Utils.CreateStroke(button, theme.Stroke)
+                CreateCorner(ButtonElement, 8)
+                CreateStroke(ButtonElement, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateGradient(ButtonElement)
                 
-                button.MouseButton1Click:Connect(function()
-                    CryzenHub.Utils.CreateRipple(button, Services.UserInputService:GetMouseLocation())
-                    callback()
+                ButtonElement.MouseButton1Click:Connect(function()
+                    CreateRipple(ButtonElement, UserInputService:GetMouseLocation())
+                    SafeCall(Callback)
                 end)
                 
-                button.MouseEnter:Connect(function()
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Stroke}, 0.2)
+                ButtonElement.MouseEnter:Connect(function()
+                    CreateTween(ButtonElement, {BackgroundColor3 = OrionLib.CurrentTheme.Stroke}, 0.2)
                 end)
                 
-                button.MouseLeave:Connect(function()
-                    CryzenHub.Utils.Tween(button, {BackgroundColor3 = theme.Second}, 0.2)
+                ButtonElement.MouseLeave:Connect(function()
+                    CreateTween(ButtonElement, {BackgroundColor3 = OrionLib.CurrentTheme.Second}, 0.2)
                 end)
                 
-                table.insert(section.Elements, element)
-                return element
+                return Button
             end
             
-            function section:AddToggle(config)
+            function Section:AddToggle(config)
                 config = config or {}
-                local name = config.Name or "Toggle"
-                local default = config.Default or false
-                local callback = config.Callback or function() end
-                local flag = config.Flag or name
+                local Name = config.Name or "Toggle"
+                local Default = config.Default or false
+                local Callback = config.Callback or function() end
+                local Flag = config.Flag or Name
                 
-                local element = {
-                    Type = "Toggle",
-                    Name = name,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
+                local Toggle = {}
+                Toggle.Type = "Toggle"
+                Toggle.Name = Name
+                Toggle.Value = Default
+                Toggle.Callback = Callback
+                Toggle.Flag = Flag
                 
-                window.Flags[flag] = default
+                Window.Flags[Flag] = Default
                 
-                local toggleFrame = Instance.new("Frame")
-                toggleFrame.Name = "ToggleFrame"
-                toggleFrame.Size = UDim2.new(1, 0, 0, 35)
-                toggleFrame.BackgroundTransparency = 1
-                toggleFrame.Parent = sectionFrame
-                element.Frame = toggleFrame
+                local ToggleFrame = Instance.new("Frame")
+                ToggleFrame.Name = "ToggleFrame"
+                ToggleFrame.Size = UDim2.new(1, 0, 0, 40)
+                ToggleFrame.BackgroundTransparency = 1
+                ToggleFrame.Parent = SectionFrame
+                Toggle.Frame = ToggleFrame
                 
-                local toggleButton = Instance.new("TextButton")
-                toggleButton.Name = "ToggleButton"
-                toggleButton.Size = UDim2.new(1, 0, 1, 0)
-                toggleButton.BackgroundColor3 = theme.Second
-                toggleButton.BorderSizePixel = 0
-                toggleButton.Text = ""
-                toggleButton.Parent = toggleFrame
-                element.Button = toggleButton
+                local ToggleButton = Instance.new("TextButton")
+                ToggleButton.Name = "ToggleButton"
+                ToggleButton.Size = UDim2.new(1, 0, 1, 0)
+                ToggleButton.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                ToggleButton.BorderSizePixel = 0
+                ToggleButton.Text = ""
+                ToggleButton.Parent = ToggleFrame
+                Toggle.Button = ToggleButton
                 
-                CryzenHub.Utils.CreateCorner(toggleButton)
-                CryzenHub.Utils.CreateStroke(toggleButton, theme.Stroke)
+                CreateCorner(ToggleButton, 8)
+                CreateStroke(ToggleButton, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateGradient(ToggleButton)
                 
-                local toggleLabel = Instance.new("TextLabel")
-                toggleLabel.Name = "Label"
-                toggleLabel.Size = UDim2.new(1, -50, 1, 0)
-                toggleLabel.Position = UDim2.new(0, 15, 0, 0)
-                toggleLabel.BackgroundTransparency = 1
-                toggleLabel.Text = name
-                toggleLabel.Font = theme.Font
-                toggleLabel.TextSize = theme.TextSize.Medium
-                toggleLabel.TextColor3 = theme.Text
-                toggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-                toggleLabel.Parent = toggleButton
+                local ToggleLabel = Instance.new("TextLabel")
+                ToggleLabel.Name = "ToggleLabel"
+                ToggleLabel.Size = UDim2.new(1, -50, 1, 0)
+                ToggleLabel.Position = UDim2.new(0, 15, 0, 0)
+                ToggleLabel.BackgroundTransparency = 1
+                ToggleLabel.Text = Name
+                ToggleLabel.Font = Enum.Font.Gotham
+                ToggleLabel.TextSize = 14
+                ToggleLabel.TextColor3 = OrionLib.CurrentTheme.Text
+                ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+                ToggleLabel.Parent = ToggleButton
                 
-                local toggleIndicator = Instance.new("Frame")
-                toggleIndicator.Name = "Indicator"
-                toggleIndicator.Size = UDim2.new(0, 20, 0, 20)
-                toggleIndicator.Position = UDim2.new(1, -30, 0.5, -10)
-                toggleIndicator.BackgroundColor3 = default and theme.SchemeColor or theme.Stroke
-                toggleIndicator.BorderSizePixel = 0
-                toggleIndicator.Parent = toggleButton
+                local ToggleIndicator = Instance.new("Frame")
+                ToggleIndicator.Name = "ToggleIndicator"
+                ToggleIndicator.Size = UDim2.new(0, 24, 0, 24)
+                ToggleIndicator.Position = UDim2.new(1, -32, 0.5, -12)
+                ToggleIndicator.BackgroundColor3 = Default and OrionLib.CurrentTheme.SchemeColor or OrionLib.CurrentTheme.Stroke
+                ToggleIndicator.BorderSizePixel = 0
+                ToggleIndicator.Parent = ToggleButton
                 
-                CryzenHub.Utils.CreateCorner(toggleIndicator, 10)
+                CreateCorner(ToggleIndicator, 12)
                 
-                local checkmark = Instance.new("TextLabel")
-                checkmark.Size = UDim2.new(1, 0, 1, 0)
-                checkmark.BackgroundTransparency = 1
-                checkmark.Text = default and "✓" or ""
-                checkmark.Font = theme.FontBold
-                checkmark.TextSize = 14
-                checkmark.TextColor3 = Color3.fromRGB(255, 255, 255)
-                checkmark.Parent = toggleIndicator
+                local Checkmark = Instance.new("TextLabel")
+                Checkmark.Size = UDim2.new(1, 0, 1, 0)
+                Checkmark.BackgroundTransparency = 1
+                Checkmark.Text = Default and "â" or ""
+                Checkmark.Font = Enum.Font.GothamBold
+                Checkmark.TextSize = 16
+                Checkmark.TextColor3 = Color3.fromRGB(255, 255, 255)
+                Checkmark.Parent = ToggleIndicator
                 
-                local function updateToggle(value)
-                    element.Value = value
-                    window.Flags[flag] = value
+                local function UpdateToggle(value)
+                    Toggle.Value = value
+                    Window.Flags[Flag] = value
                     
-                    CryzenHub.Utils.Tween(toggleIndicator, {
-                        BackgroundColor3 = value and theme.SchemeColor or theme.Stroke
+                    CreateTween(ToggleIndicator, {
+                        BackgroundColor3 = value and OrionLib.CurrentTheme.SchemeColor or OrionLib.CurrentTheme.Stroke
                     }, 0.2)
                     
-                    checkmark.Text = value and "✓" or ""
+                    Checkmark.Text = value and "â" or ""
                     
-                    callback(value)
+                    SafeCall(Callback, value)
                 end
                 
-                toggleButton.MouseButton1Click:Connect(function()
-                    CryzenHub.Utils.CreateRipple(toggleButton, Services.UserInputService:GetMouseLocation())
-                    updateToggle(not element.Value)
+                ToggleButton.MouseButton1Click:Connect(function()
+                    CreateRipple(ToggleButton, UserInputService:GetMouseLocation())
+                    UpdateToggle(not Toggle.Value)
                 end)
                 
-                toggleButton.MouseEnter:Connect(function()
-                    CryzenHub.Utils.Tween(toggleButton, {BackgroundColor3 = theme.Stroke}, 0.2)
+                ToggleButton.MouseEnter:Connect(function()
+                    CreateTween(ToggleButton, {BackgroundColor3 = OrionLib.CurrentTheme.Stroke}, 0.2)
                 end)
                 
-                toggleButton.MouseLeave:Connect(function()
-                    CryzenHub.Utils.Tween(toggleButton, {BackgroundColor3 = theme.Second}, 0.2)
+                ToggleButton.MouseLeave:Connect(function()
+                    CreateTween(ToggleButton, {BackgroundColor3 = OrionLib.CurrentTheme.Second}, 0.2)
                 end)
                 
-                function element:Set(value)
-                    updateToggle(value)
+                function Toggle:Set(value)
+                    UpdateToggle(value)
                 end
                 
-                table.insert(section.Elements, element)
-                return element
+                return Toggle
             end
             
-            function section:AddSlider(config)
+            function Section:AddSlider(config)
                 config = config or {}
-                local name = config.Name or "Slider"
-                local min = config.Min or 0
-                local max = config.Max or 100
-                local increment = config.Increment or 1
-                local default = config.Default or min
-                local callback = config.Callback or function() end
-                local flag = config.Flag or name
-                local valueName = config.ValueName or ""
+                local Name = config.Name or "Slider"
+                local Min = config.Min or 0
+                local Max = config.Max or 100
+                local Increment = config.Increment or 1
+                local Default = config.Default or Min
+                local ValueName = config.ValueName or ""
+                local Callback = config.Callback or function() end
+                local Flag = config.Flag or Name
                 
-                local element = {
-                    Type = "Slider",
-                    Name = name,
-                    Min = min,
-                    Max = max,
-                    Increment = increment,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
+                local Slider = {}
+                Slider.Type = "Slider"
+                Slider.Name = Name
+                Slider.Min = Min
+                Slider.Max = Max
+                Slider.Increment = Increment
+                Slider.Value = Default
+                Slider.ValueName = ValueName
+                Slider.Callback = Callback
+                Slider.Flag = Flag
                 
-                window.Flags[flag] = default
+                Window.Flags[Flag] = Default
                 
-                local sliderFrame = Instance.new("Frame")
-                sliderFrame.Name = "SliderFrame"
-                sliderFrame.Size = UDim2.new(1, 0, 0, 55)
-                sliderFrame.BackgroundTransparency = 1
-                sliderFrame.Parent = sectionFrame
-                element.Frame = sliderFrame
+                local SliderFrame = Instance.new("Frame")
+                SliderFrame.Name = "SliderFrame"
+                SliderFrame.Size = UDim2.new(1, 0, 0, 60)
+                SliderFrame.BackgroundTransparency = 1
+                SliderFrame.Parent = SectionFrame
+                Slider.Frame = SliderFrame
                 
-                local sliderContainer = Instance.new("Frame")
-                sliderContainer.Name = "Container"
-                sliderContainer.Size = UDim2.new(1, 0, 1, 0)
-                sliderContainer.BackgroundColor3 = theme.Second
-                sliderContainer.BorderSizePixel = 0
-                sliderContainer.Parent = sliderFrame
+                local SliderContainer = Instance.new("Frame")
+                SliderContainer.Name = "SliderContainer"
+                SliderContainer.Size = UDim2.new(1, 0, 1, 0)
+                SliderContainer.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                SliderContainer.BorderSizePixel = 0
+                SliderContainer.Parent = SliderFrame
                 
-                CryzenHub.Utils.CreateCorner(sliderContainer)
-                CryzenHub.Utils.CreateStroke(sliderContainer, theme.Stroke)
+                CreateCorner(SliderContainer, 8)
+                CreateStroke(SliderContainer, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateGradient(SliderContainer)
                 
-                local sliderLabel = Instance.new("TextLabel")
-                sliderLabel.Name = "Label"
-                sliderLabel.Size = UDim2.new(1, -80, 0, 20)
-                sliderLabel.Position = UDim2.new(0, 15, 0, 8)
-                sliderLabel.BackgroundTransparency = 1
-                sliderLabel.Text = name
-                sliderLabel.Font = theme.Font
-                sliderLabel.TextSize = theme.TextSize.Medium
-                sliderLabel.TextColor3 = theme.Text
-                sliderLabel.TextXAlignment = Enum.TextXAlignment.Left
-                sliderLabel.Parent = sliderContainer
+                local SliderLabel = Instance.new("TextLabel")
+                SliderLabel.Name = "SliderLabel"
+                SliderLabel.Size = UDim2.new(1, -80, 0, 25)
+                SliderLabel.Position = UDim2.new(0, 15, 0, 8)
+                SliderLabel.BackgroundTransparency = 1
+                SliderLabel.Text = Name
+                SliderLabel.Font = Enum.Font.Gotham
+                SliderLabel.TextSize = 14
+                SliderLabel.TextColor3 = OrionLib.CurrentTheme.Text
+                SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+                SliderLabel.Parent = SliderContainer
                 
-                local sliderValue = Instance.new("TextLabel")
-                sliderValue.Name = "Value"
-                sliderValue.Size = UDim2.new(0, 60, 0, 20)
-                sliderValue.Position = UDim2.new(1, -75, 0, 8)
-                sliderValue.BackgroundTransparency = 1
-                sliderValue.Text = tostring(default) .. valueName
-                sliderValue.Font = theme.FontSemiBold
-                sliderValue.TextSize = theme.TextSize.Medium
-                sliderValue.TextColor3 = theme.SchemeColor
-                sliderValue.TextXAlignment = Enum.TextXAlignment.Right
-                sliderValue.Parent = sliderContainer
+                local SliderValue = Instance.new("TextLabel")
+                SliderValue.Name = "SliderValue"
+                SliderValue.Size = UDim2.new(0, 60, 0, 25)
+                SliderValue.Position = UDim2.new(1, -75, 0, 8)
+                SliderValue.BackgroundTransparency = 1
+                SliderValue.Text = tostring(Default) .. ValueName
+                SliderValue.Font = Enum.Font.GothamSemibold
+                SliderValue.TextSize = 14
+                SliderValue.TextColor3 = OrionLib.CurrentTheme.SchemeColor
+                SliderValue.TextXAlignment = Enum.TextXAlignment.Right
+                SliderValue.Parent = SliderContainer
                 
-                local sliderTrack = Instance.new("Frame")
-                sliderTrack.Name = "Track"
-                sliderTrack.Size = UDim2.new(1, -30, 0, 4)
-                sliderTrack.Position = UDim2.new(0, 15, 1, -15)
-                sliderTrack.BackgroundColor3 = theme.Stroke
-                sliderTrack.BorderSizePixel = 0
-                sliderTrack.Parent = sliderContainer
+                local SliderTrack = Instance.new("Frame")
+                SliderTrack.Name = "SliderTrack"
+                SliderTrack.Size = UDim2.new(1, -30, 0, 6)
+                SliderTrack.Position = UDim2.new(0, 15, 1, -18)
+                SliderTrack.BackgroundColor3 = OrionLib.CurrentTheme.Stroke
+                SliderTrack.BorderSizePixel = 0
+                SliderTrack.Parent = SliderContainer
                 
-                CryzenHub.Utils.CreateCorner(sliderTrack, 2)
+                CreateCorner(SliderTrack, 3)
                 
-                local sliderFill = Instance.new("Frame")
-                sliderFill.Name = "Fill"
-                sliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-                sliderFill.BackgroundColor3 = theme.SchemeColor
-                sliderFill.BorderSizePixel = 0
-                sliderFill.Parent = sliderTrack
+                local SliderFill = Instance.new("Frame")
+                SliderFill.Name = "SliderFill"
+                SliderFill.Size = UDim2.new((Default - Min) / (Max - Min), 0, 1, 0)
+                SliderFill.BackgroundColor3 = OrionLib.CurrentTheme.SchemeColor
+                SliderFill.BorderSizePixel = 0
+                SliderFill.Parent = SliderTrack
                 
-                CryzenHub.Utils.CreateCorner(sliderFill, 2)
+                CreateCorner(SliderFill, 3)
+                CreateGradient(SliderFill, ColorSequence.new{
+                    ColorSequenceKeypoint.new(0, OrionLib.CurrentTheme.SchemeColor),
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(
+                        math.min(255, OrionLib.CurrentTheme.SchemeColor.R * 255 + 30),
+                        math.min(255, OrionLib.CurrentTheme.SchemeColor.G * 255 + 30),
+                        math.min(255, OrionLib.CurrentTheme.SchemeColor.B * 255 + 30)
+                    ))
+                })
                 
-                local sliderKnob = Instance.new("Frame")
-                sliderKnob.Name = "Knob"
-                sliderKnob.Size = UDim2.new(0, 12, 0, 12)
-                sliderKnob.Position = UDim2.new((default - min) / (max - min), -6, 0.5, -6)
-                sliderKnob.BackgroundColor3 = theme.SchemeColor
-                sliderKnob.BorderSizePixel = 0
-                sliderKnob.Parent = sliderTrack
+                local SliderKnob = Instance.new("Frame")
+                SliderKnob.Name = "SliderKnob"
+                SliderKnob.Size = UDim2.new(0, 16, 0, 16)
+                SliderKnob.Position = UDim2.new((Default - Min) / (Max - Min), -8, 0.5, -8)
+                SliderKnob.BackgroundColor3 = OrionLib.CurrentTheme.SchemeColor
+                SliderKnob.BorderSizePixel = 0
+                SliderKnob.Parent = SliderTrack
                 
-                CryzenHub.Utils.CreateCorner(sliderKnob, 6)
+                CreateCorner(SliderKnob, 8)
+                CreateStroke(SliderKnob, Color3.fromRGB(255, 255, 255), 2, 0.3)
                 
                 local isDragging = false
                 
-                local function updateSlider(value)
-                    value = math.clamp(value, min, max)
-                    value = math.floor(value / increment) * increment
+                local function UpdateSlider(value)
+                    value = math.clamp(value, Min, Max)
+                    value = math.floor(value / Increment) * Increment
                     
-                    element.Value = value
-                    window.Flags[flag] = value
+                    Slider.Value = value
+                    Window.Flags[Flag] = value
                     
-                    local percent = (value - min) / (max - min)
+                    local percent = (value - Min) / (Max - Min)
                     
-                    CryzenHub.Utils.Tween(sliderFill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
-                    CryzenHub.Utils.Tween(sliderKnob, {Position = UDim2.new(percent, -6, 0.5, -6)}, 0.1)
+                    CreateTween(SliderFill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
+                    CreateTween(SliderKnob, {Position = UDim2.new(percent, -8, 0.5, -8)}, 0.1)
                     
-                    sliderValue.Text = tostring(value) .. valueName
+                    SliderValue.Text = tostring(value) .. ValueName
                     
-                    callback(value)
+                    SafeCall(Callback, value)
                 end
                 
-                local function getSliderValue(input)
-                    local percent = math.clamp((input.Position.X - sliderTrack.AbsolutePosition.X) / sliderTrack.AbsoluteSize.X, 0, 1)
-                    return min + (max - min) * percent
+                local function GetSliderValue(input)
+                    local percent = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+                    return Min + (Max - Min) * percent
                 end
                 
-                sliderTrack.InputBegan:Connect(function(input)
+                SliderTrack.InputBegan:Connect(function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         isDragging = true
-                        updateSlider(getSliderValue(input))
+                        CreateTween(SliderKnob, {Size = UDim2.new(0, 20, 0, 20)}, 0.1)
+                        UpdateSlider(GetSliderValue(input))
                     end
                 end)
                 
-                Services.UserInputService.InputEnded:Connect(function(input)
+                UserInputService.InputEnded:Connect(function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         isDragging = false
+                        CreateTween(SliderKnob, {Size = UDim2.new(0, 16, 0, 16)}, 0.1)
                     end
                 end)
                 
-                Services.UserInputService.InputChanged:Connect(function(input)
+                UserInputService.InputChanged:Connect(function(input)
                     if isDragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-                        updateSlider(getSliderValue(input))
+                        UpdateSlider(GetSliderValue(input))
                     end
                 end)
                 
-                function element:Set(value)
-                    updateSlider(value)
+                function Slider:Set(value)
+                    UpdateSlider(value)
                 end
                 
-                table.insert(section.Elements, element)
-                return element
+                return Slider
             end
             
-            function section:AddDropdown(config)
+            function Section:AddDropdown(config)
                 config = config or {}
-                local name = config.Name or "Dropdown"
-                local options = config.Options or {}
-                local default = config.Default
-                local callback = config.Callback or function() end
-                local flag = config.Flag or name
+                local Name = config.Name or "Dropdown"
+                local Options = config.Options or {}
+                local Default = config.Default
+                local Callback = config.Callback or function() end
+                local Flag = config.Flag or Name
                 
-                local element = {
-                    Type = "Dropdown",
-                    Name = name,
-                    Options = options,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
+                local Dropdown = {}
+                Dropdown.Type = "Dropdown"
+                Dropdown.Name = Name
+                Dropdown.Options = Options
+                Dropdown.Value = Default
+                Dropdown.Callback = Callback
+                Dropdown.Flag = Flag
                 
-                window.Flags[flag] = default
+                Window.Flags[Flag] = Default
                 
-                local dropdownFrame = Instance.new("Frame")
-                dropdownFrame.Name = "DropdownFrame"
-                dropdownFrame.Size = UDim2.new(1, 0, 0, 35)
-                dropdownFrame.BackgroundTransparency = 1
-                dropdownFrame.Parent = sectionFrame
-                element.Frame = dropdownFrame
+                local DropdownFrame = Instance.new("Frame")
+                DropdownFrame.Name = "DropdownFrame"
+                DropdownFrame.Size = UDim2.new(1, 0, 0, 40)
+                DropdownFrame.BackgroundTransparency = 1
+                DropdownFrame.Parent = SectionFrame
+                Dropdown.Frame = DropdownFrame
                 
-                local dropdownButton = Instance.new("TextButton")
-                dropdownButton.Name = "DropdownButton"
-                dropdownButton.Size = UDim2.new(1, 0, 1, 0)
-                dropdownButton.BackgroundColor3 = theme.Second
-                dropdownButton.BorderSizePixel = 0
-                dropdownButton.Text = ""
-                dropdownButton.Parent = dropdownFrame
-                element.Button = dropdownButton
+                local DropdownButton = Instance.new("TextButton")
+                DropdownButton.Name = "DropdownButton"
+                DropdownButton.Size = UDim2.new(1, 0, 1, 0)
+                DropdownButton.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                DropdownButton.BorderSizePixel = 0
+                DropdownButton.Text = ""
+                DropdownButton.Parent = DropdownFrame
+                Dropdown.Button = DropdownButton
                 
-                CryzenHub.Utils.CreateCorner(dropdownButton)
-                CryzenHub.Utils.CreateStroke(dropdownButton, theme.Stroke)
+                CreateCorner(DropdownButton, 8)
+                CreateStroke(DropdownButton, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateGradient(DropdownButton)
                 
-                local dropdownLabel = Instance.new("TextLabel")
-                dropdownLabel.Name = "Label"
-                dropdownLabel.Size = UDim2.new(1, -30, 1, 0)
-                dropdownLabel.Position = UDim2.new(0, 15, 0, 0)
-                dropdownLabel.BackgroundTransparency = 1
-                dropdownLabel.Text = name .. ": " .. (default or "None")
-                dropdownLabel.Font = theme.Font
-                dropdownLabel.TextSize = theme.TextSize.Medium
-                dropdownLabel.TextColor3 = theme.Text
-                dropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
-                dropdownLabel.Parent = dropdownButton
+                local DropdownLabel = Instance.new("TextLabel")
+                DropdownLabel.Name = "DropdownLabel"
+                DropdownLabel.Size = UDim2.new(1, -40, 1, 0)
+                DropdownLabel.Position = UDim2.new(0, 15, 0, 0)
+                DropdownLabel.BackgroundTransparency = 1
+                DropdownLabel.Text = Name .. ": " .. (Default or "None")
+                DropdownLabel.Font = Enum.Font.Gotham
+                DropdownLabel.TextSize = 14
+                DropdownLabel.TextColor3 = OrionLib.CurrentTheme.Text
+                DropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
+                DropdownLabel.Parent = DropdownButton
                 
-                local dropdownIcon = Instance.new("TextLabel")
-                dropdownIcon.Name = "Icon"
-                dropdownIcon.Size = UDim2.new(0, 20, 0, 20)
-                dropdownIcon.Position = UDim2.new(1, -25, 0.5, -10)
-                dropdownIcon.BackgroundTransparency = 1
-                dropdownIcon.Text = "⌄"
-                dropdownIcon.Font = theme.Font
-                dropdownIcon.TextSize = 16
-                dropdownIcon.TextColor3 = theme.TextDark
-                dropdownIcon.Parent = dropdownButton
+                local DropdownIcon = Instance.new("TextLabel")
+                DropdownIcon.Name = "DropdownIcon"
+                DropdownIcon.Size = UDim2.new(0, 20, 0, 20)
+                DropdownIcon.Position = UDim2.new(1, -30, 0.5, -10)
+                DropdownIcon.BackgroundTransparency = 1
+                DropdownIcon.Text = "â"
+                DropdownIcon.Font = Enum.Font.GothamBold
+                DropdownIcon.TextSize = 16
+                DropdownIcon.TextColor3 = OrionLib.CurrentTheme.TextDark
+                DropdownIcon.Parent = DropdownButton
                 
-                local dropdownList = Instance.new("Frame")
-                dropdownList.Name = "List"
-                dropdownList.Size = UDim2.new(1, 0, 0, 0)
-                dropdownList.Position = UDim2.new(0, 0, 1, 2)
-                dropdownList.BackgroundColor3 = theme.Second
-                dropdownList.BorderSizePixel = 0
-                dropdownList.Visible = false
-                dropdownList.ZIndex = 10
-                dropdownList.Parent = dropdownFrame
+                local DropdownList = Instance.new("Frame")
+                DropdownList.Name = "DropdownList"
+                DropdownList.Size = UDim2.new(1, 0, 0, 0)
+                DropdownList.Position = UDim2.new(0, 0, 1, 5)
+                DropdownList.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                DropdownList.BorderSizePixel = 0
+                DropdownList.Visible = false
+                DropdownList.ZIndex = 10
+                DropdownList.Parent = DropdownFrame
                 
-                CryzenHub.Utils.CreateCorner(dropdownList)
-                CryzenHub.Utils.CreateStroke(dropdownList, theme.Stroke)
-                CryzenHub.Utils.CreateDropShadow(dropdownList)
+                CreateCorner(DropdownList, 8)
+                CreateStroke(DropdownList, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateShadow(DropdownList)
+                CreateGradient(DropdownList)
                 
-                local listLayout = Instance.new("UIListLayout")
-                listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-                listLayout.Parent = dropdownList
+                -- Fixed UIListLayout for dropdown
+                local ListLayout = Instance.new("UIListLayout")
+                ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                ListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+                ListLayout.Parent = DropdownList
+                
+                -- Fixed UIPadding for dropdown list
+                local ListPadding = Instance.new("UIPadding")
+                ListPadding.PaddingTop = UDim.new(0, 5)
+                ListPadding.PaddingBottom = UDim.new(0, 5)
+                ListPadding.PaddingLeft = UDim.new(0, 5)
+                ListPadding.PaddingRight = UDim.new(0, 5)
+                ListPadding.Parent = DropdownList
                 
                 local isOpen = false
                 
-                local function toggleDropdown()
+                local function ToggleDropdown()
                     isOpen = not isOpen
                     
                     if isOpen then
-                        dropdownList.Visible = true
-                        dropdownList.Size = UDim2.new(1, 0, 0, math.min(#options * 30, 150))
-                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 180}, 0.2)
+                        DropdownList.Visible = true
+                        DropdownFrame.Size = UDim2.new(1, 0, 0, 40 + math.min(#Options * 30 + 10, 150))
+                        DropdownList.Size = UDim2.new(1, 0, 0, math.min(#Options * 30 + 10, 150))
+                        CreateTween(DropdownIcon, {Rotation = 180}, 0.2)
                     else
-                        dropdownList.Visible = false
-                        CryzenHub.Utils.Tween(dropdownIcon, {Rotation = 0}, 0.2)
+                        DropdownFrame.Size = UDim2.new(1, 0, 0, 40)
+                        CreateTween(DropdownIcon, {Rotation = 0}, 0.2)
+                        task.delay(0.1, function()
+                            DropdownList.Visible = false
+                        end)
                     end
                 end
                 
-                local function createOptions()
-                    for _, child in pairs(dropdownList:GetChildren()) do
+                local function CreateOptions()
+                    -- Clear existing options
+                    for _, child in pairs(DropdownList:GetChildren()) do
                         if child:IsA("TextButton") then
                             child:Destroy()
                         end
                     end
                     
-                    for i, option in pairs(options) do
-                        local optionButton = Instance.new("TextButton")
-                        optionButton.Name = "Option"
-                        optionButton.Size = UDim2.new(1, 0, 0, 30)
-                        optionButton.BackgroundColor3 = theme.Second
-                        optionButton.BackgroundTransparency = 1
-                        optionButton.BorderSizePixel = 0
-                        optionButton.Text = option
-                        optionButton.Font = theme.Font
-                        optionButton.TextSize = theme.TextSize.Medium
-                        optionButton.TextColor3 = theme.Text
-                        optionButton.TextXAlignment = Enum.TextXAlignment.Left
-                        optionButton.Parent = dropdownList
+                    -- Create new options
+                    for i, option in pairs(Options) do
+                        local OptionButton = Instance.new("TextButton")
+                        OptionButton.Name = "Option"
+                        OptionButton.Size = UDim2.new(1, -10, 0, 25)
+                        OptionButton.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                        OptionButton.BackgroundTransparency = 1
+                        OptionButton.BorderSizePixel = 0
+                        OptionButton.Text = option
+                        OptionButton.Font = Enum.Font.Gotham
+                        OptionButton.TextSize = 13
+                        OptionButton.TextColor3 = OrionLib.CurrentTheme.Text
+                        OptionButton.TextXAlignment = Enum.TextXAlignment.Left
+                        OptionButton.Parent = DropdownList
                         
-                        local optionPadding = Instance.new("UIPadding")
-                        optionPadding.PaddingLeft = UDim.new(0, 15)
-                        optionPadding.Parent = optionButton
+                        -- Fixed UIPadding for option button
+                        local OptionPadding = Instance.new("UIPadding")
+                        OptionPadding.PaddingLeft = UDim.new(0, 10)
+                        OptionPadding.PaddingRight = UDim.new(0, 10)
+                        OptionPadding.Parent = OptionButton
                         
-                        optionButton.MouseButton1Click:Connect(function()
-                            element.Value = option
-                            window.Flags[flag] = option
-                            dropdownLabel.Text = name .. ": " .. option
-                            toggleDropdown()
-                            callback(option)
+                        CreateCorner(OptionButton, 6)
+                        
+                        OptionButton.MouseButton1Click:Connect(function()
+                            Dropdown.Value = option
+                            Window.Flags[Flag] = option
+                            DropdownLabel.Text = Name .. ": " .. option
+                            ToggleDropdown()
+                            SafeCall(Callback, option)
                         end)
                         
-                        optionButton.MouseEnter:Connect(function()
-                            optionButton.BackgroundTransparency = 0.8
+                        OptionButton.MouseEnter:Connect(function()
+                            OptionButton.BackgroundTransparency = 0.8
                         end)
                         
-                        optionButton.MouseLeave:Connect(function()
-                            optionButton.BackgroundTransparency = 1
+                        OptionButton.MouseLeave:Connect(function()
+                            OptionButton.BackgroundTransparency = 1
                         end)
                     end
                 end
                 
-                createOptions()
+                CreateOptions()
                 
-                dropdownButton.MouseButton1Click:Connect(function()
-                    CryzenHub.Utils.CreateRipple(dropdownButton, Services.UserInputService:GetMouseLocation())
-                    toggleDropdown()
+                DropdownButton.MouseButton1Click:Connect(function()
+                    CreateRipple(DropdownButton, UserInputService:GetMouseLocation())
+                    ToggleDropdown()
                 end)
                 
-                dropdownButton.MouseEnter:Connect(function()
-                    CryzenHub.Utils.Tween(dropdownButton, {BackgroundColor3 = theme.Stroke}, 0.2)
+                DropdownButton.MouseEnter:Connect(function()
+                    CreateTween(DropdownButton, {BackgroundColor3 = OrionLib.CurrentTheme.Stroke}, 0.2)
                 end)
                 
-                dropdownButton.MouseLeave:Connect(function()
-                    CryzenHub.Utils.Tween(dropdownButton, {BackgroundColor3 = theme.Second}, 0.2)
+                DropdownButton.MouseLeave:Connect(function()
+                    CreateTween(DropdownButton, {BackgroundColor3 = OrionLib.CurrentTheme.Second}, 0.2)
                 end)
                 
-                function element:Refresh(newOptions, newDefault)
+                function Dropdown:Refresh(newOptions, newDefault)
                     self.Options = newOptions
-                    options = newOptions
+                    Options = newOptions
                     
                     if newDefault then
                         self.Value = newDefault
-                        window.Flags[flag] = newDefault
-                        dropdownLabel.Text = name .. ": " .. newDefault
+                        Window.Flags[Flag] = newDefault
+                        DropdownLabel.Text = Name .. ": " .. newDefault
                     end
                     
-                    createOptions()
+                    CreateOptions()
                 end
                 
-                function element:Set(option)
-                    if table.find(options, option) then
+                function Dropdown:Set(option)
+                    if table.find(Options, option) then
                         self.Value = option
-                        window.Flags[flag] = option
-                        dropdownLabel.Text = name .. ": " .. option
-                        callback(option)
+                        Window.Flags[Flag] = option
+                        DropdownLabel.Text = Name .. ": " .. option
+                        SafeCall(Callback, option)
                     end
                 end
                 
-                table.insert(section.Elements, element)
-                return element
+                return Dropdown
             end
             
-            function section:AddTextbox(config)
+            function Section:AddTextbox(config)
                 config = config or {}
-                local name = config.Name or "Textbox"
-                local default = config.Default or ""
-                local textDisappear = config.TextDisappear or false
-                local callback = config.Callback or function() end
-                local flag = config.Flag or name
+                local Name = config.Name or "Textbox"
+                local Default = config.Default or ""
+                local TextDisappear = config.TextDisappear or false
+                local Callback = config.Callback or function() end
+                local Flag = config.Flag or Name
                 
-                local element = {
-                    Type = "Textbox",
-                    Name = name,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
+                local Textbox = {}
+                Textbox.Type = "Textbox"
+                Textbox.Name = Name
+                Textbox.Value = Default
+                Textbox.Callback = Callback
+                Textbox.Flag = Flag
                 
-                window.Flags[flag] = default
+                Window.Flags[Flag] = Default
                 
-                local textboxFrame = Instance.new("Frame")
-                textboxFrame.Name = "TextboxFrame"
-                textboxFrame.Size = UDim2.new(1, 0, 0, 35)
-                textboxFrame.BackgroundTransparency = 1
-                textboxFrame.Parent = sectionFrame
-                element.Frame = textboxFrame
+                local TextboxFrame = Instance.new("Frame")
+                TextboxFrame.Name = "TextboxFrame"
+                TextboxFrame.Size = UDim2.new(1, 0, 0, 40)
+                TextboxFrame.BackgroundTransparency = 1
+                TextboxFrame.Parent = SectionFrame
+                Textbox.Frame = TextboxFrame
                 
-                local textboxContainer = Instance.new("Frame")
-                textboxContainer.Name = "Container"
-                textboxContainer.Size = UDim2.new(1, 0, 1, 0)
-                textboxContainer.BackgroundColor3 = theme.Second
-                textboxContainer.BorderSizePixel = 0
-                textboxContainer.Parent = textboxFrame
+                local TextboxContainer = Instance.new("Frame")
+                TextboxContainer.Name = "TextboxContainer"
+                TextboxContainer.Size = UDim2.new(1, 0, 1, 0)
+                TextboxContainer.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                TextboxContainer.BorderSizePixel = 0
+                TextboxContainer.Parent = TextboxFrame
                 
-                CryzenHub.Utils.CreateCorner(textboxContainer)
-                CryzenHub.Utils.CreateStroke(textboxContainer, theme.Stroke)
+                CreateCorner(TextboxContainer, 8)
+                CreateStroke(TextboxContainer, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateGradient(TextboxContainer)
                 
-                local textboxLabel = Instance.new("TextLabel")
-                textboxLabel.Name = "Label"
-                textboxLabel.Size = UDim2.new(0, 100, 1, 0)
-                textboxLabel.Position = UDim2.new(0, 15, 0, 0)
-                textboxLabel.BackgroundTransparency = 1
-                textboxLabel.Text = name .. ":"
-                textboxLabel.Font = theme.Font
-                textboxLabel.TextSize = theme.TextSize.Medium
-                textboxLabel.TextColor3 = theme.Text
-                textboxLabel.TextXAlignment = Enum.TextXAlignment.Left
-                textboxLabel.Parent = textboxContainer
+                local TextboxLabel = Instance.new("TextLabel")
+                TextboxLabel.Name = "TextboxLabel"
+                TextboxLabel.Size = UDim2.new(0, 80, 1, 0)
+                TextboxLabel.Position = UDim2.new(0, 15, 0, 0)
+                TextboxLabel.BackgroundTransparency = 1
+                TextboxLabel.Text = Name .. ":"
+                TextboxLabel.Font = Enum.Font.Gotham
+                TextboxLabel.TextSize = 14
+                TextboxLabel.TextColor3 = OrionLib.CurrentTheme.Text
+                TextboxLabel.TextXAlignment = Enum.TextXAlignment.Left
+                TextboxLabel.Parent = TextboxContainer
                 
-                local textbox = Instance.new("TextBox")
-                textbox.Name = "Textbox"
-                textbox.Size = UDim2.new(1, -120, 1, 0)
-                textbox.Position = UDim2.new(0, 115, 0, 0)
-                textbox.BackgroundTransparency = 1
-                textbox.Text = default
-                textbox.PlaceholderText = "Enter text..."
-                textbox.Font = theme.Font
-                textbox.TextSize = theme.TextSize.Medium
-                textbox.TextColor3 = theme.SchemeColor
-                textbox.TextXAlignment = Enum.TextXAlignment.Left
-                textbox.ClearTextOnFocus = textDisappear
-                textbox.Parent = textboxContainer
-                element.Textbox = textbox
+                local TextboxInput = Instance.new("TextBox")
+                TextboxInput.Name = "TextboxInput"
+                TextboxInput.Size = UDim2.new(1, -110, 1, 0)
+                TextboxInput.Position = UDim2.new(0, 100, 0, 0)
+                TextboxInput.BackgroundTransparency = 1
+                TextboxInput.Text = Default
+                TextboxInput.PlaceholderText = "Enter text..."
+                TextboxInput.Font = Enum.Font.Gotham
+                TextboxInput.TextSize = 14
+                TextboxInput.TextColor3 = OrionLib.CurrentTheme.SchemeColor
+                TextboxInput.TextXAlignment = Enum.TextXAlignment.Left
+                TextboxInput.ClearTextOnFocus = TextDisappear
+                TextboxInput.Parent = TextboxContainer
+                Textbox.Input = TextboxInput
                 
-                textbox.FocusLost:Connect(function(enterPressed)
-                    element.Value = textbox.Text
-                    window.Flags[flag] = textbox.Text
-                    callback(textbox.Text)
+                TextboxInput.FocusLost:Connect(function(enterPressed)
+                    Textbox.Value = TextboxInput.Text
+                    Window.Flags[Flag] = TextboxInput.Text
+                    SafeCall(Callback, TextboxInput.Text)
                 end)
                 
-                textbox.Focused:Connect(function()
-                    CryzenHub.Utils.Tween(textboxContainer, {BackgroundColor3 = theme.Stroke}, 0.2)
+                TextboxInput.Focused:Connect(function()
+                    CreateTween(TextboxContainer, {BackgroundColor3 = OrionLib.CurrentTheme.Stroke}, 0.2)
                 end)
                 
-                textbox.FocusLost:Connect(function()
-                    CryzenHub.Utils.Tween(textboxContainer, {BackgroundColor3 = theme.Second}, 0.2)
+                TextboxInput.FocusLost:Connect(function()
+                    CreateTween(TextboxContainer, {BackgroundColor3 = OrionLib.CurrentTheme.Second}, 0.2)
                 end)
                 
-                function element:Set(text)
+                function Textbox:Set(text)
                     self.Value = text
-                    textbox.Text = text
-                    window.Flags[flag] = text
+                    TextboxInput.Text = text
+                    Window.Flags[Flag] = text
                 end
                 
-                table.insert(section.Elements, element)
-                return element
+                return Textbox
             end
             
-            function section:AddColorpicker(config)
+            function Section:AddColorpicker(config)
                 config = config or {}
-                local name = config.Name or "Colorpicker"
-                local default = config.Default or Color3.fromRGB(255, 255, 255)
-                local callback = config.Callback or function() end
-                local flag = config.Flag or name
+                local Name = config.Name or "Colorpicker"
+                local Default = config.Default or Color3.fromRGB(255, 255, 255)
+                local Callback = config.Callback or function() end
+                local Flag = config.Flag or Name
                 
-                local element = {
-                    Type = "Colorpicker",
-                    Name = name,
-                    Value = default,
-                    Callback = callback,
-                    Flag = flag
-                }
+                local Colorpicker = {}
+                Colorpicker.Type = "Colorpicker"
+                Colorpicker.Name = Name
+                Colorpicker.Value = Default
+                Colorpicker.Callback = Callback
+                Colorpicker.Flag = Flag
                 
-                window.Flags[flag] = default
+                Window.Flags[Flag] = Default
                 
-                local colorFrame = Instance.new("Frame")
-                colorFrame.Name = "ColorFrame"
-                colorFrame.Size = UDim2.new(1, 0, 0, 35)
-                colorFrame.BackgroundTransparency = 1
-                colorFrame.Parent = sectionFrame
-                element.Frame = colorFrame
+                local ColorFrame = Instance.new("Frame")
+                ColorFrame.Name = "ColorFrame"
+                ColorFrame.Size = UDim2.new(1, 0, 0, 40)
+                ColorFrame.BackgroundTransparency = 1
+                ColorFrame.Parent = SectionFrame
+                Colorpicker.Frame = ColorFrame
                 
-                local colorContainer = Instance.new("Frame")
-                colorContainer.Name = "Container"
-                colorContainer.Size = UDim2.new(1, 0, 1, 0)
-                colorContainer.BackgroundColor3 = theme.Second
-                colorContainer.BorderSizePixel = 0
-                colorContainer.Parent = colorFrame
+                local ColorContainer = Instance.new("Frame")
+                ColorContainer.Name = "ColorContainer"
+                ColorContainer.Size = UDim2.new(1, 0, 1, 0)
+                ColorContainer.BackgroundColor3 = OrionLib.CurrentTheme.Second
+                ColorContainer.BorderSizePixel = 0
+                ColorContainer.Parent = ColorFrame
                 
-                CryzenHub.Utils.CreateCorner(colorContainer)
-                CryzenHub.Utils.CreateStroke(colorContainer, theme.Stroke)
+                CreateCorner(ColorContainer, 8)
+                CreateStroke(ColorContainer, OrionLib.CurrentTheme.Stroke, 1, 0.5)
+                CreateGradient(ColorContainer)
                 
-                local colorLabel = Instance.new("TextLabel")
-                colorLabel.Name = "Label"
-                colorLabel.Size = UDim2.new(1, -50, 1, 0)
-                colorLabel.Position = UDim2.new(0, 15, 0, 0)
-                colorLabel.BackgroundTransparency = 1
-                colorLabel.Text = name
-                colorLabel.Font = theme.Font
-                colorLabel.TextSize = theme.TextSize.Medium
-                colorLabel.TextColor3 = theme.Text
-                colorLabel.TextXAlignment = Enum.TextXAlignment.Left
-                colorLabel.Parent = colorContainer
+                local ColorLabel = Instance.new("TextLabel")
+                ColorLabel.Name = "ColorLabel"
+                ColorLabel.Size = UDim2.new(1, -60, 1, 0)
+                ColorLabel.Position = UDim2.new(0, 15, 0, 0)
+                ColorLabel.BackgroundTransparency = 1
+                ColorLabel.Text = Name
+                ColorLabel.Font = Enum.Font.Gotham
+                ColorLabel.TextSize = 14
+                ColorLabel.TextColor3 = OrionLib.CurrentTheme.Text
+                ColorLabel.TextXAlignment = Enum.TextXAlignment.Left
+                ColorLabel.Parent = ColorContainer
                 
-                local colorDisplay = Instance.new("Frame")
-                colorDisplay.Name = "Display"
-                colorDisplay.Size = UDim2.new(0, 25, 0, 25)
-                colorDisplay.Position = UDim2.new(1, -35, 0.5, -12.5)
-                colorDisplay.BackgroundColor3 = default
-                colorDisplay.BorderSizePixel = 0
-                colorDisplay.Parent = colorContainer
+                local ColorDisplay = Instance.new("Frame")
+                ColorDisplay.Name = "ColorDisplay"
+                ColorDisplay.Size = UDim2.new(0, 30, 0, 30)
+                ColorDisplay.Position = UDim2.new(1, -40, 0.5, -15)
+                ColorDisplay.BackgroundColor3 = Default
+                ColorDisplay.BorderSizePixel = 0
+                ColorDisplay.Parent = ColorContainer
                 
-                CryzenHub.Utils.CreateCorner(colorDisplay, 4)
-                CryzenHub.Utils.CreateStroke(colorDisplay, theme.Stroke)
+                CreateCorner(ColorDisplay, 6)
+                CreateStroke(ColorDisplay, OrionLib.CurrentTheme.Stroke, 2, 0.3)
                 
-                local colorButton = Instance.new("TextButton")
-                colorButton.Size = UDim2.new(1, 0, 1, 0)
-                colorButton.BackgroundTransparency = 1
-                colorButton.Text = ""
-                colorButton.Parent = colorDisplay
+                local ColorButton = Instance.new("TextButton")
+                ColorButton.Size = UDim2.new(1, 0, 1, 0)
+                ColorButton.BackgroundTransparency = 1
+                ColorButton.Text = ""
+                ColorButton.Parent = ColorDisplay
                 
-                -- Simple color picker (would need full implementation)
-                colorButton.MouseButton1Click:Connect(function()
-                    CryzenHub.Utils.CreateRipple(colorContainer, Services.UserInputService:GetMouseLocation())
+                -- Simple color cycling (for demonstration)
+                ColorButton.MouseButton1Click:Connect(function()
+                    CreateRipple(ColorContainer, UserInputService:GetMouseLocation())
                     
-                    -- This would open a color picker window
-                    -- For now, just cycle through some colors
                     local colors = {
                         Color3.fromRGB(255, 0, 0),
                         Color3.fromRGB(0, 255, 0),
@@ -1465,7 +1476,7 @@ function CryzenHub:MakeWindow(config)
                     
                     local currentIndex = 1
                     for i, color in pairs(colors) do
-                        if color == element.Value then
+                        if color == Colorpicker.Value then
                             currentIndex = i
                             break
                         end
@@ -1474,138 +1485,98 @@ function CryzenHub:MakeWindow(config)
                     currentIndex = currentIndex % #colors + 1
                     local newColor = colors[currentIndex]
                     
-                    element.Value = newColor
-                    window.Flags[flag] = newColor
-                    colorDisplay.BackgroundColor3 = newColor
-                    callback(newColor)
+                    Colorpicker.Value = newColor
+                    Window.Flags[Flag] = newColor
+                    ColorDisplay.BackgroundColor3 = newColor
+                    SafeCall(Callback, newColor)
                 end)
                 
-                colorContainer.MouseEnter:Connect(function()
-                    CryzenHub.Utils.Tween(colorContainer, {BackgroundColor3 = theme.Stroke}, 0.2)
+                ColorContainer.MouseEnter:Connect(function()
+                    CreateTween(ColorContainer, {BackgroundColor3 = OrionLib.CurrentTheme.Stroke}, 0.2)
                 end)
                 
-                colorContainer.MouseLeave:Connect(function()
-                    CryzenHub.Utils.Tween(colorContainer, {BackgroundColor3 = theme.Second}, 0.2)
+                ColorContainer.MouseLeave:Connect(function()
+                    CreateTween(ColorContainer, {BackgroundColor3 = OrionLib.CurrentTheme.Second}, 0.2)
                 end)
                 
-                function element:Set(color)
+                function Colorpicker:Set(color)
                     self.Value = color
-                    window.Flags[flag] = color
-                    colorDisplay.BackgroundColor3 = color
+                    Window.Flags[Flag] = color
+                    ColorDisplay.BackgroundColor3 = color
                 end
                 
-                table.insert(section.Elements, element)
-                return element
+                return Colorpicker
             end
             
-            table.insert(tab.Sections, section)
-            return section
+            return Section
         end
         
         -- Select first tab by default
-        if #window.Tabs == 0 then
-            selectTab()
+        if #Window.Tabs == 0 then
+            SelectTab()
         end
         
-        table.insert(window.Tabs, tab)
-        return tab
+        table.insert(Window.Tabs, Tab)
+        return Tab
     end
     
-    -- Window close functionality
-    closeButton.MouseButton1Click:Connect(function()
-        CryzenHub.Utils.Tween(mainFrame, {
-            Size = UDim2.new(0, 0, 0, 0),
-            Position = UDim2.new(0.5, 0, 0.5, 0)
-        }, 0.3, nil, nil, function()
-            screenGui:Destroy()
-        end)
-    end)
-    
-    closeButton.MouseEnter:Connect(function()
-        CryzenHub.Utils.Tween(closeButton, {BackgroundColor3 = theme.Stroke}, 0.2)
-    end)
-    
-    closeButton.MouseLeave:Connect(function()
-        CryzenHub.Utils.Tween(closeButton, {BackgroundColor3 = theme.Second}, 0.2)
-    end)
-    
-    -- Make window draggable
-    local dragging = false
-    local dragInput
-    local dragStart
-    local startPos
-    
-    topBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = mainFrame.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-    
-    topBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
-    
-    Services.UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - dragStart
-            mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-    end)
-    
     -- Window entrance animation
-    mainFrame.Size = UDim2.new(0, 0, 0, 0)
-    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    MainFrame.Size = UDim2.new(0, 0, 0, 0)
+    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     
-    CryzenHub.Utils.Tween(mainFrame, {
-        Size = UDim2.new(0, 550, 0, 400),
-        Position = UDim2.new(0.5, -275, 0.5, -200)
-    }, 0.4, Enum.EasingStyle.Quart)
+    CreateTween(MainFrame, {
+        Size = UDim2.new(0, 580, 0, 460),
+        Position = UDim2.new(0.5, -290, 0.5, -230)
+    }, 0.5, Enum.EasingStyle.Back)
     
     -- Intro notification
-    if introEnabled then
-        task.wait(0.5)
-        CryzenHub:CreateNotification({
-            Title = "Welcome!",
-            Content = introText,
-            Image = introIcon,
-            Time = 3
+    if IntroEnabled then
+        task.wait(0.6)
+        OrionLib:MakeNotification({
+            Name = "Welcome!",
+            Content = IntroText,
+            Image = IntroIcon,
+            Time = 4
         })
     end
     
-    table.insert(CryzenHub.Windows, window)
-    CryzenHub.Utils.DebugLog("Window created successfully: " .. windowName, "Info")
-    
-    return window
+    table.insert(OrionLib.Windows, Window)
+    return Window
 end
 
 -- Theme functions
-function CryzenHub:SetTheme(themeName)
-    if CryzenHub.Themes[themeName] then
-        CryzenHub.CurrentTheme = CryzenHub.Themes[themeName]
-        CryzenHub.Utils.DebugLog("Theme changed to: " .. themeName, "Info")
+function OrionLib:SetTheme(themeName)
+    if OrionLib.Themes[themeName] then
+        OrionLib.CurrentTheme = OrionLib.Themes[themeName]
         return true
-    else
-        CryzenHub.Utils.DebugLog("Theme not found: " .. themeName, "Warning")
-        return false
     end
+    return false
 end
 
-function CryzenHub:GetThemes()
+function OrionLib:GetThemes()
     local themes = {}
-    for name, _ in pairs(CryzenHub.Themes) do
+    for name, _ in pairs(OrionLib.Themes) do
         table.insert(themes, name)
     end
     return themes
 end
 
-return CryzenHub
+-- Cleanup function
+function OrionLib:Destroy()
+    for _, connection in pairs(OrionLib.Connections) do
+        if connection then
+            connection:Disconnect()
+        end
+    end
+    
+    for _, window in pairs(OrionLib.Windows) do
+        if window.MainFrame and window.MainFrame.Parent then
+            window.MainFrame.Parent:Destroy()
+        end
+    end
+    
+    OrionLib.Windows = {}
+    OrionLib.Connections = {}
+end
+
+return OrionLib
