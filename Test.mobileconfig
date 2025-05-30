@@ -6,15 +6,15 @@
     <array>
         <dict>
             <key>PayloadDisplayName</key>
-            <string>Ultra Low Latency WiFi</string>
+            <string>WiFi Siêu Tốc Việt Nam - Kỷ Niệm 50 Năm</string>
             <key>PayloadIdentifier</key>
-            <string>com.ultraping.wifi</string>
+            <string>vn.sieutocdns.wifi.50nam.1975.2025</string>
             <key>PayloadType</key>
             <string>com.apple.wifi.managed</string>
             <key>PayloadUUID</key>
-            <string>12345678-1234-1234-1234-123456789012</string>
+            <string>VN041975-3004-2025-WIFI-50NAMTHONGN</string>
             <key>PayloadVersion</key>
-            <integer>1</integer>
+            <integer>4</integer>
             <key>SSID_STR</key>
             <string>YourWiFiNetwork</string>
             <key>HIDDEN_NETWORK</key>
@@ -22,7 +22,7 @@
             <key>AutoJoin</key>
             <true/>
             <key>EncryptionType</key>
-            <string>WPA2</string>
+            <string>WPA3</string>
             <key>Password</key>
             <string>White_memecat</string>
             <key>ProxyType</key>
@@ -31,43 +31,27 @@
             <true/>
             <key>DisableAssociationMACRandomization</key>
             <false/>
-        </dict>
-        <dict>
-            <key>PayloadDisplayName</key>
-            <string>NextDNS Ultra Performance</string>
-            <key>PayloadIdentifier</key>
-            <string>com.ultraping.nextdns</string>
-            <key>PayloadType</key>
-            <string>com.apple.dnsSettings.managed</string>
-            <key>PayloadUUID</key>
-            <string>NEXTDNS1-2222-3333-4444-555555555555</string>
-            <key>PayloadVersion</key>
-            <integer>1</integer>
-            <key>DNSSettings</key>
+            <key>QoSMarkingPolicy</key>
             <dict>
-                <key>DNSProtocol</key>
-                <string>HTTPS</string>
-                <key>ServerURL</key>
-                <string>https://dns.nextdns.io/</string>
-                <key>SupplementalMatchDomains</key>
-                <array>
-                    <string>gaming</string>
-                    <string>cdn</string>
-                    <string>api</string>
-                </array>
+                <key>QoSMarkingEnabled</key>
+                <true/>
+                <key>QoSMarkingAppleAudioVideoCalls</key>
+                <true/>
             </dict>
+            <key>Priority</key>
+            <integer>1</integer>
         </dict>
         <dict>
             <key>PayloadDisplayName</key>
-            <string>Cloudflare 1ms DNS</string>
+            <string>Cloudflare DNS Việt Nam Siêu Nhanh 1.1.1.1</string>
             <key>PayloadIdentifier</key>
-            <string>com.ultraping.cloudflare</string>
+            <string>vn.sieutocdns.cloudflare.chinh</string>
             <key>PayloadType</key>
             <string>com.apple.dnsSettings.managed</string>
             <key>PayloadUUID</key>
-            <string>CFLARE11-1111-1111-1111-111111111111</string>
+            <string>CF111111-1001-VIET-NAM-SIEUNHANH01</string>
             <key>PayloadVersion</key>
-            <integer>1</integer>
+            <integer>4</integer>
             <key>DNSSettings</key>
             <dict>
                 <key>DNSProtocol</key>
@@ -79,19 +63,30 @@
                     <string>1.1.1.1</string>
                     <string>1.0.0.1</string>
                 </array>
+                <key>SupplementalMatchDomains</key>
+                <array>
+                    <string>*.vn</string>
+                    <string>*.com.vn</string>
+                    <string>*.net.vn</string>
+                    <string>roblox.com</string>
+                    <string>rbxcdn.com</string>
+                    <string>robloxlabs.com</string>
+                    <string>gaming</string>
+                    <string>cdn</string>
+                </array>
             </dict>
         </dict>
         <dict>
             <key>PayloadDisplayName</key>
-            <string>Google High Speed DNS</string>
+            <string>Google DNS Việt Nam 8.8.8.8 Tối Ưu Game</string>
             <key>PayloadIdentifier</key>
-            <string>com.ultraping.google</string>
+            <string>vn.sieutocdns.google.toiuugame</string>
             <key>PayloadType</key>
             <string>com.apple.dnsSettings.managed</string>
             <key>PayloadUUID</key>
-            <string>GOOGLE88-8888-8888-8888-888888888888</string>
+            <string>GG888888-4444-VIET-NAM-TOIUUGAME</string>
             <key>PayloadVersion</key>
-            <integer>1</integer>
+            <integer>4</integer>
             <key>DNSSettings</key>
             <dict>
                 <key>DNSProtocol</key>
@@ -103,25 +98,140 @@
                     <string>8.8.8.8</string>
                     <string>8.8.4.4</string>
                 </array>
+                <key>SupplementalMatchDomains</key>
+                <array>
+                    <string>youtube.com</string>
+                    <string>google.com</string>
+                    <string>googleapis.com</string>
+                    <string>*.roblox.com</string>
+                    <string>*.rbxcdn.com</string>
+                </array>
             </dict>
         </dict>
         <dict>
             <key>PayloadDisplayName</key>
-            <string>Ultra Network Performance</string>
+            <string>DNS Roblox Chuyên Dụng Việt Nam</string>
             <key>PayloadIdentifier</key>
-            <string>com.ultraping.performance</string>
+            <string>vn.sieutocdns.roblox.chuyendung</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>ROBLOX01-VIET-NAM-CHUYENDUNG001</string>
+            <key>PayloadVersion</key>
+            <integer>4</integer>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerURL</key>
+                <string>https://1.1.1.1/dns-query</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>1.1.1.1</string>
+                    <string>8.8.8.8</string>
+                    <string>1.0.0.1</string>
+                    <string>8.8.4.4</string>
+                </array>
+                <key>SupplementalMatchDomains</key>
+                <array>
+                    <string>roblox.com</string>
+                    <string>www.roblox.com</string>
+                    <string>web.roblox.com</string>
+                    <string>api.roblox.com</string>
+                    <string>rbxcdn.com</string>
+                    <string>robloxlabs.com</string>
+                    <string>rbx.com</string>
+                    <string>*.rbxcdn.com</string>
+                    <string>*.roblox.com</string>
+                    <string>*.robloxlabs.com</string>
+                </array>
+            </dict>
+        </dict>
+        <dict>
+            <key>PayloadDisplayName</key>
+            <string>VPN DNS Tối Ưu Việt Nam</string>
+            <key>PayloadIdentifier</key>
+            <string>vn.sieutocdns.vpn.toiuu</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>VNVPN004-VIET-NAM-TOIUU-SIEUNHAN</string>
+            <key>PayloadVersion</key>
+            <integer>4</integer>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>TLS</string>
+                <key>ServerName</key>
+                <string>one.one.one.one</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>1.1.1.1</string>
+                    <string>1.0.0.1</string>
+                    <string>8.8.8.8</string>
+                    <string>8.8.4.4</string>
+                    <string>9.9.9.9</string>
+                </array>
+                <key>SupplementalMatchDomains</key>
+                <array>
+                    <string>vpn</string>
+                    <string>proxy</string>
+                    <string>tunnel</string>
+                    <string>*.vpn</string>
+                </array>
+            </dict>
+        </dict>
+        <dict>
+            <key>PayloadDisplayName</key>
+            <string>Quad9 Bảo Mật DNS Việt Nam</string>
+            <key>PayloadIdentifier</key>
+            <string>vn.sieutocdns.quad9.baomat</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>QUAD9999-VIET-NAM-BAOMATDNS001</string>
+            <key>PayloadVersion</key>
+            <integer>4</integer>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerURL</key>
+                <string>https://dns.quad9.net/dns-query</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>9.9.9.9</string>
+                    <string>149.112.112.112</string>
+                </array>
+            </dict>
+        </dict>
+        <dict>
+            <key>PayloadDisplayName</key>
+            <string>Hiệu Suất Game Việt Nam Siêu Cao v4.0</string>
+            <key>PayloadIdentifier</key>
+            <string>vn.sieutocdns.hieusuat.game.v4</string>
             <key>PayloadType</key>
             <string>com.apple.networkusage</string>
             <key>PayloadUUID</key>
-            <string>PERFORM1-2345-6789-ABCD-PERFORMANCE1</string>
+            <string>VNHIEUSUAT-GAME-V4-SIEUCAO2025</string>
             <key>PayloadVersion</key>
-            <integer>1</integer>
+            <integer>4</integer>
             <key>AppRules</key>
             <array>
                 <dict>
                     <key>AppIdentifierMatches</key>
                     <array>
-                        <string>*</string>
+                        <string>com.roblox.RobloxPlayer</string>
+                        <string>com.roblox.*</string>
+                        <string>*roblox*</string>
+                        <string>com.pubg.*</string>
+                        <string>com.garena.*</string>
+                        <string>com.riotgames.*</string>
+                        <string>com.tencent.*</string>
+                        <string>com.ea.*</string>
+                        <string>com.supercell.*</string>
+                        <string>*gaming*</string>
+                        <string>*game*</string>
                     </array>
                     <key>Cellular</key>
                     <dict>
@@ -140,38 +250,63 @@
         </dict>
         <dict>
             <key>PayloadDisplayName</key>
-            <string>Gaming Mode Optimization</string>
+            <string>Cache Roblox Tối Ưu Việt Nam</string>
             <key>PayloadIdentifier</key>
-            <string>com.ultraping.gaming</string>
+            <string>vn.sieutocdns.cache.roblox.toiuu</string>
             <key>PayloadType</key>
             <string>com.apple.contentcaching</string>
             <key>PayloadUUID</key>
-            <string>GAMING11-1111-2222-3333-LOWLATENCY1</string>
+            <string>ROBLOXCACHE-VIET-NAM-TOIUU-V4</string>
             <key>PayloadVersion</key>
-            <integer>1</integer>
+            <integer>4</integer>
             <key>AllowPersonalRequests</key>
             <true/>
             <key>AllowSharedRequests</key>
             <true/>
             <key>AutoActivation</key>
             <true/>
+            <key>LogLevel</key>
+            <string>info</string>
+            <key>Port</key>
+            <integer>0</integer>
+            <key>CacheLimit</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>PayloadDisplayName</key>
+            <string>Chế Độ Gaming Roblox Chuyên Nghiệp</string>
+            <key>PayloadIdentifier</key>
+            <string>vn.sieutocdns.gaming.roblox.chuyennghiep</string>
+            <key>PayloadType</key>
+            <string>com.apple.airplay</string>
+            <key>PayloadUUID</key>
+            <string>ROBLOXGAMING-CHUYENNGHIEP-VN-V4</string>
+            <key>PayloadVersion</key>
+            <integer>4</integer>
+            <key>Whitelist</key>
+            <array>
+                <dict>
+                    <key>DeviceID</key>
+                    <string>*</string>
+                </dict>
+            </array>
         </dict>
     </array>
     <key>PayloadDisplayName</key>
-    <string>Ultra-Ping-No-More-Lag v2.0</string>
+    <string>🇻🇳 Siêu Tốc DNS Việt Nam v4.0 - Roblox Chuyên Dụng (30/4/1975-30/4/2025)</string>
     <key>PayloadIdentifier</key>
-    <string>com.ultraping.nomorelag</string>
+    <string>vn.sieutocdns.v4.roblox.50namthongn</string>
     <key>PayloadRemovalDisallowed</key>
     <false/>
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadUUID</key>
-    <string>ULTRAPING-0000-0000-0000-NOMORELAG000</string>
+    <string>VN041975-2025-SIEUTOCDNS-V4-ROBLOX</string>
     <key>PayloadVersion</key>
-    <integer>2</integer>
+    <integer>4</integer>
     <key>PayloadDescription</key>
-    <string>Advanced DNS configuration combining NextDNS + Cloudflare + Google DNS for 1-5ms ping optimization. Includes gaming mode and ultra-low latency settings.</string>
+    <string>🇻🇳 SIÊU TỐC DNS VIỆT NAM v4.0 - Phiên Bản Roblox Chuyên Dụng! Kỷ niệm 50 năm Thống Nhất (30/4/1975-30/4/2025). DNS siêu nhanh với Cloudflare 1.1.1.1/1.0.0.1 + Google 8.8.8.8/8.8.4.4 + Tối ưu VPN. Hỗ trợ đặc biệt cho Roblox! Ping siêu thấp 1ms cho game thủ Việt Nam!</string>
     <key>PayloadOrganization</key>
-    <string>Ultra-Ping Network Solutions</string>
+    <string>🇻🇳 Siêu Tốc DNS Việt Nam - Kỷ Niệm 50 Năm Thống Nhất</string>
 </dict>
 </plist>
